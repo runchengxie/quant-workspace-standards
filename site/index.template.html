@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="English-first development standards for the quant code workspace, with a Simplified Chinese reference.">
+  <title>Quant Workspace Standards</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182d36;
+      --muted: #506872;
+      --paper: #f3f7f5;
+      --surface: #ffffff;
+      --line: #d7e3df;
+      --brand: #116b61;
+      --brand-soft: #e3f2ee;
+      --code: #eef3f1;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.7; }
+    .page { width: min(100% - 32px, 980px); margin: 0 auto; padding: 48px 0 80px; }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+    .brand { color: var(--brand); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .language-switch { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+    .language-switch button { min-height: 40px; padding: 0 15px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: .9rem; cursor: pointer; }
+    .language-switch button[aria-selected="true"] { background: var(--brand); color: #fff; }
+    .language-switch button:focus-visible { outline: 3px solid #e9ad57; outline-offset: 3px; }
+    .intro { margin-bottom: 24px; padding: 30px 34px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: -.045em; line-height: 1.15; }
+    .intro p { max-width: 68ch; margin: 12px 0 0; color: var(--muted); }
+    .authority { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 7px 12px; border-radius: 999px; background: var(--brand-soft); color: #145b52; font-size: .88rem; font-weight: 650; }
+    .authority::before { width: 7px; height: 7px; border-radius: 50%; background: #168174; content: ""; }
+    .document { padding: clamp(22px, 5vw, 48px); border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 12px 36px rgb(24 45 54 / 5%); }
+    .document[hidden] { display: none; }
+    .document h1 { display: none; }
+    .document h2 { margin: 2.2em 0 .65em; padding-bottom: .35em; border-bottom: 1px solid var(--line); font-size: 1.45rem; letter-spacing: -.02em; }
+    .document h3 { margin: 1.8em 0 .5em; font-size: 1.1rem; }
+    .document p, .document ul, .document ol { color: #304a53; }
+    .document li { padding-left: .25em; margin: .42em 0; }
+    .document li::marker { color: var(--brand); }
+    code { padding: .12em .35em; border-radius: 5px; background: var(--code); color: #244a50; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; overflow-wrap: anywhere; }
+    pre { overflow-x: auto; padding: 18px; border-radius: 12px; background: var(--code); }
+    pre code { padding: 0; background: transparent; }
+    a { color: var(--brand); text-underline-offset: 3px; }
+    footer { padding: 22px 8px 0; color: var(--muted); font-size: .85rem; text-align: center; }
+    @media (max-width: 560px) {
+      .page { width: min(100% - 20px, 980px); padding-top: 24px; }
+      .topline { align-items: flex-start; flex-direction: column; gap: 14px; }
+      .intro { padding: 24px 20px; }
+      .language-switch { width: 100%; }
+      .language-switch button { flex: 1; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .document { animation: enter .18s ease-out; }
+      @keyframes enter { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topline">
+      <div class="brand">Quant · Workspace Guide</div>
+      <div class="language-switch" role="tablist" aria-label="Choose language / 选择语言">
+        <button id="tab-en" type="button" role="tab" aria-controls="doc-en" aria-selected="true">English</button>
+        <button id="tab-zh" type="button" role="tab" aria-controls="doc-zh" aria-selected="false" lang="zh-CN">简体中文</button>
+      </div>
+    </div>
+
+    <header class="intro">
+      <div id="hero-en">
+        <h1>Quant Workspace Standards</h1>
+        <p>Practical development guidance for repositories in the quant code workspace.</p>
+        <div class="authority">English is authoritative · 中文为参考译文</div>
+      </div>
+      <div id="hero-zh" lang="zh-CN" hidden>
+        <h1>Quant 工作区开发规范</h1>
+        <p>quant 代码工作区各项目仓库的开发规范。</p>
+        <div class="authority">英文为权威版本 · 中文为参考译文</div>
+      </div>
+    </header>
+
+    <article id="doc-en" class="document" role="tabpanel" aria-labelledby="tab-en">
+      {{ENGLISH_DOCUMENT}}
+    </article>
+    <article id="doc-zh" class="document" role="tabpanel" aria-labelledby="tab-zh" lang="zh-CN" hidden>
+      {{CHINESE_DOCUMENT}}
+    </article>
+
+    <footer><span id="source-en">Source:</span><span id="source-zh" lang="zh-CN" hidden>来源：</span> <a href="https://github.com/runchengxie/quant-workspace-standards">quant-workspace-standards</a></footer>
+  </main>
+  <script>
+    (() => {
+      const tabs = [
+        { button: document.getElementById("tab-en"), panel: document.getElementById("doc-en"), language: "en" },
+        { button: document.getElementById("tab-zh"), panel: document.getElementById("doc-zh"), language: "zh-CN" },
+      ];
+      const heroEnglish = document.getElementById("hero-en");
+      const heroChinese = document.getElementById("hero-zh");
+      const sourceEnglish = document.getElementById("source-en");
+      const sourceChinese = document.getElementById("source-zh");
+
+      function selectLanguage(language, remember = true) {
+        for (const tab of tabs) {
+          const selected = tab.language === language;
+          tab.button.setAttribute("aria-selected", String(selected));
+          tab.button.tabIndex = selected ? 0 : -1;
+          tab.panel.hidden = !selected;
+        }
+        heroEnglish.hidden = language !== "en";
+        heroChinese.hidden = language !== "zh-CN";
+        sourceEnglish.hidden = language !== "en";
+        sourceChinese.hidden = language !== "zh-CN";
+        document.documentElement.lang = language;
+        if (remember) {
+          try { localStorage.setItem("quant-workspace-language", language); } catch (_) { /* Storage may be disabled. */ }
+        }
+      }
+
+      for (const [index, tab] of tabs.entries()) {
+        tab.button.addEventListener("click", () => selectLanguage(tab.language));
+        tab.button.addEventListener("keydown", (event) => {
+          let nextIndex = index;
+          if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (index + 1) % tabs.length;
+          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (index + tabs.length - 1) % tabs.length;
+          else if (event.key === "Home") nextIndex = 0;
+          else if (event.key === "End") nextIndex = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          tabs[nextIndex].button.focus();
+          selectLanguage(tabs[nextIndex].language);
+        });
+      }
+
+      let initialLanguage = "en";
+      try {
+        if (location.hash.toLowerCase() === "#zh-cn") initialLanguage = "zh-CN";
+        else if (localStorage.getItem("quant-workspace-language") === "zh-CN") initialLanguage = "zh-CN";
+      } catch (_) { /* English remains the default when storage is disabled. */ }
+      selectLanguage(initialLanguage, false);
+    })();
+  </script>
+</body>
+</html>

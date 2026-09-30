@@ -1,0 +1,62 @@
+name: Publish bilingual GitHub Pages site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - AGENTS.md
+      - AGENTS.zh-CN.md
+      - requirements-pages.txt
+      - scripts/build_pages.py
+      - site/index.template.html
+      - .github/workflows/pages.yml
+  pull_request:
+    paths:
+      - AGENTS.md
+      - AGENTS.zh-CN.md
+      - requirements-pages.txt
+      - scripts/build_pages.py
+      - site/index.template.html
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install page builder
+        run: python -m pip install -r requirements-pages.txt
+      - name: Build site
+        run: python scripts/build_pages.py --output-dir _site
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
