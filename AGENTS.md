@@ -5,7 +5,7 @@ This directory contains multiple independent repositories. Identify the target r
 ## Language and Internationalization
 
 - English is the authoritative language for workspace standards, technical requirements, and repository development documentation. Chinese translations are secondary references; use the English version if the two differ.
-- Keep `AGENTS.md` as the canonical English standard and `AGENTS.zh-CN.md` as its Simplified Chinese reference. Update both in the same change when changing a rule, and do not add requirements only to the translation.
+- Keep the root `AGENTS.md` as the canonical English standard and `docs/standards.zh-CN.md` as its Simplified Chinese reference. Update both in the same change when changing a rule, and do not add requirements only to the translation. Keep the translation clearly labeled as reference material rather than a separate agent instruction file.
 - For user-facing software that supports multiple languages, keep translatable text in locale catalogs rather than embedding it in UI components. Use stable semantic keys, interpolation for dynamic values, plural-aware messages, and locale-aware formatting.
 - Default to English and provide an explicit language switch when multiple locales are supported. Preserve the user's selection when practical, and fall back to English when a translation is missing.
 - Keep locale selection separate from business logic. Store timestamps and other values according to the data contract; format them for display using the selected locale and an explicit time zone.
