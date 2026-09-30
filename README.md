@@ -9,7 +9,7 @@ This repository contains general development guidance. Keep credentials, persona
 ## Read the standards
 
 - [English source standard](AGENTS.md)
-- [简体中文参考译文](AGENTS.zh-CN.md)
+- [简体中文参考译文](docs/standards.zh-CN.md)
 - [Bilingual GitHub Pages site](https://runchengxie.github.io/quant-workspace-standards/)
 
 The English version is authoritative. The Chinese translation is provided for reference.
