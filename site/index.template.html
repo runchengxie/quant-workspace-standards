@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="English-first development standards for the quant code workspace, with a Simplified Chinese reference.">
+  <meta name="description" content="Development standards for the quant code workspace.">
   <title>Quant Workspace Standards</title>
   <style>
     :root {
@@ -25,10 +25,6 @@
     .page { width: min(100% - 32px, 980px); margin: 0 auto; padding: 48px 0 80px; }
     .topline { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
     .brand { color: var(--brand); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
-    .language-switch { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
-    .language-switch button { min-height: 40px; padding: 0 15px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: inherit; font-size: .9rem; cursor: pointer; }
-    .language-switch button[aria-selected="true"] { background: var(--brand); color: #fff; }
-    .language-switch button:focus-visible { outline: 3px solid #e9ad57; outline-offset: 3px; }
     .intro { margin-bottom: 24px; padding: 30px 34px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); }
     h1 { margin: 0 0 8px; font-size: clamp(2rem, 6vw, 3.2rem); letter-spacing: -.045em; line-height: 1.15; }
     .intro p { max-width: 68ch; margin: 12px 0 0; color: var(--muted); }
@@ -51,8 +47,6 @@
       .page { width: min(100% - 20px, 980px); padding-top: 24px; }
       .topline { align-items: flex-start; flex-direction: column; gap: 14px; }
       .intro { padding: 24px 20px; }
-      .language-switch { width: 100%; }
-      .language-switch button { flex: 1; }
     }
     @media (prefers-reduced-motion: no-preference) {
       .document { animation: enter .18s ease-out; }
@@ -64,84 +58,21 @@
   <main class="page">
     <div class="topline">
       <div class="brand">Quant · Workspace Guide</div>
-      <div class="language-switch" role="tablist" aria-label="Choose language / 选择语言">
-        <button id="tab-en" type="button" role="tab" aria-controls="doc-en" aria-selected="true">English</button>
-        <button id="tab-zh" type="button" role="tab" aria-controls="doc-zh" aria-selected="false" lang="zh-CN">简体中文</button>
-      </div>
     </div>
 
     <header class="intro">
       <div id="hero-en">
         <h1>Quant Workspace Standards</h1>
         <p>Practical development guidance for repositories in the quant code workspace.</p>
-        <div class="authority">English is authoritative · 中文为参考译文</div>
-      </div>
-      <div id="hero-zh" lang="zh-CN" hidden>
-        <h1>Quant 工作区开发规范</h1>
-        <p>quant 代码工作区各项目仓库的开发规范。</p>
-        <div class="authority">英文为权威版本 · 中文为参考译文</div>
+        <div class="authority">Canonical workspace standard</div>
       </div>
     </header>
 
-    <article id="doc-en" class="document" role="tabpanel" aria-labelledby="tab-en">
+    <article id="doc-en" class="document" aria-label="Workspace standards">
       {{ENGLISH_DOCUMENT}}
     </article>
-    <article id="doc-zh" class="document" role="tabpanel" aria-labelledby="tab-zh" lang="zh-CN" hidden>
-      {{CHINESE_DOCUMENT}}
-    </article>
 
-    <footer><span id="source-en">Source:</span><span id="source-zh" lang="zh-CN" hidden>来源：</span> <a href="https://github.com/runchengxie/quant-workspace-standards">quant-workspace-standards</a></footer>
+    <footer>Source: <a href="https://github.com/runchengxie/quant-workspace-standards">quant-workspace-standards</a></footer>
   </main>
-  <script>
-    (() => {
-      const tabs = [
-        { button: document.getElementById("tab-en"), panel: document.getElementById("doc-en"), language: "en" },
-        { button: document.getElementById("tab-zh"), panel: document.getElementById("doc-zh"), language: "zh-CN" },
-      ];
-      const heroEnglish = document.getElementById("hero-en");
-      const heroChinese = document.getElementById("hero-zh");
-      const sourceEnglish = document.getElementById("source-en");
-      const sourceChinese = document.getElementById("source-zh");
-
-      function selectLanguage(language, remember = true) {
-        for (const tab of tabs) {
-          const selected = tab.language === language;
-          tab.button.setAttribute("aria-selected", String(selected));
-          tab.button.tabIndex = selected ? 0 : -1;
-          tab.panel.hidden = !selected;
-        }
-        heroEnglish.hidden = language !== "en";
-        heroChinese.hidden = language !== "zh-CN";
-        sourceEnglish.hidden = language !== "en";
-        sourceChinese.hidden = language !== "zh-CN";
-        document.documentElement.lang = language;
-        if (remember) {
-          try { localStorage.setItem("quant-workspace-language", language); } catch (_) { /* Storage may be disabled. */ }
-        }
-      }
-
-      for (const [index, tab] of tabs.entries()) {
-        tab.button.addEventListener("click", () => selectLanguage(tab.language));
-        tab.button.addEventListener("keydown", (event) => {
-          let nextIndex = index;
-          if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (index + 1) % tabs.length;
-          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (index + tabs.length - 1) % tabs.length;
-          else if (event.key === "Home") nextIndex = 0;
-          else if (event.key === "End") nextIndex = tabs.length - 1;
-          else return;
-          event.preventDefault();
-          tabs[nextIndex].button.focus();
-          selectLanguage(tabs[nextIndex].language);
-        });
-      }
-
-      let initialLanguage = "en";
-      try {
-        if (location.hash.toLowerCase() === "#zh-cn") initialLanguage = "zh-CN";
-        else if (localStorage.getItem("quant-workspace-language") === "zh-CN") initialLanguage = "zh-CN";
-      } catch (_) { /* English remains the default when storage is disabled. */ }
-      selectLanguage(initialLanguage, false);
-    })();
-  </script>
 </body>
 </html>
