@@ -11,4 +11,4 @@ This repository contains general development guidance. Keep credentials, persona
 - [Source standard](AGENTS.md)
 - [GitHub Pages site](https://runchengxie.github.io/quant-workspace-standards/)
 
-Machine-local shared path settings belong in `CONFIG_ROOT/shared/workspace.toml`. Use the existing private configuration layout when available; otherwise, place `CONFIG_ROOT` under the owner's namespace in `XDG_CONFIG_HOME` (or `~/.config`) on Linux or `LOCALAPPDATA` on Windows. Tools must explicitly read these settings or receive the resolved paths through environment variables.
+Machine-local shared path settings belong in `CONFIG_ROOT/shared/workspace.toml`. Use the existing private configuration layout when available; otherwise, use `~/.config/<owner>/` on both Windows and Linux, honoring an explicitly configured `XDG_CONFIG_HOME` when present. Tools must explicitly read these settings or receive the resolved paths through environment variables. Keep tool-specific settings in the locations required by the tool.

@@ -46,7 +46,7 @@ These standards apply to a workspace containing multiple independent repositorie
 
 ## Project Configuration and Credentials
 
-- Store personal project configuration, production settings, credentials, and machine-specific paths under `CONFIG_ROOT`, outside source repositories and temporary worktrees. Unless an existing layout specifies otherwise, use an owner namespace under `XDG_CONFIG_HOME` (or `~/.config`) on Linux and under `LOCALAPPDATA` on Windows.
+- Store personal project configuration, production settings, credentials, and machine-specific paths under `CONFIG_ROOT`, outside source repositories and temporary worktrees. Unless an existing layout specifies otherwise, use `~/.config/<owner>/` on both Windows and Linux, honoring an explicitly configured `XDG_CONFIG_HOME` when present. Resolve `~` to the current user's home directory. Keep tool-specific settings in the locations required by the tool.
 - Before creating a configuration file, inspect and follow existing grouping under `CONFIG_ROOT/projects/`, `deployments/`, and `shared/`. Maintain one authoritative copy of each credential and refer to it from consumers.
 - Use `projects/<repo>/` for personal project settings, `deployments/<repo>/` for deployment-specific settings, and `shared/` only for configuration genuinely shared by multiple projects. Derive paths from the configured roots; do not hard-code a person's absolute path in shareable code.
 - On Unix-like systems, set credential files to mode `0600` and directories containing only credentials to mode `0700`. On Windows, use ACLs to restrict access to the owner and explicitly required service identities. Keep logs, runtime results, and raw data in their designated locations outside the configuration directory.
