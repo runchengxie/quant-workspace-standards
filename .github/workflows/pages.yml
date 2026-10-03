@@ -1,11 +1,10 @@
-name: Publish bilingual GitHub Pages site
+name: Publish GitHub Pages site
 
 on:
   push:
     branches: [main]
     paths:
       - AGENTS.md
-      - docs/standards.zh-CN.md
       - requirements-pages.txt
       - scripts/build_pages.py
       - site/index.template.html
@@ -13,7 +12,6 @@ on:
   pull_request:
     paths:
       - AGENTS.md
-      - docs/standards.zh-CN.md
       - requirements-pages.txt
       - scripts/build_pages.py
       - site/index.template.html

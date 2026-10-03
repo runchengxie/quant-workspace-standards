@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the bilingual GitHub Pages site from the canonical Markdown files."""
+"""Build the GitHub Pages site from the canonical Markdown standard."""
 
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "site" / "index.template.html"
 DOCUMENTS = {
     "{{ENGLISH_DOCUMENT}}": ROOT / "AGENTS.md",
-    "{{CHINESE_DOCUMENT}}": ROOT / "docs" / "standards.zh-CN.md",
 }
 
 
