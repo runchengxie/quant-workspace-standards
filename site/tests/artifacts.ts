@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve, relative } from "node:path";
 import { parse, type DefaultTreeAdapterMap } from "parse5";
 import { unzipSync, strFromU8 } from "fflate";
+import { marked } from "marked";
 import { repoRoot, pagePaths } from "../src/lib/paths";
 import { promptPath } from "../src/lib/content";
 
@@ -95,6 +96,18 @@ for (const [path, source] of htmlFiles) {
   }
 }
 const prompts = linksAndIds(htmlFiles.get("playbooks/index.html")!).tree;
+const standards = linksAndIds(htmlFiles.get("standards/index.html")!).tree;
+for (const locale of ["en-US", "zh-CN"]) {
+  const panel = standards.find(node => attribute(node, "data-locale") === locale);
+  assert.ok(panel);
+  const parts = nodes(panel).filter(node => {
+    const classes = attribute(node, "class")?.split(" ") ?? [];
+    return classes.includes("standard-intro") || classes.includes("chapter-body") || ("tagName" in node && node.tagName === "h2");
+  });
+  const expected = marked.parse(readFileSync(resolve(repoRoot, locale === "en-US" ? "AGENTS.md" : "AGENTS.zh-CN.md"), "utf8"), { async: false });
+  const normalize = (value: string) => value.replace(/\s+/g, " ").trim();
+  assert.equal(normalize(parts.map(contents).join(" ")), normalize(contents(parse(expected))), "Folding must preserve complete standards text and order");
+}
 for (const workflow of ["code", "docs", "closeout"]) {
   for (const locale of ["en-US", "zh-CN"] as const) {
     const pre = prompts.find(
