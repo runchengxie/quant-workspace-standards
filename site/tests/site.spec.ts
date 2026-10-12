@@ -103,7 +103,7 @@ test("Chinese selection changes standards body, brand and page title", async ({
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator(".standard-intro h1:visible")).toHaveText("代码工作区规范");
-  await expect(page.locator(".brand")).toHaveText("量化工作区 · 工程实践");
+  await expect(page.locator(".brand")).toHaveText("项目开发 · 工程实践");
   await expect(page).toHaveTitle(/开发规范/);
   await expect(page.locator("main")).toContainText("固定的目录名称");
   await expect(page.locator('[data-locale="en-US"]')).toBeHidden();
@@ -388,7 +388,7 @@ test("home presents three entries and playbooks presents two ways to do the same
   await page.locator('[data-phase="closeout"]').click();
   await expect(page.locator('.prompt-stage:visible')).toHaveAttribute('data-stage', 'closeout');
   await page.selectOption('.locale', 'zh-CN');
-  await expect(page.locator('main h1')).toHaveText('同一套维护工作，两种使用方式');
+  await expect(page.locator('main h1')).toHaveText('仓库维护');
   await page.setViewportSize({ width: 320, height: 900 });
   const narrowLeft = await page.locator('.prompt-version').boundingBox();
   const narrowRight = await page.locator('.skill-version').boundingBox();

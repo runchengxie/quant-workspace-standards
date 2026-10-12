@@ -8,6 +8,7 @@ const text = catalog['en-US'];
 <Layout page="playbooks" route="playbooks/index.html" bodyClass="playbooks">
   <header class="page-intro">
     <h1 data-i18n="playbooksTitle">{text.playbooksTitle}</h1>
+    <p data-i18n="playbooksIntro">{text.playbooksIntro}</p>
   </header>
   <div class="playbook-columns">
     <section class="prompt-version" aria-labelledby="prompt-version-title">
@@ -15,6 +16,7 @@ const text = catalog['en-US'];
       <Prompts />
     </section>
     <aside class="skill-version" aria-labelledby="skill-version-title">
+      <span class="version-or" aria-hidden="true" data-i18n="versionOr">{text.versionOr}</span>
       <header class="version-heading"><h2 id="skill-version-title" data-i18n="skillVersion">{text.skillVersion}</h2></header>
       <Document name="playbooks" />
     </aside>

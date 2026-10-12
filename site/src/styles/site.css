@@ -343,3 +343,8 @@ footer a { color: var(--muted); }
 
 .standards-relation.sr-only {margin:-1px;}
 .flow-controls {justify-content:center;}
+
+.skill-version {position:relative;}
+.version-or {position:absolute; left:0; top:50%; transform:translate(-50%,-50%); padding:10px 0; background:var(--paper); color:var(--muted); font-size:.85rem;}
+@media(max-width:850px) {.version-or {left:50%; top:0; padding:0 16px;}}
+@media print {.version-or {display:none;}}
