@@ -42,7 +42,7 @@ const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
     </div>
   </header>
   <main id="main"><slot /></main>
-  <footer><span data-i18n="source">{catalog['en-US'].source}</span> · <a href="https://github.com/runchengxie/quant-workspace-standards">quant-workspace-standards</a></footer>
+  <footer><a href="https://github.com/runchengxie/quant-workspace-standards">GitHub</a></footer>
 </div>
 <script is:inline id="locale-catalog" type="application/json" set:html={catalogJson}></script>
 <script is:inline set:html={mainScript}></script>

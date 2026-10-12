@@ -10,6 +10,7 @@ const lanes = [
 <section class="worktree-flow" id="parallel-development" aria-labelledby="flow-title">
   <h2 id="flow-title" data-i18n="flowTitle">{text.flowTitle}</h2>
   <figure id="flow-demo" data-step="7">
+    <div id="flow-tooltip" class="flow-tooltip" role="tooltip" hidden></div>
     <figcaption class="sr-only" data-i18n="flowCaption">{text.flowCaption}</figcaption>
     <svg class="branch-graph graph-wide" viewBox="0 0 1080 400" role="img" aria-label={text.flowGraph} data-i18n-aria="flowGraph">
       <defs><marker id="flow-direction-wide" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 6 3 L 0 6" class="direction-tip" /></marker></defs>
@@ -19,10 +20,10 @@ const lanes = [
       {lanes.map(lane => <g class="flow-lane">
         <path class="task-track" pathLength="1" data-reveal="1" d={`M 145 65 C 220 65 210 ${lane.y} 290 ${lane.y} H 510`} />
         <path class="task-track" pathLength="1" data-reveal={lane.step} d={`M 510 ${lane.y} H ${lane.merge - 110} C ${lane.merge - 35} ${lane.y} ${lane.merge - 60} 65 ${lane.merge} 65`} />
-        <g data-reveal="1" tabindex="0" role="img" aria-label={text.flowHoverBranch} data-i18n-aria="flowHoverBranch"><title data-i18n="flowHoverBranch">{text.flowHoverBranch}</title><text x="285" y={lane.y - 25}>{`task-${lane.name.toLowerCase()} · worktree ${lane.name}`}</text></g>
-        <g data-reveal="2" tabindex="0" role="img" aria-label={text.flowHoverDevelop} data-i18n-aria="flowHoverDevelop"><title data-i18n="flowHoverDevelop">{text.flowHoverDevelop}</title><circle class="task-node" cx="345" cy={lane.y} r="7" /><text x="345" y={lane.y + 30} text-anchor="middle" data-i18n="flowDevelopShort">{text.flowDevelopShort}</text></g>
-        <g data-reveal="3" tabindex="0" role="img" aria-label={text.flowHoverCheck} data-i18n-aria="flowHoverCheck"><title data-i18n="flowHoverCheck">{text.flowHoverCheck}</title><circle class="check-node" cx="510" cy={lane.y} r="8" /><text x="510" y={lane.y + 30} text-anchor="middle">{`PR ${lane.name}`}</text></g>
-        <g data-reveal={lane.step} tabindex="0" role="img" aria-label={text.flowHoverMerge} data-i18n-aria="flowHoverMerge"><title data-i18n="flowHoverMerge">{text.flowHoverMerge}</title><circle class="main-node" cx={lane.merge} cy="65" r="8" /><text x={lane.merge} y="40" text-anchor="middle">{`+ ${lane.name}`}</text></g>
+        <g data-reveal="1" tabindex="0" role="img" aria-label={text.flowHoverBranch} data-i18n-aria="flowHoverBranch"><text x="285" y={lane.y - 25}>{`task-${lane.name.toLowerCase()} · worktree ${lane.name}`}</text></g>
+        <g data-reveal="2" tabindex="0" role="img" aria-label={text.flowHoverDevelop} data-i18n-aria="flowHoverDevelop"><circle class="task-node" cx="345" cy={lane.y} r="7" /><text x="345" y={lane.y + 30} text-anchor="middle" data-i18n="flowDevelopShort">{text.flowDevelopShort}</text></g>
+        <g data-reveal="3" tabindex="0" role="img" aria-label={text.flowHoverCheck} data-i18n-aria="flowHoverCheck"><circle class="check-node" cx="510" cy={lane.y} r="8" /><text x="510" y={lane.y + 30} text-anchor="middle">{`PR ${lane.name}`}</text></g>
+        <g data-reveal={lane.step} tabindex="0" role="img" aria-label={text.flowHoverMerge} data-i18n-aria="flowHoverMerge"><circle class="main-node" cx={lane.merge} cy="65" r="8" /><text x={lane.merge} y="40" text-anchor="middle">{`+ ${lane.name}`}</text></g>
       </g>)}
       <g data-reveal="5"><path class="sync-track" marker-end="url(#flow-direction-wide)" d="M 675 85 Q 720 115 690 150" /><text x="695" y="195" text-anchor="middle" data-i18n="flowSync">{text.flowSync}</text></g>
     </svg>
@@ -35,10 +36,10 @@ const lanes = [
         return <g>
           <path class="task-track" pathLength="1" data-reveal="1" d={`M 42 60 Q ${x} 60 ${x} 125 V 365`} />
           <path class="task-track" pathLength="1" data-reveal={lane.step} d={`M ${x} 365 V ${y - 40} Q ${x} ${y} 42 ${y}`} />
-          <g data-reveal="1" tabindex="0" role="img" aria-label={text.flowHoverBranch} data-i18n-aria="flowHoverBranch"><title data-i18n="flowHoverBranch">{text.flowHoverBranch}</title><text x={x} y="150" text-anchor="middle">{`task-${lane.name.toLowerCase()}`}</text><text x={x} y="170" text-anchor="middle">{`worktree ${lane.name}`}</text></g>
-          <g data-reveal="2" tabindex="0" role="img" aria-label={text.flowHoverDevelop} data-i18n-aria="flowHoverDevelop"><title data-i18n="flowHoverDevelop">{text.flowHoverDevelop}</title><circle class="task-node" cx={x} cy="240" r="6" /><text x={x} y="270" text-anchor="middle" data-i18n="flowDevelopShort">{text.flowDevelopShort}</text></g>
-          <g data-reveal="3" tabindex="0" role="img" aria-label={text.flowHoverCheck} data-i18n-aria="flowHoverCheck"><title data-i18n="flowHoverCheck">{text.flowHoverCheck}</title><circle class="check-node" cx={x} cy="350" r="7" /><text x={x} y="380" text-anchor="middle">{`PR ${lane.name}`}</text></g>
-          <g data-reveal={lane.step} tabindex="0" role="img" aria-label={text.flowHoverMerge} data-i18n-aria="flowHoverMerge"><title data-i18n="flowHoverMerge">{text.flowHoverMerge}</title><circle class="main-node" cx="42" cy={y} r="7" /><text x="14" y={y + 25}>{`+ ${lane.name}`}</text></g>
+          <g data-reveal="1" tabindex="0" role="img" aria-label={text.flowHoverBranch} data-i18n-aria="flowHoverBranch"><text x={x} y="150" text-anchor="middle">{`task-${lane.name.toLowerCase()}`}</text><text x={x} y="170" text-anchor="middle">{`worktree ${lane.name}`}</text></g>
+          <g data-reveal="2" tabindex="0" role="img" aria-label={text.flowHoverDevelop} data-i18n-aria="flowHoverDevelop"><circle class="task-node" cx={x} cy="240" r="6" /><text x={x} y="270" text-anchor="middle" data-i18n="flowDevelopShort">{text.flowDevelopShort}</text></g>
+          <g data-reveal="3" tabindex="0" role="img" aria-label={text.flowHoverCheck} data-i18n-aria="flowHoverCheck"><circle class="check-node" cx={x} cy="350" r="7" /><text x={x} y="380" text-anchor="middle">{`PR ${lane.name}`}</text></g>
+          <g data-reveal={lane.step} tabindex="0" role="img" aria-label={text.flowHoverMerge} data-i18n-aria="flowHoverMerge"><circle class="main-node" cx="42" cy={y} r="7" /><text x="14" y={y + 25}>{`+ ${lane.name}`}</text></g>
         </g>;
       })}
       <g data-reveal="5"><path class="sync-track" marker-end="url(#flow-direction-narrow)" d="M 42 470 Q 65 480 95 420" /><text x="160" y="625" text-anchor="middle" data-i18n="flowSync">{text.flowSync}</text></g>
@@ -51,18 +52,18 @@ const lanes = [
   </figure>
   <details class="flow-notes">
     <summary data-i18n="flowNotes">{text.flowNotes}</summary>
-    <p data-i18n="flowIntro">{text.flowIntro}</p>
-    <p id="flow-status" class="flow-status" aria-live="polite" data-i18n="flowStep7">{text.flowStep7}</p>
-    <p class="flow-finish" data-i18n="flowFinish">{text.flowFinish}</p>
-    <p class="help" data-i18n="flowTiming">{text.flowTiming}</p>
-    <h3 data-i18n="flowBoundaries">{text.flowBoundaries}</h3>
-    <ul>
-      <li data-i18n="flowBoundaryCode">{text.flowBoundaryCode}</li>
-      <li data-i18n="flowBoundaryData">{text.flowBoundaryData}</li>
-      <li data-i18n="flowBoundaryDependencies">{text.flowBoundaryDependencies}</li>
-      <li data-i18n="flowBoundaryReview">{text.flowBoundaryReview}</li>
-    </ul>
-    <p><span data-i18n="flowReferences">{text.flowReferences}</span> <a href="https://git-scm.com/docs/git-worktree">Git worktree</a> · <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">GitHub protected branches</a></p>
-    <slot />
+    <section class="flow-process" aria-labelledby="flow-process-title">
+      <h3 id="flow-process-title" data-i18n="flowProcess">{text.flowProcess}</h3>
+      <ol class="flow-steps">{['Develop', 'Validate', 'Merge', 'Cleanup'].map(name => <li><strong data-i18n={`flowAction${name}`}>{text[`flowAction${name}` as keyof typeof text]}</strong><p data-i18n={`flowAction${name}Detail`}>{text[`flowAction${name}Detail` as keyof typeof text]}</p></li>)}</ol>
+      <div class="flow-current"><span data-i18n="flowCurrent">{text.flowCurrent}</span><p id="flow-status" class="flow-status" aria-live="polite" data-i18n="flowStep7">{text.flowStep7}</p></div>
+      <p class="help" data-i18n="flowTiming">{text.flowTiming}</p>
+    </section>
+    <details class="flow-coordination">
+      <summary data-i18n="flowCoordination">{text.flowCoordination}</summary>
+      <table class="coordination-table"><thead><tr><th data-i18n="flowResource">{text.flowResource}</th><th data-i18n="flowHow">{text.flowHow}</th></tr></thead><tbody>{['Files', 'History', 'Runtime', 'Data', 'Integration'].map(name => <tr><th scope="row" data-i18n={`flowResource${name}`}>{text[`flowResource${name}` as keyof typeof text]}</th><td data-i18n={`flowResource${name}Detail`}>{text[`flowResource${name}Detail` as keyof typeof text]}</td></tr>)}</tbody></table>
+      <p class="help" data-i18n="flowBoundaryReview">{text.flowBoundaryReview}</p>
+      <p class="help"><span data-i18n="flowReferences">{text.flowReferences}</span> <a href="https://git-scm.com/docs/git-worktree">Git worktree</a> · <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">GitHub protected branches</a></p>
+    </details>
+    <details class="flow-standard"><summary data-i18n="flowFullStandard">{text.flowFullStandard}</summary><slot /></details>
   </details>
 </section>
