@@ -1,0 +1,226 @@
+[
+  {
+    "id": "opening",
+    "title": {
+      "en-US": "AI can write code. Who maintains the system?",
+      "zh-CN": "AI 能写代码，谁来维护系统？"
+    },
+    "points": {
+      "en-US": [
+        "Lessons from maintaining a research and reporting system",
+        "2026.10.18 · About 30 minutes · Open discussion"
+      ],
+      "zh-CN": [
+        "从量化投研项目的事故，谈长期维护",
+        "2026.10.18 · 约 30 分钟 · 随时交流"
+      ]
+    },
+    "notes": "背景是市场数据、研究、回测和每天发布的报告。说明这是个人实践。",
+    "case": null
+  },
+  {
+    "id": "prototype",
+    "title": {
+      "en-US": "A quick prototype still needs long-term care",
+      "zh-CN": "MVP 很快，稳定运行要花时间"
+    },
+    "points": {
+      "en-US": [
+        "Data → validation → model → report → delivery",
+        "Each step can expose an overlooked boundary"
+      ],
+      "zh-CN": [
+        "数据 → 清洗 → 模型 → 报告 → 通知",
+        "每一步都可能遇到没预料到的边界"
+      ]
+    },
+    "notes": "用提前备菜的经历介绍自动化链路。不要把五分钟和六个月当统计结论。",
+    "case": null
+  },
+  {
+    "id": "holiday",
+    "title": {
+      "en-US": "A holiday exceeded the freshness window",
+      "zh-CN": "长假碰到了七天规则"
+    },
+    "points": {
+      "en-US": [
+        "Calendar-day age cannot replace trading-session semantics",
+        "Validate the report date, prior open session and evidence"
+      ],
+      "zh-CN": [
+        "自然日的间隔，不能代替交易日语义",
+        "核对报告日、最后有效交易日和校验证据"
+      ]
+    },
+    "notes": "讲八个自然日的事故回忆。PR #216 支持按上一个交易日检查。",
+    "case": "216"
+  },
+  {
+    "id": "delivery",
+    "title": {
+      "en-US": "What if a send succeeds without an acknowledgment?",
+      "zh-CN": "发出去了，确认没回来怎么办？"
+    },
+    "points": {
+      "en-US": [
+        "sent / failed / unknown",
+        "An unknown outcome needs an explicit retry boundary"
+      ],
+      "zh-CN": ["sent / failed / unknown", "未知状态不能直接当作失败重试"]
+    },
+    "notes": "先讲从九点改成七点的回忆，再讲防重复检查本身也会出错。PR #220 保留 unknown 并阻断盲目 fallback。",
+    "case": "220"
+  },
+  {
+    "id": "ownership",
+    "title": {
+      "en-US": "Splitting repositories still needs ownership checks",
+      "zh-CN": "拆成多个仓库，仍要验证职责"
+    },
+    "points": {
+      "en-US": [
+        "Generation → presentation → deployment and monitoring",
+        "About 36k deleted lines included code, tests and artifacts"
+      ],
+      "zh-CN": [
+        "生成 → 展示 → 部署与监控",
+        "约 3.6 万行退役 diff，包括代码、测试和产物"
+      ]
+    },
+    "notes": "说明 PR #211 和 #98 的具体边界。不要称全部删除行都是重复代码。",
+    "case": "211"
+  },
+  {
+    "id": "coverage",
+    "title": {
+      "en-US": "Before trusting a pass, inspect its scope",
+      "zh-CN": "检查通过之前，看看检查了什么"
+    },
+    "points": {
+      "en-US": [
+        "674 → 1,656 files in the same configured audit scope",
+        "Validate coverage separately from violation counts"
+      ],
+      "zh-CN": [
+        "同一配置范围，674 → 1,656 个文件",
+        "扫描范围与错误数量分别核对"
+      ]
+    },
+    "notes": "PR #10 原始记录确认 quant-research 的只读维护性审计数量。不是测试覆盖率，也不能推断 AI 故意少扫描。",
+    "case": "10"
+  },
+  {
+    "id": "workflows",
+    "title": {
+      "en-US": "Three focused maintenance workflows",
+      "zh-CN": "三个维护工作流，各做一件事"
+    },
+    "points": {
+      "en-US": [
+        "01 Code and architecture",
+        "02 Documentation, tests and i18n",
+        "03 Hygiene and final validation"
+      ],
+      "zh-CN": [
+        "01 代码与架构",
+        "02 文档、测试与 i18n",
+        "03 仓库收尾与最终验证"
+      ]
+    },
+    "notes": "只改文档不用先重构整个项目。完整维护共享事实基线，按需回退。",
+    "case": null
+  },
+  {
+    "id": "skill",
+    "title": {
+      "en-US": "Turn repeated instructions into reusable workflows",
+      "zh-CN": "把重复要求变成可复用流程"
+    },
+    "points": {
+      "en-US": [
+        "Prompt → workflow → Skill",
+        "Standards define boundaries; the Skill routes execution"
+      ],
+      "zh-CN": [
+        "Prompt → Workflow → Skill",
+        "Standards 约定边界，Skill 组织执行"
+      ]
+    },
+    "notes": "介绍 audit/code/docs/full。完整提示词在网站，不在投影片逐行展示。",
+    "case": null
+  },
+  {
+    "id": "git",
+    "title": {
+      "en-US": "Isolate development and verify delivery",
+      "zh-CN": "开发隔离与交付贯穿三个阶段"
+    },
+    "points": {
+      "en-US": [
+        "worktree → PR → checks → merge → cleanup",
+        "Clean only task-owned work; verify merge and deployment"
+      ],
+      "zh-CN": [
+        "worktree → PR → checks → merge → cleanup",
+        "只清理当前任务，核对合并和实际部署"
+      ]
+    },
+    "notes": "解释日报还在定时运行，独立 worktree 减少干扰。不能把本地修改等同部署。",
+    "case": null
+  },
+  {
+    "id": "questions",
+    "title": {
+      "en-US": "Ask AI to inspect the premise too",
+      "zh-CN": "允许 AI 检查我们的前提"
+    },
+    "points": {
+      "en-US": [
+        "Parameter tuning missed a data/model mismatch",
+        "State expected behavior, reproduction and failure evidence"
+      ],
+      "zh-CN": [
+        "反复调参数，没有解决数据与模型不匹配",
+        "说明预期行为、复现方式和失败证据"
+      ]
+    },
+    "notes": "微调案例是个人观察，不上升为模型心理定律。",
+    "case": null
+  },
+  {
+    "id": "customers",
+    "title": {
+      "en-US": "Customers need a usable outcome",
+      "zh-CN": "客户需要能用上的结果"
+    },
+    "points": {
+      "en-US": [
+        "Company-information tool → a selection list",
+        "A complete result brings delivery and operating costs"
+      ],
+      "zh-CN": ["企业信息工具 → 选股清单", "完整交付增加价值，也增加运维成本"]
+    },
+    "notes": "保留两三个月搭链路的经历。十万元客服订单是可选延伸，不作盈利保证。",
+    "case": null
+  },
+  {
+    "id": "takeaway",
+    "title": {
+      "en-US": "Start with one real problem",
+      "zh-CN": "从一个真实问题开始"
+    },
+    "points": {
+      "en-US": [
+        "Copy a prompt or download repo-maintenance",
+        "Confirm user feedback, then verify the change"
+      ],
+      "zh-CN": [
+        "复制提示词，或下载 repo-maintenance",
+        "准确复述用户反馈，再一起验证"
+      ]
+    },
+    "notes": "开放交流。二维码指向提示词页，断网仍可用随包 HTML 阅读。",
+    "case": null
+  }
+]

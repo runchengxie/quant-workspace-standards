@@ -7,14 +7,20 @@ on:
       - AGENTS.md
       - requirements-pages.txt
       - scripts/build_pages.py
-      - site/index.template.html
+      - "site/**"
+      - "content/**"
+      - "skills/**"
+      - "tests/**"
       - .github/workflows/pages.yml
   pull_request:
     paths:
       - AGENTS.md
       - requirements-pages.txt
       - scripts/build_pages.py
-      - site/index.template.html
+      - "site/**"
+      - "content/**"
+      - "skills/**"
+      - "tests/**"
       - .github/workflows/pages.yml
   workflow_dispatch:
 
@@ -22,7 +28,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: github-pages
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
   cancel-in-progress: true
 
 jobs:
@@ -37,6 +43,8 @@ jobs:
           python-version: "3.12"
       - name: Install page builder
         run: python -m pip install -r requirements-pages.txt
+      - name: Validate portable pages and resources
+        run: python -m unittest discover -s tests -v
       - name: Build site
         run: python scripts/build_pages.py --output-dir _site
       - name: Upload Pages artifact
