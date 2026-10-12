@@ -52,11 +52,12 @@ test("standards downloads preserve both source files and the diagram localizes",
     expect(path).toBeTruthy();
     expect(readFileSync(path!)).toEqual(readFileSync(new URL(`../../${name}`, import.meta.url)));
   }
+  await page.locator(".diagram-disclosure > summary").click();
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("#flow-title")).toHaveText("用 Git worktree 支持并行开发");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
-  await page.locator(".worktree-flow summary").click();
-  await expect(page.locator(".worktree-flow details")).toContainText("共享写入需要协调");
+  await page.locator(".worktree-flow details:not(.flow-notes) > summary").click();
+  await expect(page.locator(".worktree-flow details:not(.flow-notes)")).toContainText("共享写入需要协调");
   await page.setViewportSize({ width: 320, height: 900 });
   for (const locale of ["en-US", "zh-CN"]) {
     await page.selectOption(".locale", locale);
@@ -101,7 +102,7 @@ test("Chinese selection changes standards body, brand and page title", async ({
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
   await expect(page.locator(".brand")).toHaveText("量化工作区 · 工程实践");
-  await expect(page).toHaveTitle(/工程规范/);
+  await expect(page).toHaveTitle(/开发规范/);
   await expect(page.locator("main")).toContainText("固定的目录名称");
   await expect(page.locator('[data-locale="en-US"]')).toBeHidden();
   await page.locator('nav [data-i18n="playbooks"]').click();
@@ -270,24 +271,29 @@ test("standards chapters support defaults, bulk controls, deep links and printin
   await page.goto(url("standards/index.html"));
   const chapters = page.locator('.document:visible details.standard-chapter');
   await expect(chapters).toHaveCount(7);
-  await expect(chapters.filter({ has: page.locator('[data-chapter="workflow"]') })).toHaveAttribute('open', '');
-  await page.locator('[data-collapse-all]').click();
+  await expect(chapters.filter({ has: page.locator('[data-chapter="workflow"]') })).toHaveJSProperty('open', false);
+  await page.locator('.chapter-controls:visible [data-collapse-all]').click();
   await expect(page.locator('.document:visible details[open]')).toHaveCount(0);
-  await page.locator('[data-expand-all]').click();
+  await page.locator('.chapter-controls:visible [data-expand-all]').click();
   await expect(page.locator('.document:visible details[open]')).toHaveCount(7);
-  await page.locator('[data-collapse-all]').click();
+  await page.locator('.chapter-controls:visible [data-collapse-all]').click();
   await page.goto(url("standards/index.html") + '#standard-data');
   await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
   await page.selectOption('.locale', 'zh-CN');
   await expect(page.locator('#standard-data-zh-CN')).toHaveAttribute('open', '');
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
   await expect(page.locator('.document:visible details[open]')).toHaveCount(7);
+  await expect(page.locator('.diagram-disclosure')).toHaveJSProperty('open', true);
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
-  await expect(page.locator('.document:visible details[open]')).toHaveCount(3);
+  await expect(page.locator('.document:visible details[open]')).toHaveCount(1);
+  await expect(page.locator('.diagram-disclosure')).toHaveJSProperty('open', false);
 });
 
 test("worktree demonstration is opt-in, pausable, localized and respects reduced motion", async ({ page }) => {
   await page.goto(url("standards/index.html"));
+  await expect(page.locator('.diagram-disclosure')).toHaveJSProperty('open', false);
+  await page.locator('.diagram-disclosure > summary').click();
+  await expect(page.locator('.flow-notes')).toHaveJSProperty('open', false);
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
   await page.locator('#flow-play').click();
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '0');
@@ -320,9 +326,10 @@ test("without JavaScript the full diagram and native chapters remain usable", as
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(url('standards/index.html'));
+  await page.locator('.diagram-disclosure > summary').click();
   await expect(page.locator('.graph-wide')).toBeVisible();
   await expect(page.locator('.flow-controls')).toBeHidden();
-  await expect(page.locator('.chapter-controls')).toBeHidden();
+  await expect(page.locator('.chapter-controls:visible')).toHaveCount(0);
   await page.locator('#standard-data summary').click();
   await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
   await expect(page.locator('#standard-data .chapter-body')).toContainText('DATA_ROOT');
@@ -346,4 +353,33 @@ test("missing UI translations fall back to English and then the stable key", asy
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
   await expect(page.locator(".brand")).toHaveText(englishBrand);
   await expect(page.locator("#missing-ui-key")).toHaveText("testMissingKey");
+});
+
+test("home presents three entries and playbooks presents two ways to do the same work", async ({ page }) => {
+  await page.goto(url('index.html'));
+  await expect(page.locator('main h1:visible')).toHaveText('AI can write code. Who maintains the system?');
+  await expect(page.locator('.locale-panel:visible .handbook-index li')).toHaveCount(3);
+  await page.selectOption('.locale', 'zh-CN');
+  await expect(page.locator('main h1:visible')).toHaveText('AI 能写代码，谁来维护系统？');
+  await expect(page.locator('[data-locale="zh-CN"] .handbook-index a')).toHaveText(['提示词与 Skill', '10 月 18 日分享', '开发规范']);
+  await expect(page.locator('main')).not.toContainText('适用范围');
+  await page.selectOption('.locale', 'en-US');
+  await page.locator('nav [data-i18n="playbooks"]').click();
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await expect(page.locator('.prompt-version')).toBeVisible();
+  await expect(page.locator('.skill-version')).toBeVisible();
+  const left = await page.locator('.prompt-version').boundingBox();
+  const right = await page.locator('.skill-version').boundingBox();
+  expect(right!.x).toBeGreaterThan(left!.x + left!.width);
+  await expect(page.locator('.skill-version')).toContainText('full');
+  await expect(page.locator('.maintenance-phases li')).toHaveCount(3);
+  await page.selectOption('.locale', 'zh-CN');
+  await expect(page.locator('main h1')).toHaveText('同一套维护工作，两种使用方式');
+  await page.setViewportSize({ width: 320, height: 900 });
+  const narrowLeft = await page.locator('.prompt-version').boundingBox();
+  const narrowRight = await page.locator('.skill-version').boundingBox();
+  expect(narrowRight!.y).toBeGreaterThan(narrowLeft!.y);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.locator('.version-jumps a[href="#skill-version-title"]').click();
+  await expect(page.locator('#skill-version-title')).toBeInViewport();
 });
