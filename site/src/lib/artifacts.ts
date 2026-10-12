@@ -20,6 +20,8 @@ function within(parent: string, child: string): boolean {
 export const generatedFiles = [
   ...pagePaths,
   ".nojekyll",
+  "downloads/AGENTS.md",
+  "downloads/AGENTS.zh-CN.md",
   "downloads/repo-maintenance.zip",
   "downloads/engineering-practices-offline.zip",
   ...[
@@ -111,6 +113,11 @@ export function packageDownloads(output: string): void {
   const offline: Record<string, Uint8Array> = {
     "downloads/repo-maintenance.zip": archive,
   };
+  for (const name of ["AGENTS.md", "AGENTS.zh-CN.md"]) {
+    const source = readFileSync(join(repoRoot, name));
+    writeFileSync(join(output, "downloads", name), source);
+    offline[`downloads/${name}`] = source;
+  }
   for (const path of pagePaths)
     offline[path] = readFileSync(join(output, path));
   for (const [name, source] of Object.entries(skill))
