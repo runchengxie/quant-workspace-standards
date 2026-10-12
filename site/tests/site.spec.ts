@@ -264,3 +264,67 @@ test("stale online preference parameters do not override a newer explicit choice
   await expect(page.locator(".locale")).toHaveValue("en-US");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });
+
+
+test("standards chapters support defaults, bulk controls, deep links and printing", async ({ page }) => {
+  await page.goto(url("standards/index.html"));
+  const chapters = page.locator('.document:visible details.standard-chapter');
+  await expect(chapters).toHaveCount(7);
+  await expect(chapters.filter({ has: page.locator('[data-chapter="workflow"]') })).toHaveAttribute('open', '');
+  await page.locator('[data-collapse-all]').click();
+  await expect(page.locator('.document:visible details[open]')).toHaveCount(0);
+  await page.locator('[data-expand-all]').click();
+  await expect(page.locator('.document:visible details[open]')).toHaveCount(7);
+  await page.locator('[data-collapse-all]').click();
+  await page.goto(url("standards/index.html") + '#standard-data');
+  await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
+  await page.selectOption('.locale', 'zh-CN');
+  await expect(page.locator('#standard-data-zh-CN')).toHaveAttribute('open', '');
+  await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
+  await expect(page.locator('.document:visible details[open]')).toHaveCount(7);
+  await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
+  await expect(page.locator('.document:visible details[open]')).toHaveCount(3);
+});
+
+test("worktree demonstration is opt-in, pausable, localized and respects reduced motion", async ({ page }) => {
+  await page.goto(url("standards/index.html"));
+  await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
+  await page.locator('#flow-play').click();
+  await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '0');
+  await page.locator('#flow-play').click();
+  await page.waitForTimeout(2300);
+  await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '0');
+  for (let i = 0; i < 4; i++) await page.locator('#flow-next').click();
+  await expect(page.locator('#flow-status')).toContainText('B');
+  await page.selectOption('.locale', 'zh-CN');
+  await expect(page.locator('#flow-status')).toContainText('先合入');
+  await page.locator('#flow-next').click();
+  await expect(page.locator('#flow-status')).toContainText('重新验证');
+  await page.locator('#flow-replay').click();
+  await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '0');
+  await page.locator('#flow-play').click();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('#flow-demo')).toHaveAttribute('data-reduced-motion', 'true');
+  expect(await page.locator('.graph-wide .task-track').first().evaluate(el => getComputedStyle(el).transitionDuration)).toBe('0s');
+  await page.setViewportSize({ width: 320, height: 900 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.clock.install();
+  await page.locator('#flow-play').click();
+  await page.clock.runFor(15400);
+  await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
+  await expect(page.locator('#flow-play')).toHaveText('播放演示');
+  await expect(page.locator('#flow-next')).toBeDisabled();
+});
+
+test("without JavaScript the full diagram and native chapters remain usable", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto(url('standards/index.html'));
+  await expect(page.locator('.graph-wide')).toBeVisible();
+  await expect(page.locator('.flow-controls')).toBeHidden();
+  await expect(page.locator('.chapter-controls')).toBeHidden();
+  await page.locator('#standard-data summary').click();
+  await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
+  await expect(page.locator('#standard-data .chapter-body')).toContainText('DATA_ROOT');
+  await context.close();
+});

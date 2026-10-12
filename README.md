@@ -13,6 +13,8 @@ This repository contains general development guidance. Keep credentials, persona
 - [Download AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [Chinese translation](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md)
 - [Parallel worktree workflow](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)
 
+The standards page shows an optional step-by-step branch demonstration with play, pause, next-step and replay controls. Seven source-backed chapters support expand/collapse controls and direct links; workflow and safety chapters open by default. Printing expands the full standard and restores the reading state afterwards. The full Markdown downloads remain unchanged.
+
 Machine-local shared path settings belong in `CONFIG_ROOT/shared/workspace.toml`. Use the existing private configuration layout when available; otherwise, use `~/.config/<owner>/` on both Windows and Linux, honoring an explicitly configured `XDG_CONFIG_HOME` when present. Tools must explicitly read these settings or receive the resolved paths through environment variables. Keep tool-specific settings in the locations required by the tool.
 
 
