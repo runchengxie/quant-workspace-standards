@@ -8,9 +8,10 @@ import {
   rmSync,
   writeFileSync,
   readFileSync,
+  existsSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { validateOutput } from "../src/lib/artifacts";
+import { validateOutput, publishOutput, generatedFiles } from "../src/lib/artifacts";
 import { repoRoot } from "../src/lib/paths";
 test("output validation protects source and its parents, including symlinks", () => {
   for (const path of [
@@ -45,4 +46,26 @@ test("existing unrelated output is preserved instead of being emptied by Astro",
   } finally {
     rmSync(temp, { recursive: true });
   }
+});
+
+
+test("publishing removes a retired generated cases page only when the prior manifest owns it", () => {
+  const temp = mkdtempSync(join(tmpdir(), "standards-retired-"));
+  try {
+    const staging = join(temp, "staging");
+    const output = join(temp, "output");
+    for (const path of generatedFiles) {
+      mkdirSync(dirname(join(staging, path)), { recursive: true });
+      writeFileSync(join(staging, path), "new");
+    }
+    mkdirSync(join(output, "cases"), { recursive: true });
+    writeFileSync(join(output, "cases/index.html"), "old case page");
+    writeFileSync(join(output, ".standards-site.json"), JSON.stringify({ owner: "quant-workspace-standards", files: [...generatedFiles, "cases/index.html"] }));
+    publishOutput(staging, output);
+    assert.equal(existsSync(join(output, "cases/index.html")), false);
+    assert.equal(readFileSync(join(output, "index.html"), "utf8"), "new");
+    writeFileSync(join(output, "cases/index.html"), "user-owned content");
+    assert.throws(() => publishOutput(staging, output), /unowned/);
+    assert.equal(readFileSync(join(output, "cases/index.html"), "utf8"), "user-owned content");
+  } finally { rmSync(temp, { recursive: true }); }
 });

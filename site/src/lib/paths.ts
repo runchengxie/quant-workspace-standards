@@ -6,7 +6,6 @@ export const siteUrl =
 export const routes = {
   home: "index.html",
   standards: "standards/index.html",
-  cases: "cases/index.html",
   playbooks: "playbooks/index.html",
   talk: "talk/2026-10-18/index.html",
 } as const;
