@@ -69,8 +69,13 @@ export function initStandards(message: (key: string) => string): void {
     demo!.querySelectorAll<SVGElement>('[data-reveal]').forEach(mark => {
       mark.classList.toggle('is-pending', Number(mark.dataset.reveal) > step);
     });
-    play.dataset.i18n = playing ? 'flowPause' : 'flowPlay';
-    play.textContent = message(play.dataset.i18n);
+    const playKey = playing ? 'flowPause' : 'flowPlay';
+    play.dataset.i18nAria = playKey;
+    play.setAttribute('aria-label', message(playKey));
+    play.dataset.playing = String(playing);
+    const hint = play.querySelector<HTMLElement>('.flow-control-hint')!;
+    hint.dataset.i18n = playKey;
+    hint.textContent = message(playKey);
     next.disabled = step === 7;
     status.dataset.i18n = `flowStep${step}`;
     status.textContent = message(status.dataset.i18n);
