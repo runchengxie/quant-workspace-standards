@@ -58,3 +58,5 @@ The playbooks page selects one phase at a time, copies complete prompts without 
 The homepage lists standards, prompts and Skill, then the talk. Standards downloads are the primary action; graph nodes offer concise hover descriptions and supporting prose lives in one closed text disclosure.
 
 The standards introduction and chapters are inside the single Text explanation disclosure. Chapter links expand it automatically; printing expands the full content and restores the disclosure state afterwards.
+
+The standards page explains the two download files side by side. Graph nodes show immediate tooltips on hover, focus or tap, dismissed with Escape. Text explanation separates concise process steps, a coordination table and the complete standards. The footer retains a compact GitHub link; playbooks no longer displays the unused attribution.

@@ -56,7 +56,8 @@ test("standards downloads preserve both source files and the diagram localizes",
   await expect(page.locator("#flow-title")).toHaveText("用 Git worktree 支持并行开发");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
   await page.locator(".worktree-flow .flow-notes > summary").click();
-  await expect(page.locator(".worktree-flow .flow-notes")).toContainText("共享写入需要协调");
+  await page.locator(".flow-coordination > summary").click();
+  await expect(page.locator(".coordination-table")).toContainText("更新需要协调");
   await page.setViewportSize({ width: 320, height: 900 });
   for (const locale of ["en-US", "zh-CN"]) {
     await page.selectOption(".locale", locale);
@@ -98,6 +99,7 @@ test("Chinese selection changes standards body, brand and page title", async ({
 }) => {
   await page.goto(url("standards/index.html"));
   await page.locator(".flow-notes > summary").click();
+  await page.locator(".flow-standard > summary").click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
@@ -145,6 +147,7 @@ test("denied storage still permits theme and locale changes", async ({
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.locator(".flow-notes > summary").click();
+  await page.locator(".flow-standard > summary").click();
   await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
 });
 test("invalid stored preferences fall back without breaking the page", async ({
@@ -272,6 +275,7 @@ test("standards chapters support defaults, bulk controls, deep links and printin
   await page.goto(url("standards/index.html"));
   await expect(page.locator('.standard-intro:visible')).toHaveCount(0);
   await page.locator('.flow-notes > summary').click();
+  await page.locator('.flow-standard > summary').click();
   const chapters = page.locator('.document:visible details.standard-chapter');
   await expect(chapters).toHaveCount(7);
   await expect(chapters.filter({ has: page.locator('[data-chapter="workflow"]') })).toHaveJSProperty('open', false);
@@ -332,6 +336,7 @@ test("without JavaScript the full diagram and native chapters remain usable", as
   await expect(page.locator('.flow-controls')).toBeHidden();
   await expect(page.locator('.chapter-controls:visible')).toHaveCount(0);
   await page.locator('.flow-notes > summary').click();
+  await page.locator('.flow-standard > summary').click();
   await page.locator('#standard-data summary').click();
   await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
   await expect(page.locator('#standard-data .chapter-body')).toContainText('DATA_ROOT');
@@ -414,10 +419,10 @@ test("standards prioritizes downloads and keeps explanations in one disclosure",
  await expect(page.locator(".primary-download")).toHaveAttribute("download", "AGENTS.md");
  await expect(page.locator(".worktree-flow > details")).toHaveCount(1);
  await expect(page.locator(".flow-notes")).toHaveJSProperty("open", false);
- await expect(page.locator(".graph-wide g[tabindex] title").first()).toHaveText(/independent task/);
+ await expect(page.locator(".graph-wide g[tabindex]").first()).toHaveAttribute("aria-label", /independent task/);
  await page.selectOption(".locale", "zh-CN");
  await expect(page.locator(".flow-notes > summary")).toHaveText("文字说明");
- await expect(page.locator(".graph-wide g[tabindex] title").first()).toHaveText(/独立任务/);
+ await expect(page.locator(".graph-wide g[tabindex]").first()).toHaveAttribute("aria-label", /独立任务/);
  await page.locator(".graph-wide g[tabindex]").first().focus();
  await expect(page.locator(".graph-wide g[tabindex]").first()).toBeFocused();
 });
@@ -431,4 +436,26 @@ test("full standards disclosure restores after print", async ({page}) => {
  await expect(page.locator(".document:visible details[open]")).toHaveCount(7);
  await page.evaluate(() => window.dispatchEvent(new Event("afterprint")));
  await expect(page.locator(".flow-notes")).toHaveJSProperty("open", false);
+});
+
+test("graph tooltip appears on hover, focus and tap and closes with Escape", async ({page}) => {
+ await page.goto(url("standards/index.html"));
+ const node = page.locator(".graph-wide g[data-i18n-aria=flowHoverDevelop]").first();
+ const tip = page.locator("#flow-tooltip");
+ await node.hover();
+ await expect(tip).toBeVisible();
+ await expect(tip).toContainText("working files");
+ await page.keyboard.press("Escape");
+ await expect(tip).toBeHidden();
+ await node.focus();
+ await expect(tip).toBeVisible();
+ await page.selectOption(".locale", "zh-CN");
+ await node.focus();
+ await expect(tip).toContainText("运行资源");
+ await page.setViewportSize({width:320,height:900});
+ await page.locator(".graph-narrow g[data-i18n-aria=flowHoverDevelop]").first().click();
+ await expect(tip).toBeVisible();
+ const box=await tip.boundingBox(); expect(box!.x).toBeGreaterThanOrEqual(0); expect(box!.x+box!.width).toBeLessThanOrEqual(320);
+ await page.locator("#flow-title").click();
+ await expect(tip).toBeHidden();
 });
