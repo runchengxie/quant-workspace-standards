@@ -1,6 +1,8 @@
 export function initStandards(message: (key: string) => string): void {
   const chapters = [...document.querySelectorAll<HTMLDetailsElement>('.standard-chapter')];
   document.querySelectorAll<HTMLElement>('.chapter-controls').forEach(controls => controls.hidden = false);
+  const textDisclosure = document.querySelector<HTMLDetailsElement>('.flow-notes');
+  let printTextOpen: boolean | undefined;
   const visibleChapters = () => chapters.filter(chapter => !chapter.closest<HTMLElement>('[data-locale]')?.hidden);
   function revealChapter(): void {
     let id: string;
@@ -13,6 +15,7 @@ export function initStandards(message: (key: string) => string): void {
     if (!id.startsWith('standard-')) return;
     for (const chapter of visibleChapters()) {
       if (chapter.id.replace(/-zh-CN$/, '') === id) {
+        if (textDisclosure) textDisclosure.open = true;
         chapter.open = true;
         chapter.scrollIntoView({ block: 'start' });
       }
@@ -27,12 +30,14 @@ export function initStandards(message: (key: string) => string): void {
   window.addEventListener('beforeprint', () => {
     if (printState) return;
     printState = chapters.map(chapter => chapter.open);
+    if (textDisclosure) { printTextOpen = textDisclosure.open; textDisclosure.open = true; }
     chapters.forEach(chapter => chapter.open = true);
   });
   window.addEventListener('afterprint', () => {
     if (!printState) return;
     chapters.forEach((chapter, index) => chapter.open = printState![index]!);
     printState = undefined;
+    if (textDisclosure && printTextOpen !== undefined) { textDisclosure.open = printTextOpen; printTextOpen = undefined; }
   });
 
   const demo = document.querySelector<HTMLElement>('#flow-demo');
