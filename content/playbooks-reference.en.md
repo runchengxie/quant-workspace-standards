@@ -1,0 +1,1 @@
+[Khazix's neat-freak](https://github.com/KKKKhazix/khazix-skills/tree/main/neat-freak) informed the closeout idea. This Skill independently organizes the workflows and does not vendor or require neat-freak.

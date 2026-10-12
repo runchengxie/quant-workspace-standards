@@ -52,7 +52,6 @@ test("standards downloads preserve both source files and the diagram localizes",
     expect(path).toBeTruthy();
     expect(readFileSync(path!)).toEqual(readFileSync(new URL(`../../${name}`, import.meta.url)));
   }
-  await page.locator(".diagram-disclosure > summary").click();
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("#flow-title")).toHaveText("用 Git worktree 支持并行开发");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
@@ -283,16 +282,14 @@ test("standards chapters support defaults, bulk controls, deep links and printin
   await expect(page.locator('#standard-data-zh-CN')).toHaveAttribute('open', '');
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
   await expect(page.locator('.document:visible details[open]')).toHaveCount(7);
-  await expect(page.locator('.diagram-disclosure')).toHaveJSProperty('open', true);
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   await expect(page.locator('.document:visible details[open]')).toHaveCount(1);
-  await expect(page.locator('.diagram-disclosure')).toHaveJSProperty('open', false);
 });
 
 test("worktree demonstration is opt-in, pausable, localized and respects reduced motion", async ({ page }) => {
   await page.goto(url("standards/index.html"));
-  await expect(page.locator('.diagram-disclosure')).toHaveJSProperty('open', false);
-  await page.locator('.diagram-disclosure > summary').click();
+  await expect(page.locator('.graph-wide')).toBeVisible();
+  expect((await page.locator('.worktree-flow').boundingBox())!.y).toBeLessThan((await page.locator('.standard-intro:visible').boundingBox())!.y);
   await expect(page.locator('.flow-notes')).toHaveJSProperty('open', false);
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
   await page.locator('#flow-play').click();
@@ -326,7 +323,6 @@ test("without JavaScript the full diagram and native chapters remain usable", as
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(url('standards/index.html'));
-  await page.locator('.diagram-disclosure > summary').click();
   await expect(page.locator('.graph-wide')).toBeVisible();
   await expect(page.locator('.flow-controls')).toBeHidden();
   await expect(page.locator('.chapter-controls:visible')).toHaveCount(0);
@@ -354,7 +350,14 @@ test("home presents three entries and playbooks presents two ways to do the same
   const right = await page.locator('.skill-version').boundingBox();
   expect(right!.x).toBeGreaterThan(left!.x + left!.width);
   await expect(page.locator('.skill-version')).toContainText('full');
-  await expect(page.locator('.maintenance-phases li')).toHaveCount(3);
+  await expect(page.locator('.prompt-switch button')).toHaveCount(3);
+  await expect(page.locator('.prompt-stage:visible')).toHaveAttribute('data-stage', 'code');
+  await expect(page.locator('.prompt:visible details')).toHaveJSProperty('open', false);
+  await expect(page.locator('.skill-version .locale-panel:visible details[open]')).toHaveCount(0);
+  await page.locator('[data-phase="docs"]').click();
+  await expect(page.locator('.prompt-stage:visible')).toHaveAttribute('data-stage', 'docs');
+  await page.locator('[data-phase="closeout"]').click();
+  await expect(page.locator('.prompt-stage:visible')).toHaveAttribute('data-stage', 'closeout');
   await page.selectOption('.locale', 'zh-CN');
   await expect(page.locator('main h1')).toHaveText('同一套维护工作，两种使用方式');
   await page.setViewportSize({ width: 320, height: 900 });
@@ -364,4 +367,20 @@ test("home presents three entries and playbooks presents two ways to do the same
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.locator('.version-jumps a[href="#skill-version-title"]').click();
   await expect(page.locator('#skill-version-title')).toBeInViewport();
+});
+
+test("phase selection copies complete folded source and survives locale changes", async ({ page }) => {
+ await page.goto(url("playbooks/index.html"));
+ await page.evaluate(() => Object.defineProperty(navigator, "clipboard", {value: {writeText: async (value: string) => {document.body.dataset["copiedText"] = value;}}, configurable:true}));
+ for (const phase of ["code", "docs", "closeout"]) {
+  await page.locator(`[data-phase="${phase}"]`).click();
+  for (const locale of ["en-US", "zh-CN"]) {
+   await page.selectOption(".locale", locale);
+   await expect(page.locator(".prompt-stage:visible")).toHaveAttribute("data-stage", phase);
+   await expect(page.locator(".prompt:visible details")).toHaveJSProperty("open", false);
+   await page.locator(".prompt:visible button").click();
+   const sourcePath = locale === "en-US" ? `../../skills/repo-maintenance/workflows/${phase}.md` : `../../content/prompts/${phase}.zh-CN.md`;
+   expect(await page.locator("body").getAttribute("data-copied-text")).toBe(readFileSync(new URL(sourcePath, import.meta.url), "utf8"));
+  }
+ }
 });
