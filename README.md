@@ -20,7 +20,7 @@ The Pages site includes [case studies](https://runchengxie.github.io/quant-works
 
 [`skills/repo-maintenance/SKILL.md`](skills/repo-maintenance/SKILL.md) routes `audit`, `code`, `docs` and `full` modes to three workflows. English workflow files are canonical and are also the English copyable prompts. [`content/prompts/`](content/prompts/) contains the corresponding zh-CN prompts. Copy the complete Skill folder into your tool's skill directory to install; copying SKILL.md alone omits the workflows.
 
-The site defaults to English and offers a persistent Chinese switch. `AGENTS.md` remains the English canonical standard. The Chinese talk is original commentary; case source notes distinguish repository evidence from recollection and unverified counts. The worktree/PR protocol follows existing authorization and repository controls.
+The site defaults to English and offers a persistent Chinese switch. Unknown stored or selected locales use English; missing Chinese UI keys fall back to English, then to the key itself. `AGENTS.md` remains the English canonical standard. The Chinese talk is original commentary; case source notes distinguish repository evidence from recollection and unverified counts. The worktree/PR protocol follows existing authorization and repository controls.
 
 ## Build and validate
 
@@ -34,4 +34,4 @@ Resolve `DATA_ROOT` from your machine's configured roots before running the buil
 
 Open the generated `index.html` directly, or serve the generated directory with a static HTTP server. Pages contain their styles, scripts and UI catalogs inline; the talk does not require an API or a network connection. The QR code points to the online playbooks page. Offline navigation and prompts remain available in the downloaded archive; online downloads and source PR links require connectivity.
 
-Edit `content/`, `site/locales.json`, `site/assets/` or the canonical Skill workflows, then rebuild. The deployment workflow validates and builds on content/Skill/site changes. Only main pushes deploy. The builder creates `downloads/repo-maintenance.zip` and `downloads/engineering-practices-offline.zip`; it never scans arbitrary directories into the archives.
+Edit `content/`, `site/locales.json`, `site/assets/` or the canonical Skill workflows, then rebuild. The deployment workflow validates and builds on content/Skill/site changes. Main pushes and manual workflow dispatches deploy; pull requests only build. The builder creates `downloads/repo-maintenance.zip` and `downloads/engineering-practices-offline.zip`; it never scans arbitrary directories into the archives.
