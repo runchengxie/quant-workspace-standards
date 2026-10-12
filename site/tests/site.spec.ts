@@ -55,8 +55,8 @@ test("standards downloads preserve both source files and the diagram localizes",
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("#flow-title")).toHaveText("用 Git worktree 支持并行开发");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
-  await page.locator(".worktree-flow details:not(.flow-notes) > summary").click();
-  await expect(page.locator(".worktree-flow details:not(.flow-notes)")).toContainText("共享写入需要协调");
+  await page.locator(".worktree-flow .flow-notes > summary").click();
+  await expect(page.locator(".worktree-flow .flow-notes")).toContainText("共享写入需要协调");
   await page.setViewportSize({ width: 320, height: 900 });
   for (const locale of ["en-US", "zh-CN"]) {
     await page.selectOption(".locale", locale);
@@ -357,7 +357,7 @@ test("home presents three entries and playbooks presents two ways to do the same
   await expect(page.locator('.locale-panel:visible .handbook-index li')).toHaveCount(3);
   await page.selectOption('.locale', 'zh-CN');
   await expect(page.locator('main h1:visible')).toHaveText('AI 能写代码，谁来维护系统？');
-  await expect(page.locator('[data-locale="zh-CN"] .handbook-index a')).toHaveText(['提示词与 Skill', '10 月 18 日分享', '开发规范']);
+  await expect(page.locator('[data-locale="zh-CN"] .handbook-index a')).toHaveText(['开发规范', '提示词与 Skill', '10 月 18 日分享']);
   await expect(page.locator('main')).not.toContainText('适用范围');
   await page.selectOption('.locale', 'en-US');
   await page.locator('nav [data-i18n="playbooks"]').click();
@@ -401,4 +401,17 @@ test("phase selection copies complete folded source and survives locale changes"
    expect(await page.locator("body").getAttribute("data-copied-text")).toBe(readFileSync(new URL(sourcePath, import.meta.url), "utf8"));
   }
  }
+});
+
+test("standards prioritizes downloads and keeps explanations in one disclosure", async ({ page }) => {
+ await page.goto(url("standards/index.html"));
+ await expect(page.locator(".primary-download")).toHaveAttribute("download", "AGENTS.md");
+ await expect(page.locator(".worktree-flow details")).toHaveCount(1);
+ await expect(page.locator(".flow-notes")).toHaveJSProperty("open", false);
+ await expect(page.locator(".graph-wide g[tabindex] title").first()).toHaveText(/independent task/);
+ await page.selectOption(".locale", "zh-CN");
+ await expect(page.locator(".flow-notes summary")).toHaveText("文字说明");
+ await expect(page.locator(".graph-wide g[tabindex] title").first()).toHaveText(/独立任务/);
+ await page.locator(".graph-wide g[tabindex]").first().focus();
+ await expect(page.locator(".graph-wide g[tabindex]").first()).toBeFocused();
 });
