@@ -1,0 +1,6 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Document from '../components/Document.astro';
+import catalog from '../../locales.json';
+---
+<Layout page="standards" route="standards/index.html"><p class="notice" data-i18n="canonical">{catalog['en-US'].canonical}</p><Document name="standards" /></Layout>

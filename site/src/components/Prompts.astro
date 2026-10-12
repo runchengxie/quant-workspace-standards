@@ -1,0 +1,14 @@
+---
+import { locales, promptPath, text } from '../lib/content';
+import catalog from '../../locales.json';
+const names = ['code', 'docs', 'closeout'];
+---
+<p id="copy-status" class="status" role="status" aria-live="polite"></p>
+{names.map(name => locales.map(locale => {
+  const source = text(promptPath(name, locale));
+  const identifier = `prompt-${name}-${locale}`;
+  return <section class="prompt" data-locale={locale} hidden={locale !== 'en-US'}>
+    <div class="prompt-head"><h2>{source.split('\n')[0]?.replace(/^# /, '')}</h2><button data-copy={identifier} data-i18n="copy">{catalog[locale].copy}</button></div>
+    <pre id={identifier} tabindex="0">{source}</pre>
+  </section>;
+}))}
