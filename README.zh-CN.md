@@ -6,6 +6,8 @@
 
 ## 网站内容
 
+规范页提供分支汇合图，点击后可播放、暂停、逐步推进和重播。七个章节支持折叠、全部展开或收起，以及直接定位；开发流程与安全边界默认展开。打印时展开完整规范，结束后恢复阅读状态，下载的 Markdown 仍保留全文。
+
 [下载英文 AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [下载中文译版](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md) · [并行开发流程图](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)。下载文件直接复制对应规范源文件，完整离线包也包含两份规范。
 
 [Pages 网站](https://runchengxie.github.io/quant-workspace-standards/) 提供工程规范、案例、三个提示词、可下载 Skill，以及 2026 年 10 月 18 日的分享页。网站默认英文，可显式切换中文并保存选择。工程规范以英文为准，中文正文由 AGENTS.zh-CN.md 提供完整本地化，中文分享是独立的个人叙述。所有页面支持跟随系统、浅色和深色主题。

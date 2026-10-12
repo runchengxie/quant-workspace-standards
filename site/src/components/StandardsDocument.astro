@@ -1,0 +1,31 @@
+---
+import { marked } from 'marked';
+import { documentPath, locales, text } from '../lib/content';
+import catalog from '../../locales.json';
+const chapters = [
+  ['roots', 'chapterRoots'], ['i18n', 'chapterI18n'], ['content', 'chapterContent'],
+  ['workflow', 'chapterWorkflow'], ['safety', 'chapterSafety'], ['config', 'chapterConfig'], ['data', 'chapterData'],
+] as const;
+const documents = locales.map(locale => {
+  const tokens = marked.lexer(text(documentPath('standards', locale)));
+  const starts = tokens.flatMap((token, index) => token.type === 'heading' && token.depth === 2 ? [index] : []);
+  if (starts.length !== chapters.length) throw new Error('Standards chapter metadata must match source headings');
+  return { locale, intro: marked.parser(tokens.slice(0, starts[0])), sections: starts.map((start, index) => {
+    const heading = tokens[start];
+    if (!heading || heading.type !== 'heading' || !('text' in heading)) throw new Error('Expected chapter heading');
+    const [key, summary] = chapters[index]!;
+    return { key, summary, title: heading.text, html: marked.parser(tokens.slice(start + 1, starts[index + 1] ?? tokens.length)) };
+  }) };
+});
+---
+<div class="chapter-controls resources" hidden>
+  <button type="button" data-expand-all data-i18n="chaptersExpand">{catalog['en-US'].chaptersExpand}</button>
+  <button type="button" data-collapse-all data-i18n="chaptersCollapse">{catalog['en-US'].chaptersCollapse}</button>
+</div>
+{documents.map(({locale, intro, sections}) => <section class="locale-panel document" data-locale={locale} lang={locale === 'en-US' ? 'en' : locale} hidden={locale !== 'en-US'}>
+  <div class="standard-intro" set:html={intro} />
+  {sections.map(section => <details class="standard-chapter" id={`standard-${section.key}${locale === 'en-US' ? '' : '-zh-CN'}`} open={['workflow', 'safety'].includes(section.key)}>
+    <summary data-chapter={section.key}><h2>{section.title}</h2><span>{catalog[locale][section.summary]}</span></summary>
+    <div class="chapter-body" set:html={section.html} />
+  </details>)}
+</section>)}
