@@ -18,13 +18,13 @@ const documents = locales.map(locale => {
   }) };
 });
 ---
-<div class="chapter-controls resources" hidden>
-  <button type="button" data-expand-all data-i18n="chaptersExpand">{catalog['en-US'].chaptersExpand}</button>
-  <button type="button" data-collapse-all data-i18n="chaptersCollapse">{catalog['en-US'].chaptersCollapse}</button>
-</div>
 {documents.map(({locale, intro, sections}) => <section class="locale-panel document" data-locale={locale} lang={locale === 'en-US' ? 'en' : locale} hidden={locale !== 'en-US'}>
   <div class="standard-intro" set:html={intro} />
-  {sections.map(section => <details class="standard-chapter" id={`standard-${section.key}${locale === 'en-US' ? '' : '-zh-CN'}`} open={['workflow', 'safety'].includes(section.key)}>
+  <div class="chapter-controls resources" hidden>
+    <button type="button" data-expand-all data-i18n="chaptersExpand">{catalog[locale].chaptersExpand}</button>
+    <button type="button" data-collapse-all data-i18n="chaptersCollapse">{catalog[locale].chaptersCollapse}</button>
+  </div>
+  {sections.map(section => <details class="standard-chapter" id={`standard-${section.key}${locale === 'en-US' ? '' : '-zh-CN'}`}>
     <summary data-chapter={section.key}><h2>{section.title}</h2><span>{catalog[locale][section.summary]}</span></summary>
     <div class="chapter-body" set:html={section.html} />
   </details>)}
