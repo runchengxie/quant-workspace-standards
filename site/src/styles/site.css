@@ -348,3 +348,12 @@ footer a { color: var(--muted); }
 .version-or {position:absolute; left:0; top:50%; transform:translate(-50%,-50%); padding:10px 0; background:var(--paper); color:var(--muted); font-size:.85rem;}
 @media(max-width:850px) {.version-or {left:50%; top:0; padding:0 16px;}}
 @media print {.version-or {display:none;}}
+
+.flow-icon-button {position:relative; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; padding:10px; border-radius:50%;}
+.flow-icon-button svg {width:22px; height:22px; fill:currentColor;}
+.flow-icon-button .flow-replay-icon {fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+.flow-pause-icon, #flow-play[data-playing="true"] .flow-play-icon {display:none;}
+#flow-play[data-playing="true"] .flow-pause-icon {display:block;}
+.flow-control-hint {position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); padding:4px 9px; background:var(--ink); color:var(--paper); font-size:.8rem; white-space:nowrap; opacity:0; pointer-events:none;}
+.flow-icon-button:hover .flow-control-hint, .flow-icon-button:focus-visible .flow-control-hint {opacity:1;}
+@media print {.flow-control-hint {display:none;}}
