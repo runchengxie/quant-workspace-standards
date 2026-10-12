@@ -10,16 +10,13 @@ const text = catalog['en-US'];
     <h1 data-i18n="playbooksTitle">{text.playbooksTitle}</h1>
     <p data-i18n="playbooksIntro">{text.playbooksIntro}</p>
   </header>
-  <nav class="version-jumps" aria-label={text.versionNavigation} data-i18n-aria="versionNavigation">
-    <a href="#prompt-version-title" data-i18n="promptVersion">{text.promptVersion}</a>
-    <a href="#skill-version-title" data-i18n="skillVersion">{text.skillVersion}</a>
-  </nav>
   <div class="playbook-columns">
     <section class="prompt-version" aria-labelledby="prompt-version-title">
       <header class="version-heading"><h2 id="prompt-version-title" data-i18n="promptVersion">{text.promptVersion}</h2></header>
       <Prompts />
     </section>
     <aside class="skill-version" aria-labelledby="skill-version-title">
+      <span class="version-or" aria-hidden="true" data-i18n="versionOr">{text.versionOr}</span>
       <header class="version-heading"><h2 id="skill-version-title" data-i18n="skillVersion">{text.skillVersion}</h2></header>
       <Document name="playbooks" />
     </aside>
