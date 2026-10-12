@@ -53,7 +53,7 @@ test("standards downloads preserve both source files and the diagram localizes",
     expect(readFileSync(path!)).toEqual(readFileSync(new URL(`../../${name}`, import.meta.url)));
   }
   await page.selectOption(".locale", "zh-CN");
-  await expect(page.locator("#flow-title")).toHaveText("默认开发流程 · Git worktree");
+  await expect(page.locator("#flow-title")).toHaveText("开发流程示意图");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
   await page.locator(".worktree-flow .flow-notes > summary").click();
   await page.locator(".flow-coordination > summary").click();
