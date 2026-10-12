@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StandardsDocument from '../components/StandardsDocument.astro';
+import catalog from '../../locales.json';
+import WorktreeFlow from '../components/WorktreeFlow.astro';
+---
+<Layout page="standards" route="standards/index.html">
+  <p class="notice" data-i18n="canonical">{catalog['en-US'].canonical}</p>
+  <div class="resources" aria-label={catalog['en-US'].standardsDownloads} data-i18n-aria="standardsDownloads">
+    <a class="button" href="../downloads/AGENTS.md" download="AGENTS.md" data-i18n="downloadAgents">{catalog['en-US'].downloadAgents}</a>
+    <a class="button" href="../downloads/AGENTS.zh-CN.md" download="AGENTS.zh-CN.md" data-i18n="downloadAgentsChinese">{catalog['en-US'].downloadAgentsChinese}</a>
+  </div>
+  <WorktreeFlow />
+  <StandardsDocument />
+</Layout>

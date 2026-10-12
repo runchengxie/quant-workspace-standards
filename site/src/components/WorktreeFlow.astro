@@ -1,0 +1,66 @@
+---
+import catalog from '../../locales.json';
+const text = catalog['en-US'];
+const lanes = [
+  { name: 'A', y: 150, merge: 810, step: 6 },
+  { name: 'B', y: 240, merge: 650, step: 4 },
+  { name: 'C', y: 330, merge: 970, step: 7 },
+];
+---
+<section class="worktree-flow" id="parallel-development" aria-labelledby="flow-title">
+  <h2 id="flow-title" data-i18n="flowTitle">{text.flowTitle}</h2>
+  <p data-i18n="flowIntro">{text.flowIntro}</p>
+  <figure id="flow-demo" data-step="7">
+    <figcaption data-i18n="flowCaption">{text.flowCaption}</figcaption>
+    <svg class="branch-graph graph-wide" viewBox="0 0 1080 400" role="img" aria-label={text.flowGraph} data-i18n-aria="flowGraph">
+      <defs><marker id="flow-direction-wide" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 6 3 L 0 6" class="direction-tip" /></marker></defs>
+      <path class="main-track" d="M 45 65 H 1035" />
+      <text x="45" y="40">main</text><circle class="main-node" cx="145" cy="65" r="8" />
+      <text x="145" y="105" text-anchor="middle">origin/main</text>
+      {lanes.map(lane => <g class="flow-lane">
+        <path class="task-track" pathLength="1" data-reveal="1" d={`M 145 65 C 220 65 210 ${lane.y} 290 ${lane.y} H 510`} />
+        <path class="task-track" pathLength="1" data-reveal={lane.step} d={`M 510 ${lane.y} H ${lane.merge - 110} C ${lane.merge - 35} ${lane.y} ${lane.merge - 60} 65 ${lane.merge} 65`} />
+        <g data-reveal="1"><text x="285" y={lane.y - 25}>{`task-${lane.name.toLowerCase()} · worktree ${lane.name}`}</text></g>
+        <g data-reveal="2"><circle class="task-node" cx="345" cy={lane.y} r="7" /><text x="345" y={lane.y + 30} text-anchor="middle" data-i18n="flowDevelopShort">{text.flowDevelopShort}</text></g>
+        <g data-reveal="3"><circle class="check-node" cx="510" cy={lane.y} r="8" /><text x="510" y={lane.y + 30} text-anchor="middle">{`PR ${lane.name}`}</text></g>
+        <g data-reveal={lane.step}><circle class="main-node" cx={lane.merge} cy="65" r="8" /><text x={lane.merge} y="40" text-anchor="middle">{`+ ${lane.name}`}</text></g>
+      </g>)}
+      <g data-reveal="5"><path class="sync-track" marker-end="url(#flow-direction-wide)" d="M 675 85 Q 720 115 690 150" /><text x="695" y="195" text-anchor="middle" data-i18n="flowSync">{text.flowSync}</text></g>
+    </svg>
+    <svg class="branch-graph graph-narrow" viewBox="0 0 320 640" role="img" aria-label={text.flowGraph} data-i18n-aria="flowGraph">
+      <defs><marker id="flow-direction-narrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M 0 0 L 6 3 L 0 6" class="direction-tip" /></marker></defs>
+      <path class="main-track" d="M 42 45 V 605" /><text x="15" y="25">main</text><circle class="main-node" cx="42" cy="60" r="6" />
+      {lanes.map((lane, index) => {
+        const x = 95 + index * 92;
+        const y = 450 + (lane.step - 4) * 50;
+        return <g>
+          <path class="task-track" pathLength="1" data-reveal="1" d={`M 42 60 Q ${x} 60 ${x} 125 V 365`} />
+          <path class="task-track" pathLength="1" data-reveal={lane.step} d={`M ${x} 365 V ${y - 40} Q ${x} ${y} 42 ${y}`} />
+          <g data-reveal="1"><text x={x} y="150" text-anchor="middle">{`task-${lane.name.toLowerCase()}`}</text><text x={x} y="170" text-anchor="middle">{`worktree ${lane.name}`}</text></g>
+          <g data-reveal="2"><circle class="task-node" cx={x} cy="240" r="6" /><text x={x} y="270" text-anchor="middle" data-i18n="flowDevelopShort">{text.flowDevelopShort}</text></g>
+          <g data-reveal="3"><circle class="check-node" cx={x} cy="350" r="7" /><text x={x} y="380" text-anchor="middle">{`PR ${lane.name}`}</text></g>
+          <g data-reveal={lane.step}><circle class="main-node" cx="42" cy={y} r="7" /><text x="14" y={y + 25}>{`+ ${lane.name}`}</text></g>
+        </g>;
+      })}
+      <g data-reveal="5"><path class="sync-track" marker-end="url(#flow-direction-narrow)" d="M 42 470 Q 65 480 95 420" /><text x="160" y="625" text-anchor="middle" data-i18n="flowSync">{text.flowSync}</text></g>
+    </svg>
+    <div class="flow-controls resources" hidden>
+      <button id="flow-play" type="button" data-i18n="flowPlay">{text.flowPlay}</button>
+      <button id="flow-next" type="button" data-i18n="flowNext">{text.flowNext}</button>
+      <button id="flow-replay" type="button" data-i18n="flowReplay">{text.flowReplay}</button>
+    </div>
+    <p id="flow-status" class="flow-status" aria-live="polite" data-i18n="flowStep7">{text.flowStep7}</p>
+    <p class="flow-finish" data-i18n="flowFinish">{text.flowFinish}</p>
+  </figure>
+  <p class="help" data-i18n="flowTiming">{text.flowTiming}</p>
+  <details>
+    <summary data-i18n="flowBoundaries">{text.flowBoundaries}</summary>
+    <ul>
+      <li data-i18n="flowBoundaryCode">{text.flowBoundaryCode}</li>
+      <li data-i18n="flowBoundaryData">{text.flowBoundaryData}</li>
+      <li data-i18n="flowBoundaryDependencies">{text.flowBoundaryDependencies}</li>
+      <li data-i18n="flowBoundaryReview">{text.flowBoundaryReview}</li>
+    </ul>
+    <p><span data-i18n="flowReferences">{text.flowReferences}</span> <a href="https://git-scm.com/docs/git-worktree">Git worktree</a> · <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">GitHub protected branches</a></p>
+  </details>
+</section>
