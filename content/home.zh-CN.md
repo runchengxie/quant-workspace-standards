@@ -1,23 +1,7 @@
 # AI 能写代码，谁来维护系统？
 
-从能运行的原型，到经得起反复修改的项目。这里记录我在量化投研和日报系统中逐渐形成的开发方法。
-
-[观看 10 月 18 日分享](talk/2026-10-18/index.html) · [复制三个提示词](playbooks/index.html) · [阅读工程规范](standards/index.html)
-
-## 从你遇到的问题开始
-
-| 入口 | 可以带走什么 |
-| --- | --- |
-| [提示词与 Skill](playbooks/index.html) | 三个完整提示词和可下载的 repo-maintenance Skill |
-| [10 月 18 日分享](talk/2026-10-18/index.html) | 可离线演示的页面和完整中文阅读稿 |
-| [工作区规范](standards/index.html) | 开发隔离、契约、验证和交付规则 |
-
-## 这些内容怎样配合
-
-工程规范约定长期边界，提示词把重复任务变成可检查的工作流。有日期的分享保留讲述者当时的经历和理解。
-
-完整维护按代码、文档与测试、收尾的顺序执行，也可以只运行需要的阶段。三个阶段共用 worktree、PR、检查、合并和当前任务清理的交付协议，遵循已有授权及仓库保护。
-
-## 适用范围
-
-这些做法来自个人项目，具体团队仍需结合自己的架构选择。项目事实和 Skill 指令以英文为准，中文提示词保持同等要求。中文分享稿是独立的个人叙述。
+<ol class="handbook-index">
+<li><span class="index-number" aria-hidden="true">01</span><div><a href="playbooks/index.html">提示词与 Skill</a><p>三个完整提示词和可下载的 repo-maintenance Skill</p></div></li>
+<li><span class="index-number" aria-hidden="true">02</span><div><a href="talk/2026-10-18/index.html">10 月 18 日分享</a><p>可离线演示的页面和完整中文阅读稿</p></div></li>
+<li><span class="index-number" aria-hidden="true">03</span><div><a href="standards/index.html">开发规范</a><p>开发隔离、契约、验证和交付规则</p></div></li>
+</ol>

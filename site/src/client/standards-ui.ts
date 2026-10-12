@@ -1,12 +1,16 @@
 export function initStandards(message: (key: string) => string): void {
   const chapters = [...document.querySelectorAll<HTMLDetailsElement>('.standard-chapter')];
-  const chapterControls = document.querySelector<HTMLElement>('.chapter-controls');
-  if (chapterControls) chapterControls.hidden = false;
+  document.querySelectorAll<HTMLElement>('.chapter-controls').forEach(controls => controls.hidden = false);
   const visibleChapters = () => chapters.filter(chapter => !chapter.closest<HTMLElement>('[data-locale]')?.hidden);
   function revealChapter(): void {
     let id: string;
     try { id = decodeURIComponent(location.hash.slice(1)).replace(/-zh-CN$/, ''); }
     catch { return; }
+    if (id === 'parallel-development') {
+      const diagram = document.querySelector<HTMLDetailsElement>('.diagram-disclosure');
+      if (diagram) { diagram.open = true; diagram.scrollIntoView({ block: 'start' }); }
+      return;
+    }
     if (!id.startsWith('standard-')) return;
     for (const chapter of visibleChapters()) {
       if (chapter.id.replace(/-zh-CN$/, '') === id) {
@@ -15,21 +19,25 @@ export function initStandards(message: (key: string) => string): void {
       }
     }
   }
-  document.querySelector('[data-expand-all]')?.addEventListener('click', () => visibleChapters().forEach(chapter => chapter.open = true));
-  document.querySelector('[data-collapse-all]')?.addEventListener('click', () => visibleChapters().forEach(chapter => chapter.open = false));
+  document.querySelectorAll('[data-expand-all]').forEach(button => button.addEventListener('click', () => visibleChapters().forEach(chapter => chapter.open = true)));
+  document.querySelectorAll('[data-collapse-all]').forEach(button => button.addEventListener('click', () => visibleChapters().forEach(chapter => chapter.open = false)));
   window.addEventListener('hashchange', revealChapter);
   window.addEventListener('presentationchange', revealChapter);
   revealChapter();
   let printState: boolean[] | undefined;
+  const diagram = document.querySelector<HTMLDetailsElement>('.diagram-disclosure');
+  let printDiagramOpen: boolean | undefined;
   window.addEventListener('beforeprint', () => {
     if (printState) return;
     printState = chapters.map(chapter => chapter.open);
     chapters.forEach(chapter => chapter.open = true);
+    if (diagram) { printDiagramOpen = diagram.open; diagram.open = true; }
   });
   window.addEventListener('afterprint', () => {
     if (!printState) return;
     chapters.forEach((chapter, index) => chapter.open = printState![index]!);
     printState = undefined;
+    if (diagram && printDiagramOpen !== undefined) { diagram.open = printDiagramOpen; printDiagramOpen = undefined; }
   });
 
   const demo = document.querySelector<HTMLElement>('#flow-demo');
@@ -83,6 +91,7 @@ export function initStandards(message: (key: string) => string): void {
   window.addEventListener('presentationchange', render);
   reduced.addEventListener('change', render);
   document.addEventListener('visibilitychange', () => { if (document.hidden) { stop(); render(); } });
+  diagram?.addEventListener('toggle', () => { if (!diagram.open) { stop(); render(); } });
   let printStep: number | undefined;
   window.addEventListener('beforeprint', () => {
     if (printStep !== undefined) return;
