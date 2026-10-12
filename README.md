@@ -54,3 +54,5 @@ Edit `content/`, `AGENTS.zh-CN.md`, `site/locales.json`, `site/src/` or the cano
 The Python HTML builder and its tests were retired after their prompt/archive/link/output-boundary contracts moved to the TypeScript and browser tests. Python is no longer a website build dependency.
 
 The playbooks page selects one phase at a time, copies complete prompts without expanding their source, and folds installation and mode details. The standards page shows the worktree graph first, with download links alongside the introduction.
+
+The homepage lists standards, prompts and Skill, then the talk. Standards downloads are the primary action; graph nodes offer concise hover descriptions and supporting prose lives in one closed text disclosure.
