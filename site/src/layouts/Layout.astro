@@ -1,0 +1,49 @@
+---
+import catalog from '../../locales.json';
+import css from '../styles/site.css?raw';
+import { themeScript, mainScript } from '../lib/bundles';
+import { routes, type PageKey } from '../lib/paths';
+interface Props { page: PageKey; route: string; bodyClass?: string; }
+const { page, route, bodyClass = '' } = Astro.props;
+const rootLink = '../'.repeat(route.split('/').length - 1);
+const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="AI-assisted development practices, maintenance playbooks and workspace standards." />
+  <title>{catalog['en-US'][page]} · {catalog['en-US'].brand}</title>
+  <script is:inline set:html={themeScript}></script>
+  <style is:inline set:html={css}></style>
+</head>
+<body class={bodyClass} data-title-key={page}>
+<a class="skip" href="#main" data-i18n="skip">{catalog['en-US'].skip}</a>
+<div class="shell">
+  <header class="top">
+    <a class="brand" href={`${rootLink}index.html`} data-i18n="brand">{catalog['en-US'].brand}</a>
+    <nav class="nav" aria-label={catalog['en-US'].navigation} data-i18n-aria="navigation">
+      {Object.entries(routes).map(([key, target]) => <a href={`${rootLink}${target}`} data-i18n={key} aria-current={key === page || (page === 'readingTitle' && key === 'talk') ? 'page' : undefined}>{catalog['en-US'][key as keyof typeof routes]}</a>)}
+    </nav>
+    <div class="preferences">
+      <label><span data-i18n="language">{catalog['en-US'].language}</span>
+        <select class="locale" aria-label={catalog['en-US'].language} data-i18n-aria="language"><option value="en-US">English</option><option value="zh-CN">简体中文</option></select>
+      </label>
+      <label><span data-i18n="theme">{catalog['en-US'].theme}</span>
+        <select class="theme" aria-label={catalog['en-US'].theme} data-i18n-aria="theme">
+          <option value="system" data-i18n="themeSystem">{catalog['en-US'].themeSystem}</option>
+          <option value="light" data-i18n="themeLight">{catalog['en-US'].themeLight}</option>
+          <option value="dark" data-i18n="themeDark">{catalog['en-US'].themeDark}</option>
+        </select>
+      </label>
+    </div>
+  </header>
+  <main id="main"><slot /></main>
+  <footer><span data-i18n="source">{catalog['en-US'].source}</span> · <a href="https://github.com/runchengxie/quant-workspace-standards">quant-workspace-standards</a></footer>
+</div>
+<script is:inline id="locale-catalog" type="application/json" set:html={catalogJson}></script>
+<script is:inline set:html={mainScript}></script>
+</body>
+</html>

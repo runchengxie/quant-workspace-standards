@@ -1,0 +1,6 @@
+---
+import { documentPath, locales, rendered } from '../lib/content';
+interface Props { name: string; }
+const { name } = Astro.props;
+---
+{locales.map(locale => <section class="locale-panel document" data-locale={locale} lang={locale === 'en-US' ? 'en' : locale} hidden={locale !== 'en-US'} set:html={rendered(documentPath(name, locale))} />)}
