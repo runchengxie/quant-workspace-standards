@@ -20,11 +20,11 @@ Machine-local shared path settings belong in `CONFIG_ROOT/shared/workspace.toml`
 
 ## Maintenance playbooks and talk
 
-The Pages site includes [case studies](https://runchengxie.github.io/quant-workspace-standards/cases/), [three prompts and a downloadable Skill](https://runchengxie.github.io/quant-workspace-standards/playbooks/), and the [October 18, 2026 talk](https://runchengxie.github.io/quant-workspace-standards/talk/2026-10-18/). The talk includes keyboard navigation, fullscreen, deep links, Chinese speaker notes, a complete Chinese reading page and a downloadable offline site.
+The Pages site includes [three prompts and a downloadable Skill](https://runchengxie.github.io/quant-workspace-standards/playbooks/), and the [October 18, 2026 talk](https://runchengxie.github.io/quant-workspace-standards/talk/2026-10-18/). The talk includes keyboard navigation, fullscreen, deep links, Chinese speaker notes, a complete Chinese reading page and a downloadable offline site.
 
 [`skills/repo-maintenance/SKILL.md`](skills/repo-maintenance/SKILL.md) routes `audit`, `code`, `docs` and `full` modes to three workflows. English workflow files are canonical and are also the English copyable prompts. [`content/prompts/`](content/prompts/) contains the corresponding zh-CN prompts. Copy the complete Skill folder into your tool's skill directory to install; copying SKILL.md alone omits the workflows.
 
-The site defaults to English and offers a persistent Chinese switch, including the full standards body. System/light/dark themes apply across every page. `AGENTS.md` remains the English canonical standard. The Chinese talk is original commentary; case source notes distinguish repository evidence from recollection and unverified counts. The worktree/PR protocol follows existing authorization and repository controls.
+The site defaults to English and offers a persistent Chinese switch, including the full standards body. System/light/dark themes apply across every page. `AGENTS.md` remains the English canonical standard. The Chinese talk is original commentary. The worktree/PR protocol follows existing authorization and repository controls.
 
 ## Build and validate
 

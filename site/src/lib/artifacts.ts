@@ -7,6 +7,7 @@ import {
   readdirSync,
   copyFileSync,
   writeFileSync,
+  unlinkSync,
 } from "node:fs";
 import { zipSync } from "fflate";
 import { pagePaths, repoRoot } from "./paths";
@@ -33,6 +34,13 @@ export const generatedFiles = [
   ].map((path) => `downloads/repo-maintenance/${path}`),
 ];
 const marker = ".standards-site.json";
+const retiredFiles = ["cases/index.html"];
+type Manifest = { owner?: string; files?: unknown };
+function ownedRetiredFiles(manifest: Manifest): string[] {
+  return Array.isArray(manifest.files)
+    ? retiredFiles.filter(path => (manifest.files as unknown[]).includes(path))
+    : [];
+}
 function filesWithin(path: string): string[] {
   return readdirSync(path, { withFileTypes: true }).flatMap((entry) => {
     if (entry.isSymbolicLink())
@@ -65,12 +73,12 @@ export function validateOutput(path: string): string {
     const manifestPath = join(output, marker);
     if (!existsSync(manifestPath))
       throw new Error("Refusing to overwrite an unowned output directory");
-    const manifest: { owner?: string } = JSON.parse(
+    const manifest: Manifest = JSON.parse(
       readFileSync(manifestPath, "utf8"),
     );
     if (manifest.owner !== "quant-workspace-standards")
       throw new Error("Unrecognized output owner");
-    const known = new Set([...generatedFiles, marker]);
+    const known = new Set([...generatedFiles, ...ownedRetiredFiles(manifest), marker]);
     if (filesWithin(output).some((path) => !known.has(path)))
       throw new Error("Output contains unowned files");
   }
@@ -78,10 +86,18 @@ export function validateOutput(path: string): string {
 }
 export function publishOutput(staging: string, output: string): void {
   validateOutput(output);
+  const manifestPath = join(output, marker);
+  const retired = existsSync(manifestPath)
+    ? ownedRetiredFiles(JSON.parse(readFileSync(manifestPath, "utf8")))
+    : [];
   for (const path of generatedFiles) {
     const destination = join(output, path);
     mkdirSync(dirname(destination), { recursive: true });
     copyFileSync(join(staging, path), destination);
+  }
+  for (const path of retired) {
+    const target = join(output, path);
+    if (existsSync(target)) unlinkSync(target);
   }
   writeFileSync(
     join(output, marker),

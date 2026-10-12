@@ -8,7 +8,6 @@ const svg = await QRCode.toString(`${siteUrl}playbooks/`, { type: 'svg', errorCo
 {slides.map((slide, index) => <section class="slide" id={slide.id} data-notes={slide.notes} hidden={index !== 0}>
   <div class="slide-number">{String(index + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}</div>
   {locales.map(locale => <div data-locale={locale} hidden={locale !== 'en-US'}><h1>{slide.title[locale]}</h1><ul>{slide.points[locale].map(point => <li>{point}</li>)}</ul></div>)}
-  {slide.case && <p class="case-reference"><a href="../../cases/index.html" data-i18n="evidence">{catalog['en-US'].evidence}</a> · #{slide.case}</p>}
   {index === slides.length - 1 && <div class="resources"><div class="qr" role="img" aria-label={catalog['en-US'].qr} data-i18n-aria="qr" set:html={svg}></div><a href="../../playbooks/index.html" data-i18n="resources">{catalog['en-US'].resources}</a></div>}
 </section>)}
 <div class="progress"><span id="progress-bar"></span></div>

@@ -139,5 +139,5 @@ for (const path of Object.keys(offline)) {
   assert.ok(!path.startsWith("/") && !path.split("/").includes(".."));
 }
 console.log(
-  "Artifact checks passed: six routes, all offline links/fragments, exact prompts, complete Skill and restricted archive.",
+  `Artifact checks passed: ${pagePaths.length} routes, all offline links/fragments, exact prompts, complete Skill and restricted archive.`,
 );

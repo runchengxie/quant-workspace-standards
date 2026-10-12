@@ -499,9 +499,6 @@ footer {
 .slide ul {
   font-size: clamp(1.2rem, 2vw, 2rem);
 }
-.case-reference {
-  margin: 8px 0;
-}
 #workflows ul {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
