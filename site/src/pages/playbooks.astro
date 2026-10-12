@@ -2,5 +2,30 @@
 import Layout from '../layouts/Layout.astro';
 import Document from '../components/Document.astro';
 import Prompts from '../components/Prompts.astro';
+import catalog from '../../locales.json';
+const text = catalog['en-US'];
 ---
-<Layout page="playbooks" route="playbooks/index.html"><Document name="playbooks" /><Prompts /></Layout>
+<Layout page="playbooks" route="playbooks/index.html" bodyClass="playbooks">
+  <header class="page-intro">
+    <p class="eyebrow" data-i18n="playbooksEyebrow">{text.playbooksEyebrow}</p>
+    <h1 data-i18n="playbooksTitle">{text.playbooksTitle}</h1>
+    <p data-i18n="playbooksIntro">{text.playbooksIntro}</p>
+  </header>
+  <nav class="version-jumps" aria-label={text.versionNavigation} data-i18n-aria="versionNavigation">
+    <a href="#prompt-version-title" data-i18n="promptVersion">{text.promptVersion}</a>
+    <a href="#skill-version-title" data-i18n="skillVersion">{text.skillVersion}</a>
+  </nav>
+  <ol class="maintenance-phases" aria-label={text.maintenancePhases} data-i18n-aria="maintenancePhases">
+    {['code', 'docs', 'closeout'].map((name, index) => <li><span class="index-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><div><strong data-i18n={`phase${name}Title`}>{text[`phase${name}Title` as keyof typeof text]}</strong><p data-i18n={`phase${name}Detail`}>{text[`phase${name}Detail` as keyof typeof text]}</p></div></li>)}
+  </ol>
+  <div class="playbook-columns">
+    <section class="prompt-version" aria-labelledby="prompt-version-title">
+      <header class="version-heading"><p class="eyebrow" data-i18n="promptUse">{text.promptUse}</p><h2 id="prompt-version-title" data-i18n="promptVersion">{text.promptVersion}</h2><p data-i18n="promptVersionDetail">{text.promptVersionDetail}</p></header>
+      <Prompts />
+    </section>
+    <aside class="skill-version" aria-labelledby="skill-version-title">
+      <header class="version-heading"><p class="eyebrow" data-i18n="skillUse">{text.skillUse}</p><h2 id="skill-version-title" data-i18n="skillVersion">{text.skillVersion}</h2><p data-i18n="skillVersionDetail">{text.skillVersionDetail}</p></header>
+      <Document name="playbooks" />
+    </aside>
+  </div>
+</Layout>

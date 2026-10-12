@@ -14,6 +14,7 @@ const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23252520'/%3E%3Ctext x='16' y='24' text-anchor='middle' font-family='serif' font-size='25' fill='%23faf9f6'%3EQ%3C/text%3E%3C/svg%3E" />
   <meta name="description" content="AI-assisted development practices, maintenance playbooks and workspace standards." />
   <title>{catalog['en-US'][page]} · {catalog['en-US'].brand}</title>
   <script is:inline set:html={themeScript}></script>
@@ -25,7 +26,7 @@ const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
   <header class="top">
     <a class="brand" href={`${rootLink}index.html`} data-i18n="brand">{catalog['en-US'].brand}</a>
     <nav class="nav" aria-label={catalog['en-US'].navigation} data-i18n-aria="navigation">
-      {Object.entries(routes).map(([key, target]) => <a href={`${rootLink}${target}`} data-i18n={key} aria-current={key === page || (page === 'readingTitle' && key === 'talk') ? 'page' : undefined}>{catalog['en-US'][key as keyof typeof routes]}</a>)}
+      {Object.entries(routes).map(([key, target]) => <a class={key === 'talk' ? 'nav-secondary' : undefined} href={`${rootLink}${target}`} data-i18n={key} aria-current={key === page || (page === 'readingTitle' && key === 'talk') ? 'page' : undefined}>{catalog['en-US'][key as keyof typeof routes]}</a>)}
     </nav>
     <div class="preferences">
       <label><span data-i18n="language">{catalog['en-US'].language}</span>
