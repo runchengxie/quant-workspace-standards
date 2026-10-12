@@ -26,7 +26,7 @@ The Pages site includes [three prompts and a downloadable Skill](https://runchen
 
 [`skills/repo-maintenance/SKILL.md`](skills/repo-maintenance/SKILL.md) routes `audit`, `code`, `docs` and `full` modes to three workflows. English workflow files are canonical and are also the English copyable prompts. [`content/prompts/`](content/prompts/) contains the corresponding zh-CN prompts. Copy the complete Skill folder into your tool's skill directory to install; copying SKILL.md alone omits the workflows.
 
-The site defaults to English and offers a persistent Chinese switch, including the full standards body. System/light/dark themes apply across every page. `AGENTS.md` remains the English canonical standard. The Chinese talk is original commentary. The worktree/PR protocol follows existing authorization and repository controls.
+The site defaults to English and offers a persistent Chinese switch, including the full standards body. Unknown stored or selected locales use English; missing Chinese UI keys fall back to English, then to the key itself. System/light/dark themes apply across every page. `AGENTS.md` remains the English canonical standard. The Chinese talk is original commentary. The worktree/PR protocol follows existing authorization and repository controls.
 
 ## Build and validate
 
@@ -49,7 +49,7 @@ Use `bun run dev` for local development. Open the generated `index.html` directl
 
 Themes default to the system preference, react to system changes in system mode and save explicit light/dark choices. Initial theme selection runs in the head before styles to reduce flashing. Content, slides, prompt sources and downloads are identical across themes. English [AGENTS.md](AGENTS.md) remains canonical; [AGENTS.zh-CN.md](AGENTS.zh-CN.md) is its localization. The talk is prepared for approximately ten minutes.
 
-Edit `content/`, `AGENTS.zh-CN.md`, `site/locales.json`, `site/src/` or the canonical Skill workflows, then rebuild. Astro components share navigation, document rendering, prompt cards and slides. `site/scripts/build.ts` preserves the legacy reading.html URL and packages only explicit pages and Skill resources. It generates the existing `downloads/repo-maintenance.zip` and `downloads/engineering-practices-offline.zip` names. Content, Skill and site changes trigger checks; only main pushes deploy.
+Edit `content/`, `AGENTS.zh-CN.md`, `site/locales.json`, `site/src/` or the canonical Skill workflows, then rebuild. Astro components share navigation, document rendering, prompt cards and slides. `site/scripts/build.ts` preserves the legacy reading.html URL and packages only explicit pages and Skill resources. It generates the existing `downloads/repo-maintenance.zip` and `downloads/engineering-practices-offline.zip` names. Content, Skill and site changes trigger checks. Main pushes and manual workflow dispatches deploy; pull requests only build.
 
 The Python HTML builder and its tests were retired after their prompt/archive/link/output-boundary contracts moved to the TypeScript and browser tests. Python is no longer a website build dependency.
 

@@ -333,6 +333,24 @@ test("without JavaScript the full diagram and native chapters remain usable", as
 });
 
 
+test("missing UI translations fall back to English and then the stable key", async ({ page }) => {
+  const html = readFileSync(resolve(output!, "index.html"), "utf8");
+  const pattern = /(<script[^>]*id="locale-catalog"[^>]*>)([\s\S]*?)(<\/script>)/;
+  const match = pattern.exec(html);
+  if (!match) throw new Error("Built locale catalog missing");
+  const catalog = JSON.parse(match[2]!) as Record<string, Record<string, string>>;
+  const englishBrand = catalog["en-US"]!["brand"]!;
+  delete catalog["zh-CN"]!["brand"];
+  const fixture = html.replace(pattern, (_, start, _body, end) => start + JSON.stringify(catalog) + end)
+    .replace("</body>", '<span id="missing-ui-key" data-i18n="testMissingKey"></span></body>');
+  await page.route(`${origin}/index.html`, route => route.fulfill({ contentType: "text/html", body: fixture }));
+  await page.goto(`${origin}/index.html`);
+  await page.selectOption(".locale", "zh-CN");
+  await expect(page.locator("html")).toHaveAttribute("lang", "zh-CN");
+  await expect(page.locator(".brand")).toHaveText(englishBrand);
+  await expect(page.locator("#missing-ui-key")).toHaveText("testMissingKey");
+});
+
 test("home presents three entries and playbooks presents two ways to do the same work", async ({ page }) => {
   await page.goto(url('index.html'));
   await expect(page.locator('main h1:visible')).toHaveText('AI can write code. Who maintains the system?');
