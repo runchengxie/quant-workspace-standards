@@ -33,12 +33,12 @@ jobs:
     defaults:
       run:
         working-directory: site
-    env:
-      STANDARDS_SITE_OUTPUT_DIR: ${{ runner.temp }}/standards-site
-      STANDARDS_BROWSER_OUTPUT_DIR: ${{ runner.temp }}/standards-browser-results
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Configure temporary output
+        run: |
+          printf 'STANDARDS_SITE_OUTPUT_DIR=%s/standards-site\nSTANDARDS_BROWSER_OUTPUT_DIR=%s/standards-browser-results\n' "$RUNNER_TEMP" "$RUNNER_TEMP" >> "$GITHUB_ENV"
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
