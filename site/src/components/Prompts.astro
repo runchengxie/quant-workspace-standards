@@ -3,12 +3,16 @@ import { locales, promptPath, text } from '../lib/content';
 import catalog from '../../locales.json';
 const names = ['code', 'docs', 'closeout'];
 ---
+<div class="prompt-switch" aria-label={catalog['en-US'].maintenancePhases} data-i18n-aria="maintenancePhases" hidden>
+{names.map(name => <button type="button" data-phase={name} aria-pressed={name === 'code' ? 'true' : 'false'} data-i18n={`phase${name}Title`}>{catalog['en-US'][`phase${name}Title` as keyof typeof catalog['en-US']]}</button>)}
+</div>
 <p id="copy-status" class="status" role="status" aria-live="polite"></p>
-{names.map(name => locales.map(locale => {
+{names.map(name => <div class="prompt-stage" data-stage={name}>{locales.map(locale => {
   const source = text(promptPath(name, locale));
   const identifier = `prompt-${name}-${locale}`;
   return <section class="prompt" data-locale={locale} hidden={locale !== 'en-US'}>
-    <div class="prompt-head"><h2>{source.split('\n')[0]?.replace(/^# /, '')}</h2><button data-copy={identifier} data-i18n="copy">{catalog[locale].copy}</button></div>
-    <pre id={identifier} tabindex="0">{source}</pre>
+    <p class="prompt-purpose" data-i18n={`phase${name}Detail`}>{catalog[locale][`phase${name}Detail` as keyof typeof catalog['en-US']]}</p>
+    <button data-copy={identifier} data-i18n="copy">{catalog[locale].copy}</button>
+    <details class="prompt-source"><summary data-i18n="promptRead">{catalog[locale].promptRead}</summary><pre id={identifier} tabindex="0">{source}</pre></details>
   </section>;
-}))}
+})}</div>)}
