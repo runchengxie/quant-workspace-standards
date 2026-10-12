@@ -50,9 +50,12 @@ const lanes = [
       <button id="flow-replay" type="button" data-i18n="flowReplay">{text.flowReplay}</button>
     </div>
     <p id="flow-status" class="flow-status" aria-live="polite" data-i18n="flowStep7">{text.flowStep7}</p>
-    <p class="flow-finish" data-i18n="flowFinish">{text.flowFinish}</p>
   </figure>
-  <p class="help" data-i18n="flowTiming">{text.flowTiming}</p>
+  <details class="flow-notes">
+    <summary data-i18n="flowNotes">{text.flowNotes}</summary>
+    <p class="flow-finish" data-i18n="flowFinish">{text.flowFinish}</p>
+    <p class="help" data-i18n="flowTiming">{text.flowTiming}</p>
+  </details>
   <details>
     <summary data-i18n="flowBoundaries">{text.flowBoundaries}</summary>
     <ul>
