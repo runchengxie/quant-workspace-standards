@@ -331,3 +331,12 @@ footer a { color: var(--muted); }
 
 .branch-graph g[tabindex] {pointer-events:bounding-box;}
 .coordination-table thead th:last-child {width:72%;}
+
+.standards-heading {font-family:var(--display); font-size:clamp(2.3rem,4vw,3.6rem); font-weight:500; line-height:1.2; margin:0 0 20px;}
+.standards-toolbar {border-bottom:0; padding-bottom:0;}
+.standards-relation {color:var(--muted); font-size:.88rem; margin:28px 0 0; max-width:80ch;}
+.standards .worktree-flow {margin-top:22px;}
+.standards .worktree-flow > h2 {font-family:inherit; font-size:1.1rem; font-weight:600; margin-bottom:0;}
+
+#notes-text {white-space:pre-line;}
+#workflows ul {display:block;}

@@ -60,3 +60,5 @@ The homepage lists standards, prompts and Skill, then the talk. Standards downlo
 The standards introduction and chapters are inside the single Text explanation disclosure. Chapter links expand it automatically; printing expands the full content and restores the disclosure state afterwards.
 
 The standards page explains the two download files side by side. Graph nodes show immediate tooltips on hover, focus or tap, dismissed with Escape. Text explanation separates concise process steps, a coordination table and the complete standards. The footer retains a compact GitHub link; playbooks no longer displays the unused attribution.
+
+The standards heading now connects downloadable AGENTS.md instructions to the illustrated default workflow. The talk reading page and bilingual slides use the anonymized eight-minute version; private draft metadata and source links are excluded, while existing slide fragment IDs remain stable.

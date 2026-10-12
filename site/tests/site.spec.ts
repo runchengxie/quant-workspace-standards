@@ -53,7 +53,7 @@ test("standards downloads preserve both source files and the diagram localizes",
     expect(readFileSync(path!)).toEqual(readFileSync(new URL(`../../${name}`, import.meta.url)));
   }
   await page.selectOption(".locale", "zh-CN");
-  await expect(page.locator("#flow-title")).toHaveText("用 Git worktree 支持并行开发");
+  await expect(page.locator("#flow-title")).toHaveText("默认开发流程 · Git worktree");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
   await page.locator(".worktree-flow .flow-notes > summary").click();
   await page.locator(".flow-coordination > summary").click();
@@ -102,7 +102,7 @@ test("Chinese selection changes standards body, brand and page title", async ({
   await page.locator(".flow-standard > summary").click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await page.selectOption(".locale", "zh-CN");
-  await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
+  await expect(page.locator(".standard-intro h1:visible")).toHaveText("代码工作区规范");
   await expect(page.locator(".brand")).toHaveText("量化工作区 · 工程实践");
   await expect(page).toHaveTitle(/开发规范/);
   await expect(page.locator("main")).toContainText("固定的目录名称");
@@ -148,7 +148,7 @@ test("denied storage still permits theme and locale changes", async ({
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await page.locator(".flow-notes > summary").click();
   await page.locator(".flow-standard > summary").click();
-  await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
+  await expect(page.locator(".standard-intro h1:visible")).toHaveText("代码工作区规范");
 });
 test("invalid stored preferences fall back without breaking the page", async ({
   page,
@@ -188,7 +188,7 @@ test("clipboard denial selects the complete prompt, independent of theme", async
     source.trimEnd(),
   );
 });
-test("offline slides preserve navigation, notes, QR and ten-minute label", async ({
+test("offline slides preserve navigation, notes, QR and eight-minute label", async ({
   page,
 }) => {
   const failures: string[] = [];
@@ -196,7 +196,7 @@ test("offline slides preserve navigation, notes, QR and ten-minute label", async
   await page.route(/^https?:/, (route) => route.abort());
   await page.goto(url("talk/2026-10-18/index.html"));
   await page.selectOption(".locale", "zh-CN");
-  await expect(page.locator(".slide:visible")).toContainText("约 10 分钟");
+  await expect(page.locator(".slide:visible")).toContainText("约 8 分钟");
   await page.locator("main").click({ position: { x: 2, y: 2 } });
   await page.keyboard.press("ArrowRight");
   await expect(page.locator("#page-count")).toHaveText("2 / 12");
@@ -458,4 +458,16 @@ test("graph tooltip appears on hover, focus and tap and closes with Escape", asy
  const box=await tip.boundingBox(); expect(box!.x).toBeGreaterThanOrEqual(0); expect(box!.x+box!.width).toBeLessThanOrEqual(320);
  await page.locator("#flow-title").click();
  await expect(tip).toBeHidden();
+});
+
+test("standards connects the download to its workflow and talk is anonymized", async ({page}) => {
+ await page.goto(url("standards/index.html"));
+ await page.selectOption(".locale","zh-CN");
+ await expect(page.locator(".standards-heading")).toHaveText("开发规范");
+ await expect(page.locator(".standards-relation")).toContainText("这份规范中的默认开发流程");
+ await page.goto(url("talk/2026-10-18/reading.html"));
+ await expect(page.locator("main")).toContainText("重复发送检查");
+ await expect(page.locator("main")).not.toContainText("PR #");
+ await expect(page.locator("main")).not.toContainText("稿件备注");
+ await expect(page.locator("main")).not.toContainText("674");
 });

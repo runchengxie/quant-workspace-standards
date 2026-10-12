@@ -3,7 +3,7 @@
     "standardsDownloads": "Download the standards",
     "downloadAgents": "Download AGENTS.md (English)",
     "downloadAgentsChinese": "Download AGENTS.zh-CN.md (Chinese)",
-    "flowTitle": "Parallel development with Git worktrees",
+    "flowTitle": "Default development workflow · Git worktrees",
     "flowIntro": "Give each independent task its own branch and working directory. Develop in parallel, then integrate validated changes into main.",
     "flowCaption": "One main line, three independent worktrees. B merges first in this example.",
     "flowPrepare": "1 · Branch",
@@ -101,7 +101,7 @@
     "flowHoverDevelop": "Edit separate working files; runtime resources still need coordination.",
     "flowHoverCheck": "Build and test changes, commit and open a PR.",
     "flowHoverMerge": "Merge after required checks pass against current main.",
-    "standardsPurpose": "Workspace rules for AI coding assistants: task isolation, validation and delivery.",
+    "standardsPurpose": "Shared rules for task isolation, validation and delivery. AGENTS.md contains these instructions for AI coding assistants.",
     "downloadEnglish": "Canonical English",
     "downloadEnglishDetail": "Use for workspace instructions.",
     "downloadChinese": "Chinese translation",
@@ -130,13 +130,14 @@
     "flowResourceData": "Shared data and outputs",
     "flowResourceDataDetail": "Keep inputs at the owning repository’s permanent DATA_ROOT; separate task outputs and coordinate shared writes and current/latest updates.",
     "flowResourceIntegration": "Dependencies and merging",
-    "flowResourceIntegrationDetail": "Parallelize independent tasks; agree on interfaces first and merge providers before consumers across repositories. Revalidate against current main before each merge."
+    "flowResourceIntegrationDetail": "Parallelize independent tasks; agree on interfaces first and merge providers before consumers across repositories. Revalidate against current main before each merge.",
+    "standardsRelation": "The diagram illustrates the default development workflow in these standards. Download the complete rules or read them under Text explanation below."
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
     "downloadAgents": "下载 AGENTS.md（英文权威版）",
     "downloadAgentsChinese": "下载 AGENTS.zh-CN.md（中文译版）",
-    "flowTitle": "用 Git worktree 支持并行开发",
+    "flowTitle": "默认开发流程 · Git worktree",
     "flowIntro": "每个独立任务使用自己的分支与工作目录，同时开发，再把通过验证的改动合入 main。",
     "flowCaption": "一条 main 主线，三个独立 worktree。本例中 B 先合入。",
     "flowPrepare": "1 · 创建分支",
@@ -234,7 +235,7 @@
     "flowHoverDevelop": "各任务独立修改工作文件，运行资源仍需协调。",
     "flowHoverCheck": "构建和测试改动，提交后创建 PR。",
     "flowHoverMerge": "针对当前 main 满足所需检查后合并。",
-    "standardsPurpose": "给 AI 编码助手使用的工作区规则，约定任务隔离、验证与交付方式。",
+    "standardsPurpose": "用统一的规则隔离任务、验证改动，并完成交付。AGENTS.md 是这份规范的指令文件，可提供给 AI 编码助手。",
     "downloadEnglish": "英文权威版",
     "downloadEnglishDetail": "用于配置工作区指令。",
     "downloadChinese": "中文译版",
@@ -263,6 +264,7 @@
     "flowResourceData": "共享数据与输出",
     "flowResourceDataDetail": "输入保留所属仓库的永久 DATA_ROOT；输出按任务分目录，共享写入与 current/latest 更新需要协调。",
     "flowResourceIntegration": "依赖与合并",
-    "flowResourceIntegrationDetail": "独立任务可并行，有依赖时先约定接口；跨仓库先合并提供方。每次合入都针对当前主线重新验证。"
+    "flowResourceIntegrationDetail": "独立任务可并行，有依赖时先约定接口；跨仓库先合并提供方。每次合入都针对当前主线重新验证。",
+    "standardsRelation": "下图演示这份规范中的默认开发流程。完整规则可下载，也可展开下方“文字说明”阅读。"
   }
 }
