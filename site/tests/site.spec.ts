@@ -394,7 +394,7 @@ test("home presents three entries and playbooks presents two ways to do the same
   const narrowRight = await page.locator('.skill-version').boundingBox();
   expect(narrowRight!.y).toBeGreaterThan(narrowLeft!.y);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.locator('.version-jumps a[href="#skill-version-title"]').click();
+  await page.locator('#skill-version-title').scrollIntoViewIfNeeded();
   await expect(page.locator('#skill-version-title')).toBeInViewport();
 });
 

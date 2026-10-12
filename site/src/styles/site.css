@@ -340,3 +340,6 @@ footer a { color: var(--muted); }
 
 #notes-text {white-space:pre-line;}
 #workflows ul {display:block;}
+
+.standards-relation.sr-only {margin:-1px;}
+.flow-controls {justify-content:center;}
