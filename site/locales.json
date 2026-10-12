@@ -92,8 +92,12 @@
     "skillVersion": "Use the Skill",
     "skillVersionDetail": "Install once and select a mode. The Skill loads the same workflows as needed and carries shared evidence between phases.",
     "versionNavigation": "Usage versions",
-    "flowNotes": "Merge and cleanup notes",
-    "promptRead": "Read the complete prompt"
+    "flowNotes": "Text explanation",
+    "promptRead": "Read the complete prompt",
+    "flowHoverBranch": "Give each independent task a different branch and working directory.",
+    "flowHoverDevelop": "Edit separate working files; runtime resources still need coordination.",
+    "flowHoverCheck": "Build and test changes, commit and open a PR.",
+    "flowHoverMerge": "Merge after required checks pass against current main."
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
@@ -188,7 +192,11 @@
     "skillVersion": "使用 Skill",
     "skillVersionDetail": "安装一次，再选择模式。Skill 按需加载相同的工作流，并在阶段之间传递共享证据。",
     "versionNavigation": "使用方式",
-    "flowNotes": "合并与清理说明",
-    "promptRead": "阅读完整提示词"
+    "flowNotes": "文字说明",
+    "promptRead": "阅读完整提示词",
+    "flowHoverBranch": "每个独立任务使用不同分支和工作目录。",
+    "flowHoverDevelop": "各任务独立修改工作文件，运行资源仍需协调。",
+    "flowHoverCheck": "构建和测试改动，提交后创建 PR。",
+    "flowHoverMerge": "针对当前 main 满足所需检查后合并。"
   }
 }
