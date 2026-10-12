@@ -1,3 +1,4 @@
+import { initStandards } from './standards-ui';
 import {
   normalizeLocale,
   normalizeTheme,
@@ -56,6 +57,7 @@ function applyLocale(value: unknown): void {
   document.getElementById("copy-status")?.replaceChildren();
   savePreference("maintenance-locale", locale);
   syncOfflinePreferences();
+  window.dispatchEvent(new Event('presentationchange'));
 }
 document
   .querySelectorAll<HTMLSelectElement>(".locale")
@@ -82,6 +84,7 @@ media.addEventListener("change", () => {
   if (theme === "system") applyTheme();
 });
 applyTheme();
+initStandards(message);
 document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) =>
   button.addEventListener("click", async () => {
     const content = document.getElementById(button.dataset["copy"] ?? "");

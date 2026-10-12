@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Document from '../components/Document.astro';
+import StandardsDocument from '../components/StandardsDocument.astro';
 import catalog from '../../locales.json';
 import WorktreeFlow from '../components/WorktreeFlow.astro';
 ---
@@ -11,5 +11,5 @@ import WorktreeFlow from '../components/WorktreeFlow.astro';
     <a class="button" href="../downloads/AGENTS.zh-CN.md" download="AGENTS.zh-CN.md" data-i18n="downloadAgentsChinese">{catalog['en-US'].downloadAgentsChinese}</a>
   </div>
   <WorktreeFlow />
-  <Document name="standards" />
+  <StandardsDocument />
 </Layout>

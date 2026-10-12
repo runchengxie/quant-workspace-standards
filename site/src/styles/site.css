@@ -579,17 +579,46 @@ footer {
 .worktree-flow { margin: 32px 0; }
 .worktree-flow figure { margin: 24px 0; }
 .worktree-flow figcaption { color: var(--muted); margin-bottom: 16px; }
-.flow-axis, .flow-lane { display: grid; grid-template-columns: 80px repeat(4, minmax(0, 1fr)); gap: 12px; }
-.flow-axis { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
-.flow-lane { align-items: stretch; margin: 12px 0; }
-.flow-lane > strong { align-self: center; }
-.flow-stage { border-left: 3px solid var(--brand); background: var(--soft); padding: 12px; display: flex; flex-direction: column; justify-content: center; overflow-wrap: anywhere; }
-.flow-stage code { padding: 0; }
 .flow-finish { border-top: 2px solid var(--brand); padding-top: 14px; }
-.flow-mobile { display: none; }
+.branch-graph { display: block; width: 100%; height: auto; overflow: visible; }
+.branch-graph text { fill: var(--ink); font-size: 18px; font-family: inherit; }
+.branch-graph path { fill: none; stroke-width: 3; }
+.main-track { stroke: var(--ink); }
+.branch-graph path.task-track { stroke: var(--brand); stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 1s ease, opacity .6s ease; }
+.task-track.is-pending { stroke-dashoffset: 1; }
+.branch-graph .direction-tip { fill: var(--muted); stroke: none; }
+.sync-track { stroke: var(--muted); stroke-dasharray: 6 5; }
+.main-node { fill: var(--ink); }
+.task-node { fill: var(--brand); }
+.check-node { fill: var(--surface); stroke: var(--brand); stroke-width: 3; }
+.branch-graph [data-reveal] { opacity: 1; transition: opacity .6s ease; }
+.branch-graph .is-pending { opacity: .08; }
+.graph-narrow { display: none; }
+.flow-status { min-height: 3.5em; max-width: 80ch; color: var(--brand); }
+.flow-controls { gap: 10px; }
+.standard-intro > h1 { margin-top: 0; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.25; }
+.standard-chapter { border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 18px 0; margin: 0; scroll-margin-top: 20px; }
+.standard-chapter summary { position: relative; padding-left: 24px; list-style: none; }
+.standard-chapter summary::-webkit-details-marker { display: none; }
+.standard-chapter summary::before { content: '+'; position: absolute; left: 0; top: 0; font-weight: 700; }
+.standard-chapter[open] summary::before { content: '−'; }
+.standard-chapter summary h2 { display: inline; font-size: 1.2rem; margin: 0; }
+.standard-chapter summary span { display: block; color: var(--muted); font-size: .92rem; font-weight: 400; margin-top: 4px; }
+.chapter-body { margin-top: 18px; }
+.chapter-controls { margin-top: 36px; gap: 10px; }
 @media (max-width: 700px) {
-  .flow-axis { display: none; }
-  .flow-lane { grid-template-columns: 1fr 1fr; gap: 8px; margin: 24px 0; }
-  .flow-lane > strong { grid-column: 1 / -1; }
-  .flow-mobile { display: block; color: var(--muted); font-size: .85rem; margin-bottom: 4px; }
+  .graph-wide { display: none; }
+  .graph-narrow { display: block; max-width: 400px; margin: 0 auto; }
+  .graph-narrow text { font-size: 13px; }
+  .flow-status { min-height: 7em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .branch-graph [data-reveal], .branch-graph path.task-track { transition: none; }
+}
+@media print {
+  .flow-controls, .chapter-controls { display: none !important; }
+  .branch-graph .is-pending { opacity: 1; }
+  .branch-graph .task-track { stroke-dashoffset: 0; }
+  .standard-chapter::details-content { display: block; content-visibility: visible; }
+  .standard-chapter summary::before { content: ''; }
 }
