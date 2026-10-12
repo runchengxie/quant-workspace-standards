@@ -11,7 +11,7 @@ import WorktreeFlow from '../components/WorktreeFlow.astro';
     <a class="download-option primary-download" href="../downloads/AGENTS.md" download="AGENTS.md"><strong data-i18n="downloadEnglish">{catalog['en-US'].downloadEnglish}</strong><code>AGENTS.md</code><span data-i18n="downloadEnglishDetail">{catalog['en-US'].downloadEnglishDetail}</span><b data-i18n="downloadAction">{catalog['en-US'].downloadAction}</b></a>
     <a class="download-option" href="../downloads/AGENTS.zh-CN.md" download="AGENTS.zh-CN.md"><strong data-i18n="downloadChinese">{catalog['en-US'].downloadChinese}</strong><code>AGENTS.zh-CN.md</code><span data-i18n="downloadChineseDetail">{catalog['en-US'].downloadChineseDetail}</span><b data-i18n="downloadAction">{catalog['en-US'].downloadAction}</b></a>
   </div>
-  <p class="standards-relation" data-i18n="standardsRelation">{catalog['en-US'].standardsRelation}</p>
+  <p id="standards-relation" class="standards-relation sr-only" data-i18n="standardsRelation">{catalog['en-US'].standardsRelation}</p>
   </div>
   <WorktreeFlow><StandardsDocument /></WorktreeFlow>
 </Layout>
