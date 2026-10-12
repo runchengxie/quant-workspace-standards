@@ -260,3 +260,32 @@ footer a { color: var(--muted); }
   .worktree-flow details::details-content { display: block; content-visibility: visible; }
   .standard-chapter summary::before { content: ''; }
 }
+
+/* Focused maintenance entry points */
+.playbooks .page-intro {padding-bottom: 12px;}
+.playbooks .page-intro h1 {font-size: clamp(2.2rem, 4vw, 3.6rem); margin-bottom: 18px;}
+.playbooks .version-jumps {margin-bottom: 36px;}
+.playbooks .version-heading {margin-bottom: 28px;}
+.playbook-columns {grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);}
+.prompt-switch {display:flex; flex-wrap:wrap; gap:18px; border-bottom:1px solid var(--line);}
+.prompt-switch button {border:0; border-bottom:2px solid transparent; border-radius:0; padding:8px 0; font-size:.88rem; color:var(--muted);}
+.prompt-switch button[aria-pressed="true"] {border-bottom-color:var(--ink); color:var(--ink);}
+.prompt {margin:20px 0; padding:0; border:0;}
+.prompt-purpose {color:var(--muted); font-size:.92rem; margin-bottom:24px;}
+.prompt-source {margin-top:26px;}
+.prompt-source summary {font-size:.88rem; font-weight:400;}
+.skill-version .document {margin-top:0;}
+.skill-version .document > p:first-child > a {background:var(--ink); color:var(--paper); padding:9px 15px; text-decoration:none;}
+.skill-version details {font-size:.88rem;}
+.skill-version summary {font-weight:400;}
+.standards-toolbar {display:flex; justify-content:space-between; align-items:center; gap:30px; padding:18px 0;}
+.standards-toolbar .notice {border:0; margin:0; padding:0; max-width:50ch;}
+.standards-toolbar .resources {flex-shrink:0; gap:16px; font-size:.8rem;}
+.standards-toolbar .button {border:0; padding:0; color:var(--brand); text-decoration:underline;}
+.standards .worktree-flow {margin-top:24px;}
+.standards .worktree-flow > h2 {margin-top:0;}
+@media(max-width:850px) {.playbook-columns {grid-template-columns:1fr;} .standards-toolbar {align-items:flex-start; flex-direction:column; gap:16px;}}
+@media print {.prompt-switch {display:none;} .prompt-stage[hidden] {display:block !important;} .prompt-source::details-content, .skill-version details::details-content {display:block; content-visibility:visible;}}
+
+.playbooks-reference {margin-top:48px; border-top:1px solid var(--line);}
+.playbooks-reference .document {max-width:none; margin:18px 0; font-size:.8rem; color:var(--muted);}

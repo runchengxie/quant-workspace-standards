@@ -13,7 +13,7 @@ This repository contains general development guidance. Keep credentials, persona
 - [Download AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [Chinese translation](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md)
 - [Parallel worktree workflow](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)
 
-The standards page shows an optional step-by-step branch demonstration with play, pause, next-step and replay controls. Seven source-backed chapters support expand/collapse controls and direct links; all chapters and the worktree diagram are collapsed by default. Printing expands the full standard and restores the reading state afterwards. The full Markdown downloads remain unchanged.
+The standards page shows an optional step-by-step branch demonstration with play, pause, next-step and replay controls. Seven source-backed chapters support expand/collapse controls and direct links; all chapters are collapsed by default while the worktree diagram is directly visible at the top. Printing expands the full standard and restores the reading state afterwards. The full Markdown downloads remain unchanged.
 
 The site uses an editorial handbook layout with neutral surfaces, display headings, restrained rules and readable body widths. The home page keeps a topic title and three resource entries; the playbooks page places complete prompts and the reusable Skill side by side, with shared phase descriptions above and a stacked layout on smaller screens.
 
@@ -52,3 +52,5 @@ Themes default to the system preference, react to system changes in system mode 
 Edit `content/`, `AGENTS.zh-CN.md`, `site/locales.json`, `site/src/` or the canonical Skill workflows, then rebuild. Astro components share navigation, document rendering, prompt cards and slides. `site/scripts/build.ts` preserves the legacy reading.html URL and packages only explicit pages and Skill resources. It generates the existing `downloads/repo-maintenance.zip` and `downloads/engineering-practices-offline.zip` names. Content, Skill and site changes trigger checks. Main pushes and manual workflow dispatches deploy; pull requests only build.
 
 The Python HTML builder and its tests were retired after their prompt/archive/link/output-boundary contracts moved to the TypeScript and browser tests. Python is no longer a website build dependency.
+
+The playbooks page selects one phase at a time, copies complete prompts without expanding their source, and folds installation and mode details. The standards page shows the worktree graph first, with download links alongside the introduction.
