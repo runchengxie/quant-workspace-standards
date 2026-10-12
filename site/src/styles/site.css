@@ -575,3 +575,21 @@ footer {
   max-width: 28ch;
   text-wrap: balance;
 }
+
+.worktree-flow { margin: 32px 0; }
+.worktree-flow figure { margin: 24px 0; }
+.worktree-flow figcaption { color: var(--muted); margin-bottom: 16px; }
+.flow-axis, .flow-lane { display: grid; grid-template-columns: 80px repeat(4, minmax(0, 1fr)); gap: 12px; }
+.flow-axis { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
+.flow-lane { align-items: stretch; margin: 12px 0; }
+.flow-lane > strong { align-self: center; }
+.flow-stage { border-left: 3px solid var(--brand); background: var(--soft); padding: 12px; display: flex; flex-direction: column; justify-content: center; overflow-wrap: anywhere; }
+.flow-stage code { padding: 0; }
+.flow-finish { border-top: 2px solid var(--brand); padding-top: 14px; }
+.flow-mobile { display: none; }
+@media (max-width: 700px) {
+  .flow-axis { display: none; }
+  .flow-lane { grid-template-columns: 1fr 1fr; gap: 8px; margin: 24px 0; }
+  .flow-lane > strong { grid-column: 1 / -1; }
+  .flow-mobile { display: block; color: var(--muted); font-size: .85rem; margin-bottom: 4px; }
+}

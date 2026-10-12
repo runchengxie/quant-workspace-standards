@@ -6,6 +6,8 @@
 
 ## 网站内容
 
+[下载英文 AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [下载中文译版](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md) · [并行开发流程图](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)。下载文件直接复制对应规范源文件，完整离线包也包含两份规范。
+
 [Pages 网站](https://runchengxie.github.io/quant-workspace-standards/) 提供工程规范、案例、三个提示词、可下载 Skill，以及 2026 年 10 月 18 日的分享页。网站默认英文，可显式切换中文并保存选择。工程规范以英文为准，中文正文由 AGENTS.zh-CN.md 提供完整本地化，中文分享是独立的个人叙述。所有页面支持跟随系统、浅色和深色主题。
 
 [repo-maintenance](skills/repo-maintenance/SKILL.md) 提供 `audit`、`code`、`docs` 和 `full` 模式，按需读取代码、文档和收尾工作流。英文工作流也是网站的英文提示词，[中文提示词](content/prompts/) 保持相同要求。安装时复制完整 Skill 文件夹，单独复制 SKILL.md 会缺少工作流。

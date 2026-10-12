@@ -1,0 +1,35 @@
+---
+import catalog from '../../locales.json';
+const text = catalog['en-US'];
+const phases = ['flowPrepare', 'flowDevelop', 'flowValidate', 'flowIntegrate'] as const;
+const lanes = ['A', 'B', 'C'];
+---
+<section class="worktree-flow" id="parallel-development" aria-labelledby="flow-title">
+  <h2 id="flow-title" data-i18n="flowTitle">{text.flowTitle}</h2>
+  <p data-i18n="flowIntro">{text.flowIntro}</p>
+  <figure>
+    <figcaption data-i18n="flowCaption">{text.flowCaption}</figcaption>
+    <div class="flow-axis" aria-hidden="true">
+      <span></span>{phases.map(key => <span data-i18n={key}>{text[key]}</span>)}
+    </div>
+    {lanes.map(lane => <div class="flow-lane">
+      <strong><span data-i18n="flowTask">{text.flowTask}</span> {lane}</strong>
+      <div class="flow-stage"><span class="flow-mobile" data-i18n="flowPrepare">{text.flowPrepare}</span><code>origin/main</code><span aria-hidden="true">↓</span><code>task-{lane.toLowerCase()}</code></div>
+      <div class="flow-stage"><span class="flow-mobile" data-i18n="flowDevelop">{text.flowDevelop}</span><strong>worktree {lane}</strong><span data-i18n="flowOwnFiles">{text.flowOwnFiles}</span></div>
+      <div class="flow-stage"><span class="flow-mobile" data-i18n="flowValidate">{text.flowValidate}</span><span data-i18n="flowChecks">{text.flowChecks}</span><strong>PR {lane}</strong></div>
+      <div class="flow-stage"><span class="flow-mobile" data-i18n="flowIntegrate">{text.flowIntegrate}</span><span data-i18n="flowRefresh">{text.flowRefresh}</span><strong data-i18n="flowMerge">{text.flowMerge}</strong></div>
+    </div>)}
+    <p class="flow-finish" data-i18n="flowFinish">{text.flowFinish}</p>
+  </figure>
+  <p class="help" data-i18n="flowTiming">{text.flowTiming}</p>
+  <details>
+    <summary data-i18n="flowBoundaries">{text.flowBoundaries}</summary>
+    <ul>
+      <li data-i18n="flowBoundaryCode">{text.flowBoundaryCode}</li>
+      <li data-i18n="flowBoundaryData">{text.flowBoundaryData}</li>
+      <li data-i18n="flowBoundaryDependencies">{text.flowBoundaryDependencies}</li>
+      <li data-i18n="flowBoundaryReview">{text.flowBoundaryReview}</li>
+    </ul>
+    <p><span data-i18n="flowReferences">{text.flowReferences}</span> <a href="https://git-scm.com/docs/git-worktree">Git worktree</a> · <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">GitHub protected branches</a></p>
+  </details>
+</section>

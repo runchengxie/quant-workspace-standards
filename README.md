@@ -10,6 +10,8 @@ This repository contains general development guidance. Keep credentials, persona
 
 - [Source standard](AGENTS.md)
 - [GitHub Pages site](https://runchengxie.github.io/quant-workspace-standards/)
+- [Download AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [Chinese translation](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md)
+- [Parallel worktree workflow](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)
 
 Machine-local shared path settings belong in `CONFIG_ROOT/shared/workspace.toml`. Use the existing private configuration layout when available; otherwise, use `~/.config/<owner>/` on both Windows and Linux, honoring an explicitly configured `XDG_CONFIG_HOME` when present. Tools must explicitly read these settings or receive the resolved paths through environment variables. Keep tool-specific settings in the locations required by the tool.
 
