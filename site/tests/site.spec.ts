@@ -17,12 +17,13 @@ test.beforeAll(async () => {
     const path = pathname
       .replace(/^\/quant-workspace-standards\//, "")
       .replace(/\/$/, "/index.html");
-    if (!pagePaths.includes(path)) {
+    const isStandard = ["downloads/AGENTS.md", "downloads/AGENTS.zh-CN.md"].includes(path);
+    if (!pagePaths.includes(path) && !isStandard) {
       response.writeHead(404);
       response.end();
       return;
     }
-    response.setHeader("Content-Type", "text/html; charset=utf-8");
+    response.setHeader("Content-Type", isStandard ? "text/plain; charset=utf-8" : "text/html; charset=utf-8");
     response.end(readFileSync(resolve(output!, path)));
   });
   await new Promise<void>((ready, reject) => {
@@ -38,6 +39,32 @@ test.afterAll(async () => {
   await new Promise<void>((done, reject) =>
     server.close((error) => (error ? reject(error) : done())),
   );
+});
+
+test("standards downloads preserve both source files and the diagram localizes", async ({ page }) => {
+  await page.goto(`${origin}/standards/`);
+  for (const name of ["AGENTS.md", "AGENTS.zh-CN.md"]) {
+    const downloading = page.waitForEvent("download");
+    await page.locator(`a[download="${name}"]`).click();
+    const download = await downloading;
+    expect(download.suggestedFilename()).toBe(name);
+    const path = await download.path();
+    expect(path).toBeTruthy();
+    expect(readFileSync(path!)).toEqual(readFileSync(new URL(`../../${name}`, import.meta.url)));
+  }
+  await page.selectOption(".locale", "zh-CN");
+  await expect(page.locator("#flow-title")).toHaveText("用 Git worktree 支持并行开发");
+  await expect(page.locator(".flow-lane")).toHaveCount(3);
+  await page.locator(".worktree-flow summary").click();
+  await expect(page.locator(".worktree-flow details")).toContainText("共享写入需要协调");
+  await page.setViewportSize({ width: 320, height: 900 });
+  for (const locale of ["en-US", "zh-CN"]) {
+    await page.selectOption(".locale", locale);
+    for (const theme of ["light", "dark"]) {
+      await page.selectOption(".theme", theme);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+  }
 });
 
 test("online preferences persist across routes without changing content or URLs", async ({

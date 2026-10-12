@@ -110,10 +110,17 @@ for (const workflow of ["code", "docs", "closeout"]) {
 }
 const expectedArchive = [
   ...pagePaths,
+  "downloads/AGENTS.md",
+  "downloads/AGENTS.zh-CN.md",
   "downloads/repo-maintenance.zip",
   ...expectedSkill.map((path) => `downloads/${path}`),
 ].sort();
 assert.deepEqual(Object.keys(offline).sort(), expectedArchive);
+for (const name of ["AGENTS.md", "AGENTS.zh-CN.md"]) {
+  const source = new Uint8Array(readFileSync(resolve(repoRoot, name)));
+  assert.deepEqual(new Uint8Array(readFileSync(resolve(output, "downloads", name))), source);
+  assert.deepEqual(offline[`downloads/${name}`], source);
+}
 for (const path of Object.keys(offline)) {
   assert.ok(!relative("/", resolve("/", path)).startsWith(".."));
   assert.ok(!path.startsWith("/") && !path.split("/").includes(".."));
