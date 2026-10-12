@@ -56,3 +56,5 @@ The Python HTML builder and its tests were retired after their prompt/archive/li
 The playbooks page selects one phase at a time, copies complete prompts without expanding their source, and folds installation and mode details. The standards page shows the worktree graph first, with download links alongside the introduction.
 
 The homepage lists standards, prompts and Skill, then the talk. Standards downloads are the primary action; graph nodes offer concise hover descriptions and supporting prose lives in one closed text disclosure.
+
+The standards introduction and chapters are inside the single Text explanation disclosure. Chapter links expand it automatically; printing expands the full content and restores the disclosure state afterwards.

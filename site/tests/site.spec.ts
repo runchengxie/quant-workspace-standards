@@ -97,6 +97,7 @@ test("Chinese selection changes standards body, brand and page title", async ({
   page,
 }) => {
   await page.goto(url("standards/index.html"));
+  await page.locator(".flow-notes > summary").click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
@@ -143,6 +144,7 @@ test("denied storage still permits theme and locale changes", async ({
   await page.selectOption(".theme", "light");
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await page.locator(".flow-notes > summary").click();
   await expect(page.locator("main h1:visible")).toHaveText("代码工作区规范");
 });
 test("invalid stored preferences fall back without breaking the page", async ({
@@ -268,6 +270,8 @@ test("stale online preference parameters do not override a newer explicit choice
 
 test("standards chapters support defaults, bulk controls, deep links and printing", async ({ page }) => {
   await page.goto(url("standards/index.html"));
+  await expect(page.locator('.standard-intro:visible')).toHaveCount(0);
+  await page.locator('.flow-notes > summary').click();
   const chapters = page.locator('.document:visible details.standard-chapter');
   await expect(chapters).toHaveCount(7);
   await expect(chapters.filter({ has: page.locator('[data-chapter="workflow"]') })).toHaveJSProperty('open', false);
@@ -277,6 +281,7 @@ test("standards chapters support defaults, bulk controls, deep links and printin
   await expect(page.locator('.document:visible details[open]')).toHaveCount(7);
   await page.locator('.chapter-controls:visible [data-collapse-all]').click();
   await page.goto(url("standards/index.html") + '#standard-data');
+  await expect(page.locator('.flow-notes')).toHaveJSProperty('open', true);
   await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
   await page.selectOption('.locale', 'zh-CN');
   await expect(page.locator('#standard-data-zh-CN')).toHaveAttribute('open', '');
@@ -289,7 +294,7 @@ test("standards chapters support defaults, bulk controls, deep links and printin
 test("worktree demonstration is opt-in, pausable, localized and respects reduced motion", async ({ page }) => {
   await page.goto(url("standards/index.html"));
   await expect(page.locator('.graph-wide')).toBeVisible();
-  expect((await page.locator('.worktree-flow').boundingBox())!.y).toBeLessThan((await page.locator('.standard-intro:visible').boundingBox())!.y);
+  await expect(page.locator('.standard-intro:visible')).toHaveCount(0);
   await expect(page.locator('.flow-notes')).toHaveJSProperty('open', false);
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
   await page.locator('#flow-play').click();
@@ -326,6 +331,7 @@ test("without JavaScript the full diagram and native chapters remain usable", as
   await expect(page.locator('.graph-wide')).toBeVisible();
   await expect(page.locator('.flow-controls')).toBeHidden();
   await expect(page.locator('.chapter-controls:visible')).toHaveCount(0);
+  await page.locator('.flow-notes > summary').click();
   await page.locator('#standard-data summary').click();
   await expect(page.locator('#standard-data')).toHaveAttribute('open', '');
   await expect(page.locator('#standard-data .chapter-body')).toContainText('DATA_ROOT');
@@ -406,12 +412,23 @@ test("phase selection copies complete folded source and survives locale changes"
 test("standards prioritizes downloads and keeps explanations in one disclosure", async ({ page }) => {
  await page.goto(url("standards/index.html"));
  await expect(page.locator(".primary-download")).toHaveAttribute("download", "AGENTS.md");
- await expect(page.locator(".worktree-flow details")).toHaveCount(1);
+ await expect(page.locator(".worktree-flow > details")).toHaveCount(1);
  await expect(page.locator(".flow-notes")).toHaveJSProperty("open", false);
  await expect(page.locator(".graph-wide g[tabindex] title").first()).toHaveText(/independent task/);
  await page.selectOption(".locale", "zh-CN");
- await expect(page.locator(".flow-notes summary")).toHaveText("文字说明");
+ await expect(page.locator(".flow-notes > summary")).toHaveText("文字说明");
  await expect(page.locator(".graph-wide g[tabindex] title").first()).toHaveText(/独立任务/);
  await page.locator(".graph-wide g[tabindex]").first().focus();
  await expect(page.locator(".graph-wide g[tabindex]").first()).toBeFocused();
+});
+
+test("full standards disclosure restores after print", async ({page}) => {
+ await page.goto(url("standards/index.html"));
+ await expect(page.locator(".flow-notes")).toHaveJSProperty("open", false);
+ await expect(page.locator(".standard-intro:visible")).toHaveCount(0);
+ await page.evaluate(() => window.dispatchEvent(new Event("beforeprint")));
+ await expect(page.locator(".flow-notes")).toHaveJSProperty("open", true);
+ await expect(page.locator(".document:visible details[open]")).toHaveCount(7);
+ await page.evaluate(() => window.dispatchEvent(new Event("afterprint")));
+ await expect(page.locator(".flow-notes")).toHaveJSProperty("open", false);
 });
