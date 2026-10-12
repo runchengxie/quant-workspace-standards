@@ -45,9 +45,9 @@ const lanes = [
       <g data-reveal="5"><path class="sync-track" marker-end="url(#flow-direction-narrow)" d="M 42 470 Q 65 480 95 420" /><text x="160" y="625" text-anchor="middle" data-i18n="flowSync">{text.flowSync}</text></g>
     </svg>
     <div class="flow-controls resources" hidden>
-      <button id="flow-play" type="button" data-i18n="flowPlay">{text.flowPlay}</button>
-      <button id="flow-next" type="button" data-i18n="flowNext">{text.flowNext}</button>
-      <button id="flow-replay" type="button" data-i18n="flowReplay">{text.flowReplay}</button>
+      <button id="flow-play" class="flow-icon-button" type="button" aria-label={text.flowPlay} data-i18n-aria="flowPlay" data-playing="false"><svg class="flow-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" /></svg><svg class="flow-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" /></svg><span class="flow-control-hint" aria-hidden="true" data-i18n="flowPlay">{text.flowPlay}</span></button>
+      <button id="flow-next" class="flow-icon-button" type="button" aria-label={text.flowNext} data-i18n-aria="flowNext"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4 L16 12 L5 20 Z" /><rect x="18" y="4" width="3" height="16" rx="1" /></svg><span class="flow-control-hint" aria-hidden="true" data-i18n="flowNext">{text.flowNext}</span></button>
+      <button id="flow-replay" class="flow-icon-button" type="button" aria-label={text.flowReplay} data-i18n-aria="flowReplay"><svg class="flow-replay-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 A9 9 0 1 1 5.6 18.4 M3 3 V11 H11" /></svg><span class="flow-control-hint" aria-hidden="true" data-i18n="flowReplay">{text.flowReplay}</span></button>
     </div>
   </figure>
   <details class="flow-notes">
