@@ -1,0 +1,22 @@
+---
+import { locales, slides } from '../lib/content';
+import { siteUrl } from '../lib/paths';
+import QRCode from 'qrcode';
+import catalog from '../../locales.json';
+const svg = await QRCode.toString(`${siteUrl}playbooks/`, { type: 'svg', errorCorrectionLevel: 'M', margin: 4 });
+---
+{slides.map((slide, index) => <section class="slide" id={slide.id} data-notes={slide.notes} hidden={index !== 0}>
+  <div class="slide-number">{String(index + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}</div>
+  {locales.map(locale => <div data-locale={locale} hidden={locale !== 'en-US'}><h1>{slide.title[locale]}</h1><ul>{slide.points[locale].map(point => <li>{point}</li>)}</ul></div>)}
+  {slide.case && <p class="case-reference"><a href="../../cases/index.html" data-i18n="evidence">{catalog['en-US'].evidence}</a> · #{slide.case}</p>}
+  {index === slides.length - 1 && <div class="resources"><div class="qr" role="img" aria-label={catalog['en-US'].qr} data-i18n-aria="qr" set:html={svg}></div><a href="../../playbooks/index.html" data-i18n="resources">{catalog['en-US'].resources}</a></div>}
+</section>)}
+<div class="progress"><span id="progress-bar"></span></div>
+<div class="deck-controls">
+  <button id="previous" data-i18n="previous">{catalog['en-US'].previous}</button><span id="page-count" role="status" aria-live="polite"></span><button id="next" data-i18n="next">{catalog['en-US'].next}</button>
+  <button id="fullscreen" data-i18n="fullscreen">{catalog['en-US'].fullscreen}</button><button id="notes-toggle" data-i18n="notes" aria-expanded="false" aria-controls="speaker-notes">{catalog['en-US'].notes}</button>
+</div>
+<p class="help" data-i18n="keyboard">{catalog['en-US'].keyboard}</p><p id="deck-status" role="status"></p>
+<aside class="speaker-notes document" id="speaker-notes" hidden lang="zh-CN"><p id="notes-text"></p></aside>
+<a class="reading-link" href="reading.html" data-i18n="reading">{catalog['en-US'].reading}</a>
+<a href={`${siteUrl}downloads/engineering-practices-offline.zip`} data-i18n="offline">{catalog['en-US'].offline}</a>

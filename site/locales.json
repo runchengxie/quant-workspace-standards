@@ -21,7 +21,15 @@
     "offline": "Download the complete offline site",
     "resources": "Prompts and Skill",
     "evidence": "Case evidence",
-    "canonical": "The standard remains canonical in English. Select Chinese on the other pages for localized content."
+    "canonical": "English is the canonical source. The Chinese version localizes the same standards.",
+    "brand": "Quant workspace · Engineering practices",
+    "theme": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "navigation": "Main navigation",
+    "qr": "QR code for prompts and Skill",
+    "readingTitle": "Talk reading"
   },
   "zh-CN": {
     "home": "首页",
@@ -45,6 +53,14 @@
     "offline": "下载完整离线站点",
     "resources": "提示词与 Skill",
     "evidence": "案例证据",
-    "canonical": "工程规范继续以英文为准。其他页面可切换中文阅读本地化内容。"
+    "canonical": "英文版是权威规范，中文版按相同事实和规则翻译。",
+    "brand": "量化工作区 · 工程实践",
+    "theme": "主题",
+    "themeSystem": "跟随系统",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "navigation": "主要导航",
+    "qr": "提示词与 Skill 的二维码",
+    "readingTitle": "分享阅读稿"
   }
 }
