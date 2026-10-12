@@ -1,6 +1,6 @@
 # 量化工作区工程规范
 
-根目录 [AGENTS.md](AGENTS.md) 是英文 canonical 规范。本仓库保存通用开发约定，个人配置、机器路径、凭据、原始数据和运行产物放在仓库外。具体项目仍需遵循各自的 AGENTS.md。
+根目录 [AGENTS.md](AGENTS.md) 是权威英文规范。本仓库保存通用开发约定，个人配置、机器路径、凭据、原始数据和运行产物放在仓库外。具体项目仍需遵循各自的 AGENTS.md。
 
 机器本地路径设置保存在 `CONFIG_ROOT/shared/workspace.toml`，记录 `CODE_ROOT`、`DATA_ROOT` 和 `CONFIG_ROOT`。工具需要主动读取或接收已解析路径，TOML 不会自动导出环境变量。优先沿用已有私有配置布局，否则使用 `~/.config/<owner>/`，并遵循已设置的 `XDG_CONFIG_HOME`。工具专用配置放在工具要求的位置。
 
@@ -12,7 +12,7 @@
 
 [下载英文 AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [下载中文译版](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md) · [并行开发流程图](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)。下载文件直接复制对应规范源文件，完整离线包也包含两份规范。
 
-[Pages 网站](https://runchengxie.github.io/quant-workspace-standards/) 提供工程规范、三个提示词、可下载 Skill，以及 2026 年 10 月 18 日的分享页。网站默认英文，可显式切换中文并保存选择。工程规范以英文为准，中文正文由 AGENTS.zh-CN.md 提供完整本地化，中文分享是独立的个人叙述。所有页面支持跟随系统、浅色和深色主题。
+[Pages 网站](https://runchengxie.github.io/quant-workspace-standards/) 提供工程规范、三个提示词、可下载 Skill，以及 2026 年 10 月 18 日的分享页。网站默认英文，可显式切换中文并保存选择。未知的保存或选择语言回退到英文，中文界面键缺失时先使用英文，再使用键名。工程规范以英文为准，中文正文由 AGENTS.zh-CN.md 提供完整本地化，中文分享是独立的个人叙述。所有页面支持跟随系统、浅色和深色主题。
 
 [repo-maintenance](skills/repo-maintenance/SKILL.md) 提供 `audit`、`code`、`docs` 和 `full` 模式，按需读取代码、文档和收尾工作流。英文工作流也是网站的英文提示词，[中文提示词](content/prompts/) 保持相同要求。安装时复制完整 Skill 文件夹，单独复制 SKILL.md 会缺少工作流。
 
@@ -39,7 +39,7 @@ bun audit
 
 主题默认跟随系统，在系统模式下响应系统变化，并保存明确选择的浅色或深色。初始主题在 head 中先于样式应用，减少闪烁。主题不改变正文事实、投影片、提示词源文及下载内容。英文 [AGENTS.md](AGENTS.md) 是 canonical，中文 [AGENTS.zh-CN.md](AGENTS.zh-CN.md) 保持相同规则。分享按约十分钟准备。
 
-修改 `content/`、`AGENTS.zh-CN.md`、`site/locales.json`、`site/src/` 或英文 Skill 工作流后重新构建。Astro 组件共用导航、文档渲染、提示词卡片和演示内容。`site/scripts/build.ts` 保留原有 reading.html 地址，只打包明确的页面和 Skill 资源，沿用 Skill 和离线站点压缩包名称。内容、Skill 和站点变更触发检查，只有 main 推送会部署。
+修改 `content/`、`AGENTS.zh-CN.md`、`site/locales.json`、`site/src/` 或英文 Skill 工作流后重新构建。Astro 组件共用导航、文档渲染、提示词卡片和演示内容。`site/scripts/build.ts` 保留原有 reading.html 地址，只打包明确的页面和 Skill 资源，沿用 Skill 和离线站点压缩包名称。内容、Skill 和站点变更触发检查，main 推送和手动触发会部署，PR 只构建。
 
 旧 Python HTML 构建器退役前，其提示词、压缩包、链接和输出边界契约已迁移到 TypeScript 与浏览器测试。网站构建不再依赖 Python。
 
