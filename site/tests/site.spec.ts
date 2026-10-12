@@ -302,6 +302,9 @@ test("worktree demonstration is opt-in, pausable, localized and respects reduced
   await expect(page.locator('.flow-notes')).toHaveJSProperty('open', false);
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
   await page.locator('#flow-play').click();
+  await expect(page.locator('#flow-play')).toHaveAccessibleName('Pause');
+  await expect(page.locator('#flow-play .flow-pause-icon')).toBeVisible();
+  await expect(page.locator('#flow-play .flow-play-icon')).toBeHidden();
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '0');
   await page.locator('#flow-play').click();
   await page.waitForTimeout(2300);
@@ -324,7 +327,10 @@ test("worktree demonstration is opt-in, pausable, localized and respects reduced
   await page.locator('#flow-play').click();
   await page.clock.runFor(15400);
   await expect(page.locator('#flow-demo')).toHaveAttribute('data-step', '7');
-  await expect(page.locator('#flow-play')).toHaveText('播放演示');
+  await expect(page.locator('#flow-play')).toHaveAccessibleName('播放演示');
+  await expect(page.locator('#flow-play .flow-play-icon')).toBeVisible();
+  await expect(page.locator('#flow-next')).toHaveAccessibleName('下一步');
+  await expect(page.locator('#flow-replay')).toHaveAccessibleName('重播');
   await expect(page.locator('#flow-next')).toBeDisabled();
 });
 
