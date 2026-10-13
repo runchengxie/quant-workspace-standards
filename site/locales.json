@@ -129,7 +129,9 @@
     "flowResourceIntegration": "Dependencies and merging",
     "flowResourceIntegrationDetail": "Parallelize independent tasks; agree on interfaces first and merge providers before consumers across repositories. Revalidate against current main before each merge.",
     "standardsRelation": "The diagram illustrates the default development workflow in these standards. Download the complete rules or read them under Text explanation below.",
-    "versionOr": "or"
+    "versionOr": "or",
+    "imageCredit": "Image from the internet",
+    "imageSource": "Original source"
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
@@ -261,6 +263,8 @@
     "flowResourceIntegration": "依赖与合并",
     "flowResourceIntegrationDetail": "独立任务可并行，有依赖时先约定接口；跨仓库先合并提供方。每次合入都针对当前主线重新验证。",
     "standardsRelation": "下图演示这份规范中的默认开发流程。完整规则可下载，也可展开下方“文字说明”阅读。",
-    "versionOr": "或"
+    "versionOr": "或",
+    "imageCredit": "图片来自互联网",
+    "imageSource": "原图来源"
   }
 }
