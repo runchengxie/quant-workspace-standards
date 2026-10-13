@@ -199,10 +199,10 @@ test("offline slides preserve navigation, notes, QR and eight-minute label", asy
   await expect(page.locator(".slide:visible")).toContainText("约 8 分钟");
   await page.locator("main").click({ position: { x: 2, y: 2 } });
   await page.keyboard.press("ArrowRight");
-  await expect(page.locator("#page-count")).toHaveText("2 / 12");
-  expect(page.url()).toContain("#prototype");
+  await expect(page.locator("#page-count")).toHaveText("2 / 4");
+  expect(page.url()).toContain("#customers");
   await page.keyboard.press("End");
-  await expect(page.locator("#page-count")).toHaveText("12 / 12");
+  await expect(page.locator("#page-count")).toHaveText("4 / 4");
   await expect(page.locator(".qr svg")).toBeVisible();
   await page.keyboard.press("n");
   await expect(page.locator("#speaker-notes")).toBeVisible();
