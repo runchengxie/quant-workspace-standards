@@ -366,9 +366,12 @@ h1, h2, h3 { font-family: var(--display); }
 .slide h1 { font-weight: 650; line-height: 1.3; }
 .slide ul { line-height: 1.65; font-weight: 400; }
 .slide-content { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; align-items: center; }
-.slide-illustrated .slide-content { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+.slide-illustrated .slide-content { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.slide-illustrated h1 { font-size: clamp(2rem, 3.2vw, 3.3rem); margin-block: 10px; }
+.slide-illustrated ul { font-size: clamp(1.05rem, 1.6vw, 1.5rem); margin-block: 8px; }
+.slide-illustrated li { padding-block: 6px; }
 .talk-illustration { margin: 0; }
-.talk-illustration img { display: block; width: auto; max-width: 100%; max-height: min(42svh, 380px); object-fit: contain; border-radius: 6px; margin-inline: auto; }
+.talk-illustration img { display: block; width: auto; max-width: 100%; max-height: min(29svh, 220px); object-fit: contain; border-radius: 6px; margin-inline: auto; }
 .talk-illustration figcaption { margin-top: 10px; text-align: center; font-size: .75rem; color: var(--muted); }
 .talk-reading .document { max-width: 42rem; margin-inline: auto; font-size: clamp(1.05rem, 1.2vw, 1.16rem); line-height: 1.95; letter-spacing: .015em; }
 .talk-reading .document > h1 { font-weight: 650; font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.35; }
