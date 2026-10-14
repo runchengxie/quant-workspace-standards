@@ -1,26 +1,29 @@
 # 量化工作区工程规范
 
-根目录 [AGENTS.md](AGENTS.md) 是权威英文规范。本仓库保存通用开发约定，个人配置、机器路径、凭据、原始数据和运行产物放在仓库外。具体项目仍需遵循各自的 AGENTS.md。
+根目录 [`AGENTS.md`](AGENTS.md) 是版本管理中的英文权威规范。保持本地工作区说明与其一致，在本地说明或配置中记录已解析的 `CODE_ROOT`、`DATA_ROOT` 和 `CONFIG_ROOT`，各项目继续维护自己的 `AGENTS.md`。
 
-机器本地路径设置保存在 `CONFIG_ROOT/shared/workspace.toml`，记录 `CODE_ROOT`、`DATA_ROOT` 和 `CONFIG_ROOT`。工具需要主动读取或接收已解析路径，TOML 不会自动导出环境变量。优先沿用已有私有配置布局，否则使用 `~/.config/<owner>/`，并遵循已设置的 `XDG_CONFIG_HOME`。工具专用配置放在工具要求的位置。
+本仓库只保存通用规范。凭据、个人设置、机器路径、原始数据和运行产物都应放在仓库外。
+
+## 阅读规范
+
+- [英文源文件](AGENTS.md)
+- [GitHub Pages 网站](https://runchengxie.github.io/quant-workspace-standards/)
+- [下载英文规范](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md)和[中文译版](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md)
+- [并行 worktree 流程](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)
 
 ## 网站内容
 
-规范页提供分支汇合图，点击后可播放、暂停、逐步推进和重播。七个章节支持折叠、全部展开或收起，以及直接定位；章节默认收起，worktree 演示在页面顶部直接展示。打印时展开完整规范，结束后恢复阅读状态，下载的 Markdown 仍保留全文。
+规范页展示默认 worktree 流程图和七个与源文件对应的章节。提示词页提供三个完整提示词和可下载的 `repo-maintenance` Skill。2026 年 10 月 18 日分享页包含双语投影片、带播放控制的分步演示、中文备注、完整中文阅读稿和离线网站。分享采用匿名化的八分钟版本。
 
-网站采用工程手册式排版，以素色背景、标题层级、细分隔线和合适的正文行宽组织内容。首页只保留主题标题与三个内容入口；提示词页在共同阶段说明下，左右对照完整提示词与可重复调用的 Skill，较窄屏幕上纵向排列。
+网站默认英文，并提供持续记忆选择的简体中文界面，以及跟随系统、浅色和深色主题。未知 locale 回退到英文；缺失的中文界面翻译先回退到英文，再回退到稳定键名。语言和主题只改变呈现，不改变规范源文件、提示词、投影片事实或下载内容。
 
-[下载英文 AGENTS.md](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) · [下载中文译版](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md) · [并行开发流程图](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)。下载文件直接复制对应规范源文件，完整离线包也包含两份规范。
+构建后的站点可直接从 `index.html` 离线打开，页面内嵌样式、语言目录和浏览器脚本。访问在线来源和下载仍需联网。安装 Skill 时复制完整的 `skills/repo-maintenance` 文件夹，以保留其中的工作流文件。
 
-[Pages 网站](https://runchengxie.github.io/quant-workspace-standards/) 提供工程规范、三个提示词、可下载 Skill，以及 2026 年 10 月 18 日的分享页。网站默认英文，可显式切换中文并保存选择。未知的保存或选择语言回退到英文，中文界面键缺失时先使用英文，再使用键名。工程规范以英文为准，中文正文由 AGENTS.zh-CN.md 提供完整本地化，中文分享是独立的个人叙述。所有页面支持跟随系统、浅色和深色主题。
-
-[repo-maintenance](skills/repo-maintenance/SKILL.md) 提供 `audit`、`code`、`docs` 和 `full` 模式，按需读取代码、文档和收尾工作流。英文工作流也是网站的英文提示词，[中文提示词](content/prompts/) 保持相同要求。安装时复制完整 Skill 文件夹，单独复制 SKILL.md 会缺少工作流。
-
-演示页支持方向键、空格翻页、全屏、深链接、中文备注、完整阅读稿和离线包。worktree 和 PR 流程遵循已有授权及仓库保护。
+机器本地路径设置保存在 `CONFIG_ROOT/shared/workspace.toml`。工具需要主动读取或通过环境变量接收已解析路径，TOML 不会自动导出 shell 变量。沿用已有私有配置布局；没有现成布局时使用 `~/.config/<owner>/`，并遵循显式设置的 `XDG_CONFIG_HOME`。工具专用配置放在工具要求的位置。
 
 ## 构建与验证
 
-网站使用 Astro 7、TypeScript 和 Bun 1.4.3。Bun 管理唯一的 `site/bun.lock` 并运行脚本，Astro CLI 使用 Node >=22.12.0。[站点指引](site/AGENTS.md) 说明实现边界，无需 React 运行时。
+网站使用 Astro 7、TypeScript 和 Bun 1.4.3。Bun 管理锁定的 `site/bun.lock`；Astro 要求 Node.js 22.12.0 或更新版本。实现边界见[站点指引](site/AGENTS.md)。
 
 ```sh
 cd site
@@ -33,22 +36,8 @@ STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bu
 bun audit
 ```
 
-执行前从机器配置解析 `DATA_ROOT`，TOML 不会自动导出变量。输出目录必须为空或由本构建器通过 `.standards-site.json` 标记为自身产物，包含其他文件时拒绝覆盖。Astro 先在临时目录构建，再写入明确的产物。保留的输出放在数据目录，CI 和测试使用一次性临时目录。浏览器测试需要通过 `bunx playwright install chromium` 安装 Chromium，CI 还会安装系统依赖。
+构建前从本机配置解析 `DATA_ROOT`。输出目录必须为空，或包含本构建器写入的 `.standards-site.json` 标记；发现其他文件时会拒绝写入。构建器先在临时目录生成产物，再发布已知文件。保留的构建结果放在 `DATA_ROOT`，CI 和测试使用临时目录。浏览器测试需要 Chromium；本地可通过 `bunx playwright install chromium` 安装，CI 会安装浏览器和系统依赖。
 
-本地开发使用 `bun run dev`。构建后可以直接打开 `index.html`，也可以通过静态 HTTP 服务阅读。HTML 内嵌样式、语言目录和编译后的普通浏览器脚本，离线站点无需服务或网络。为处理 file:// 存储的不一致，离线文件链接携带语言和主题查询参数，线上页面在 localStorage 中保存偏好。存储被拒绝时仍能在当前页面切换。二维码指向线上提示词页，再次下载和访问来源需要联网。
+本地开发使用 `bun run dev`。构建器保留 `talk/2026-10-18/reading.html` 路径，以及 `repo-maintenance.zip` 和 `engineering-practices-offline.zip` 两个下载文件名。旧 Python 构建器及其测试已由 TypeScript 构建、浏览器和产物检查接替；构建网站不依赖 Python。
 
-主题默认跟随系统，在系统模式下响应系统变化，并保存明确选择的浅色或深色。初始主题在 head 中先于样式应用，减少闪烁。主题不改变正文事实、投影片、提示词源文及下载内容。英文 [AGENTS.md](AGENTS.md) 是 canonical，中文 [AGENTS.zh-CN.md](AGENTS.zh-CN.md) 保持相同规则。分享按约十分钟准备。
-
-修改 `content/`、`AGENTS.zh-CN.md`、`site/locales.json`、`site/src/` 或英文 Skill 工作流后重新构建。Astro 组件共用导航、文档渲染、提示词卡片和演示内容。`site/scripts/build.ts` 保留原有 reading.html 地址，只打包明确的页面和 Skill 资源，沿用 Skill 和离线站点压缩包名称。内容、Skill 和站点变更触发检查，main 推送和手动触发会部署，PR 只构建。
-
-旧 Python HTML 构建器退役前，其提示词、压缩包、链接和输出边界契约已迁移到 TypeScript 与浏览器测试。网站构建不再依赖 Python。
-
-提示词页一次选择一个阶段，无需展开原文即可复制完整提示词，安装与模式说明按需展开。规范页优先展示 worktree 图表，下载入口放在简介一侧。
-
-首页依次列出开发规范、提示词与 Skill、分享。规范下载为顶部主操作，图表节点提供简短悬停提示，完整解释集中在默认收起的“文字说明”中。
-
-规范简介与章节统一放在“文字说明”内。章节深链接自动展开外层说明，打印展开全文并在结束后恢复状态。
-
-规范页并列说明英文权威文件与中文译版的用途。图表节点悬停、键盘聚焦或点击时立即显示说明，Escape 可关闭；“文字说明”分为短流程、隔离协调表格与完整规范。页尾保留简短 GitHub 入口，提示词页不再展示未使用的来源说明。
-
-规范页以统一标题连接 AGENTS.md 指令文件与默认开发流程图解。分享阅读稿和双语投影片同步采用约八分钟脱敏版本，不包含私有稿件备注与原稿链接，保留原有投影片定位 ID。
+规范、网站、内容、Skill 或 Pages 工作流发生变化时会触发检查。PR 只构建和验证，不部署。推送到 `main` 和手动触发工作流时会部署 Pages 网站。
