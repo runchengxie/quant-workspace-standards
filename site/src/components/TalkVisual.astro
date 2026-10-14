@@ -1,0 +1,42 @@
+---
+import catalog from '../../locales.json';
+interface Props { id: string }
+const { id } = Astro.props;
+const text = catalog['en-US'];
+---
+<figure class:list={['talk-visual', `talk-visual-${id}`]}>
+  {id === 'questions' && <>
+    <figcaption class="sr-only" data-i18n="talkQuestionsVisual">{text.talkQuestionsVisual}</figcaption>
+    <div class="talk-paths">
+      <div class="talk-path"><strong data-i18n="talkRepeat">{text.talkRepeat}</strong><ol>{['talkPoorResult', 'talkTune', 'talkNoProgress'].map(key => <li data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ol></div>
+      <div class="talk-path talk-path-emphasis"><strong data-i18n="talkCheckFirst">{text.talkCheckFirst}</strong><ol>{['talkQuestionDirection', 'talkMismatch', 'talkDecideNext'].map(key => <li data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ol></div>
+    </div>
+  </>}
+  {id === 'customers' && <>
+    <figcaption class="sr-only" data-i18n="talkCustomersVisual">{text.talkCustomersVisual}</figcaption>
+    <div class="talk-product-comparison">
+      <div class="talk-product"><p class="talk-label" data-i18n="talkBefore">{text.talkBefore}</p><div class="talk-paper talk-paper-long"><strong data-i18n="talkInformation">{text.talkInformation}</strong><div class="talk-paper-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div><p data-i18n="talkCustomerWork">{text.talkCustomerWork}</p></div>
+      <div class="talk-product"><p class="talk-label" data-i18n="talkAfter">{text.talkAfter}</p><div class="talk-paper talk-paper-short"><strong data-i18n="talkStockList">{text.talkStockList}</strong><div class="talk-paper-lines" aria-hidden="true"><i></i><i></i></div></div><p data-i18n="talkOurWork">{text.talkOurWork}</p></div>
+    </div>
+  </>}
+  {id === 'ownership' && <>
+    <figcaption class="sr-only" data-i18n="talkOwnershipVisual">{text.talkOwnershipVisual}</figcaption>
+    <ol class="talk-pipeline">{['talkDownload', 'talkClean', 'talkModel', 'talkSend'].map(key => <li data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ol>
+    <div class="talk-timeline">
+      <div><strong>07:00</strong><span data-i18n="talkEarlierSend">{text.talkEarlierSend}</span></div>
+      <p class="talk-recovery" data-i18n="talkRecovery">{text.talkRecovery}</p>
+      <div><strong>09:00</strong><span data-i18n="talkOriginalSend">{text.talkOriginalSend}</span></div>
+      <div><strong>09:30</strong><span data-i18n="talkMarketOpen">{text.talkMarketOpen}</span></div>
+    </div>
+  </>}
+  {id === 'workflows' && <>
+    <figcaption class="sr-only" data-i18n="talkWorkflowVisual">{text.talkWorkflowVisual}</figcaption>
+    <svg class="talk-branches" viewBox="0 0 900 180" role="img" aria-label={text.talkWorkflowVisual} data-i18n-aria="talkWorkflowVisual">
+      <path class="talk-main-track" d="M20 30 H880" />
+      <text x="20" y="20">main</text><text x="824" y="20">main</text>
+      {[{key:'talkTaskA', y:75}, {key:'talkTaskB', y:115}, {key:'talkTaskC', y:155}].map(task => <g><path class="talk-task-track" d={`M100 30 C155 30 150 ${task.y} 205 ${task.y} H650 C715 ${task.y} 735 30 800 30`} /><circle cx="290" cy={task.y} r="5" /><text x="310" y={task.y - 8} data-i18n={task.key}>{text[task.key as keyof typeof text]}</text></g>)}
+    </svg>
+    <div class="talk-branches-mobile"><span>main</span><ul>{['talkTaskA', 'talkTaskB', 'talkTaskC'].map(key => <li data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ul><span>main</span></div>
+    <p class="talk-merge-note" data-i18n="talkCheckMerge">{text.talkCheckMerge}</p>
+  </>}
+</figure>
