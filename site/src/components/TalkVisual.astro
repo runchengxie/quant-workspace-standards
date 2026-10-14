@@ -34,18 +34,19 @@ const text = catalog['en-US'];
     <svg class="talk-branches" viewBox="0 0 900 180" role="img" aria-label={text.talkWorkflowVisual} data-i18n-aria="talkWorkflowVisual">
       <defs><marker id="talk-story-sync-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path class="talk-sync-arrow" d="M0 0 L7 3.5 L0 7 Z" /></marker></defs>
       <path class="talk-main-track" d="M20 30 H880" />
-      <text x="20" y="20">main</text><text x="824" y="20">main</text>
+      <text x="20" y="20">main</text><text x="824" y="20" data-story-unit="merged-main">main</text>
       {[{key:'talkTaskA', unit:'branchA', y:75, merge:780}, {key:'talkTaskB', unit:'branchB', y:115, merge:690}, {key:'talkTaskC', unit:'branchC', y:155, merge:850}].map(task => <g data-story-unit={task.unit}><path class="talk-task-track talk-branch-out" pathLength="1" d={`M100 30 C155 30 150 ${task.y} 205 ${task.y} H570`} /><path class="talk-task-track talk-branch-return" pathLength="1" d={`M570 ${task.y} H${task.merge-115} C${task.merge-50} ${task.y} ${task.merge-55} 30 ${task.merge} 30`} /><circle cx="290" cy={task.y} r="5" /><text x="310" y={task.y - 8} data-i18n={task.key}>{text[task.key as keyof typeof text]}</text><text class="talk-check-mark" x="560" y={task.y-8}>✓</text><circle class="talk-merge-node" cx={task.merge} cy="30" r="5" /></g>)}
       <path class="talk-sync-track" data-story-unit="syncA" marker-end="url(#talk-story-sync-arrow)" d="M690 38 Q735 80 550 75" />
       <path class="talk-sync-track" data-story-unit="syncC" marker-end="url(#talk-story-sync-arrow)" d="M780 38 Q820 155 550 155" />
     </svg>
-    <div class="talk-branches-mobile"><span>main</span><ul>{['talkTaskA', 'talkTaskB', 'talkTaskC'].map((key,index) => <li data-story-unit={['branchA','branchB','branchC'][index]}><span data-i18n={key}>{text[key as keyof typeof text]}</span><span class="talk-check-mark" aria-hidden="true"> ✓</span></li>)}</ul><span>main</span></div>
-    <p class="talk-merge-note" data-i18n="talkCheckMerge">{text.talkCheckMerge}</p>
+    <div class="talk-branches-mobile"><span>main</span><ul>{['talkTaskA', 'talkTaskB', 'talkTaskC'].map((key,index) => <li data-story-unit={['branchA','branchB','branchC'][index]}><span data-i18n={key}>{text[key as keyof typeof text]}</span><span class="talk-check-mark" aria-hidden="true"> ✓</span><span class="talk-mobile-merge" aria-hidden="true">→</span>{index !== 1 && <span class="talk-mobile-sync" data-story-unit={index === 0 ? 'syncA' : 'syncC'} aria-hidden="true">←</span>}</li>)}</ul><span data-story-unit="merged-main">main</span></div>
+    <p class="talk-merge-note sr-only" data-i18n="talkCheckMerge">{text.talkCheckMerge}</p>
   </>}
   <div class="talk-story-controls" hidden>
-    <button type="button" data-story-next data-i18n="storyPlay">{text.storyPlay}</button>
-    <button type="button" data-story-overview data-i18n="storyOverview">{text.storyOverview}</button>
-    <span class="talk-story-count" data-story-count></span>
-    <p data-story-status role="status" aria-live="polite" aria-atomic="true"></p>
+    <button type="button" class="talk-player-button" data-story-toggle aria-label={text.storyPlay} data-i18n-aria="storyPlay" title={text.storyPlay} aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="talk-player-play" d="M7 4 L20 12 L7 20 Z"/><g class="talk-player-pause"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></g></svg></button>
+    <button type="button" class="talk-player-button" data-story-stop aria-label={text.storyStop} data-i18n-aria="storyStop" title={text.storyStop}><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14"/></svg></button>
+    <div class="talk-story-progress" data-story-progress role="progressbar" aria-label={text.storyProgress} data-i18n-aria="storyProgress" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0"><span></span></div>
+    <span class="talk-story-count sr-only" data-story-count></span>
+    <p class="sr-only" data-story-status role="status" aria-live="polite" aria-atomic="true"></p>
   </div>
 </figure>
