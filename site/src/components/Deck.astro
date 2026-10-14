@@ -11,9 +11,9 @@ const svg = await QRCode.toString(`${siteUrl}playbooks/`, { type: 'svg', errorCo
   <div class="slide-number">{String(index + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}</div>
   <div class="slide-content">
   {locales.map(locale => <div data-locale={locale} hidden={locale !== 'en-US'}><h1>{slide.title[locale]}</h1><ul>{slide.points[locale].map(point => <li>{point}</li>)}</ul></div>)}
-  <div class:list={["talk-evidence", {"talk-evidence-resources": index === slides.length - 1}]}>
+  <div class="talk-evidence">
     <TalkVisual id={slide.id} />
-    {index === slides.length - 1 && <div class="resources"><div class="qr" role="img" aria-label={catalog['en-US'].qr} data-i18n-aria="qr" set:html={svg}></div><a href="../../playbooks/index.html" data-i18n="resources">{catalog['en-US'].resources}</a></div>}
+    {index === slides.length - 1 && <details class="talk-image-disclosure talk-qr-disclosure"><summary data-i18n="imageDisclosure">{catalog['en-US'].imageDisclosure}</summary><div class="resources"><div class="qr" role="img" aria-label={catalog['en-US'].qr} data-i18n-aria="qr" set:html={svg}></div><a href="../../playbooks/index.html" data-i18n="resources">{catalog['en-US'].resources}</a></div></details>}
   </div>
   {slide.image && <details class="talk-image-disclosure"><summary data-i18n="imageDisclosure">{catalog['en-US'].imageDisclosure}</summary><figure class="talk-illustration">{locales.map(locale => <img data-locale={locale} hidden={locale !== "en-US"} src={"../../assets/talk/2026-10-18/" + slide.image!.src} alt={slide.image!.alt[locale]} />)}<figcaption><a href={"../../assets/talk/2026-10-18/" + slide.image.src} target="_blank" rel="noopener" data-i18n="imageFullSize">{catalog['en-US'].imageFullSize}</a><span data-i18n="imageCredit">{catalog["en-US"].imageCredit}</span><a href={slide.image.source} data-i18n="imageSource">{catalog["en-US"].imageSource}</a></figcaption></figure></details>}
   </div>

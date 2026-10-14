@@ -16,7 +16,7 @@ test('illustrations fold with native keyboard controls and expand to readable si
     const disclosure = page.locator('.slide:visible .talk-image-disclosure');
     await expect(disclosure).toHaveJSProperty('open', false);
     const summary = disclosure.locator('summary');
-    await expect(summary).toHaveText('故事配图');
+    await expect(summary).toHaveText('配图');
     await summary.focus();
     await page.keyboard.press('Space');
     await expect(disclosure).toHaveJSProperty('open', true);
@@ -60,7 +60,7 @@ test('four visual stories localize and fit a projector and narrow mobile screen'
 test('printing reveals both illustrations and restores their disclosure state', async ({ page }) => {
   await page.goto(talk);
   const disclosures = page.locator('.talk-image-disclosure');
-  await expect(disclosures).toHaveCount(2);
+  await expect(disclosures).toHaveCount(3);
   await page.locator('.slide:visible .talk-image-disclosure summary').click();
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
   for (const disclosure of await disclosures.all()) await expect(disclosure).toHaveJSProperty('open', true);

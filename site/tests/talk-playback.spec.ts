@@ -1,16 +1,18 @@
-import {test,expect} from '@playwright/test';
+import {test,expect,type Page} from '@playwright/test';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 const output=process.env.STANDARDS_SITE_OUTPUT_DIR;
 if(!output)throw Error('Built site required');
 const url=pathToFileURL(resolve(output,'talk/2026-10-18/index.html')).href;
+async function open(page:Page,target:string){await page.goto(target);await page.locator('[data-story-stop]').evaluateAll(buttons=>buttons.forEach(button=>button.dispatchEvent(new Event('click'))));}
+
 test.beforeEach(async({page})=>{
  await page.clock.install({time:new Date('2026-10-14T12:00:00Z')});
  await page.clock.pauseAt(new Date('2026-10-14T12:00:01Z'));
 });
 
 test('play automatically advances; pause freezes timing; resume continues and stop resets',async({page})=>{
- await page.goto(url);
+ await open(page,url);
  await page.selectOption('.locale','zh-CN');
  const story=page.locator('#questions [data-talk-story]');
  await expect(story.locator('[data-story-toggle]')).toHaveAccessibleName('播放');
@@ -39,8 +41,8 @@ test('play automatically advances; pause freezes timing; resume continues and st
  await expect(story).toHaveAttribute('data-story-step','0');
 });
 
-test('all stories end at the last phase and can restart; controls are visual icons',async({page})=>{
- await page.goto(url);
+test('all stories wrap continuously and retain icon controls',async({page})=>{
+ await open(page,url);
  for(const [id,last]of[['questions',5],['customers',4],['ownership',7],['workflows',7]]as const){
   await page.evaluate(id=>{location.hash=id;},id);
   const story=page.locator(`#${id} [data-talk-story]`);
@@ -49,9 +51,8 @@ test('all stories end at the last phase and can restart; controls are visual ico
   expect(await story.locator('[data-story-toggle]').innerText()).toBe('');
   await story.locator('[data-story-toggle]').click();
   await page.clock.runFor(last*4000);
-  await expect(story).toHaveAttribute('data-story-step',String(last));
-  await expect(story).toHaveAttribute('data-story-playback','ended');
-  await story.locator('[data-story-toggle]').click();
+  await expect(story).toHaveAttribute('data-story-step','1');
+  await expect(story).toHaveAttribute('data-story-playback','playing');
   await expect(story).toHaveAttribute('data-story-step','1');
   await story.locator('[data-story-stop]').click();
   expect(await story.locator('[data-story-status]').evaluate(el=>getComputedStyle(el).position)).toBe('absolute');
@@ -59,7 +60,7 @@ test('all stories end at the last phase and can restart; controls are visual ico
 });
 
 test('page navigation and hidden tabs pause playback; print restores a paused phase',async({page})=>{
- await page.goto(url);
+ await open(page,url);
  const first=page.locator('#questions [data-talk-story]');
  await first.locator('[data-story-toggle]').click();
  await page.locator('#next').click();
@@ -82,7 +83,7 @@ test('page navigation and hidden tabs pause playback; print restores a paused ph
 });
 
 test('mobile graphics distinguish checking, merging and synchronizing without captions',async({page})=>{
- await page.setViewportSize({width:390,height:844});await page.goto(url+'#workflows');
+ await page.setViewportSize({width:390,height:844});await open(page,url+'#workflows');
  const story=page.locator('#workflows [data-talk-story]');
  await story.locator('[data-story-toggle]').click();await page.clock.runFor(8000);
  const taskB=story.locator('.talk-branches-mobile [data-story-unit="branchB"]');

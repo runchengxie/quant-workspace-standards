@@ -1,17 +1,19 @@
-import {test, expect} from '@playwright/test';
+import {test, expect,type Page} from '@playwright/test';
 import {pathToFileURL} from 'node:url';
 import {resolve} from 'node:path';
 const output=process.env.STANDARDS_SITE_OUTPUT_DIR;
 if(!output) throw new Error('Built site required');
 const url=pathToFileURL(resolve(output,'talk/2026-10-18/index.html')).href;
+async function open(page:Page,target:string){await page.goto(target);await page.locator('[data-story-stop]').evaluateAll(buttons=>buttons.forEach(button=>button.dispatchEvent(new Event('click'))));}
+
 test.beforeEach(async({page})=>{
  await page.clock.install({time:new Date('2026-10-14T12:00:00Z')});
  await page.clock.pauseAt(new Date('2026-10-14T12:00:01Z'));
 });
 
-test('all four stories autoplay only after play, replay and preserve offline navigation', async({page})=>{
+test('all four stories loop after play and preserve offline navigation', async({page})=>{
  await page.route(/^https?:/, route=>route.abort());
- await page.goto(url);
+ await open(page,url);
  await page.selectOption('.locale','zh-CN');
  for(const [id,last] of [['questions',5],['customers',4],['ownership',7],['workflows',7]] as const){
   await page.evaluate(id=>{location.hash=id;},id);
@@ -24,8 +26,7 @@ test('all four stories autoplay only after play, replay and preserve offline nav
    await expect(story).toHaveAttribute('data-story-step',String(step));
   }
   await page.clock.runFor(4000);
-  await expect(story.locator('[data-story-toggle]')).toHaveAccessibleName('重播');
-  await story.locator('[data-story-toggle]').click();
+  await expect(story.locator('[data-story-toggle]')).toHaveAccessibleName('暂停');
   await expect(story).toHaveAttribute('data-story-step','1');
   await story.locator('[data-story-stop]').click();
   await expect(story).toHaveAttribute('data-story-step','0');
@@ -38,7 +39,7 @@ test('all four stories autoplay only after play, replay and preserve offline nav
 });
 
 test('pipeline failure stops downstream and branches merge after their checks',async({page})=>{
- await page.goto(url+'#ownership');
+ await open(page,url+'#ownership');
  const story=page.locator('#ownership [data-talk-story]');
  await story.locator('[data-story-toggle]').click();
  await page.clock.runFor(4000);
@@ -57,8 +58,9 @@ test('pipeline failure stops downstream and branches merge after their checks',a
 
 test('reduced-motion steps localize and printing restores the current phase',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
- await page.goto(url+'#customers');
+ await open(page,url+'#customers');
  const story=page.locator('#customers [data-talk-story]');
+ await expect(story).toHaveAttribute('data-story-step','0');
  await story.locator('[data-story-toggle]').click();
  await expect(story).toHaveAttribute('data-story-reduced-motion','true');
  await page.selectOption('.locale','zh-CN');
@@ -72,7 +74,7 @@ test('reduced-motion steps localize and printing restores the current phase',asy
 
 test('without JavaScript visual stories and original image disclosure remain usable',async({browser})=>{
  const context=await browser.newContext({javaScriptEnabled:false});
- const page=await context.newPage();await page.goto(url);
+ const page=await context.newPage();await open(page,url);
  await expect(page.locator('#questions .talk-paths')).toBeVisible();
  await expect(page.locator('#questions .talk-story-controls')).toBeHidden();
  await page.locator('#questions .talk-image-disclosure summary').click();
@@ -81,7 +83,7 @@ test('without JavaScript visual stories and original image disclosure remain usa
 });
 
 test('navigation cancels moving markers and every animated phase remains within the viewport',async({page})=>{
- await page.goto(url);
+ await open(page,url);
  await page.locator('#questions [data-story-toggle]').click();
  await expect(page.locator('#questions .talk-flow-packet')).toHaveCount(1);
  await page.locator('#next').click();
@@ -109,7 +111,7 @@ test('navigation cancels moving markers and every animated phase remains within 
 
 test('background story labels retain readable contrast in both themes',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
- await page.goto(url);
+ await open(page,url);
  await page.locator('#questions [data-story-toggle]').click();
  for(const theme of ['light','dark']){
   await page.selectOption('.theme',theme);
@@ -127,3 +129,5 @@ test('background story labels retain readable contrast in both themes',async({pa
   expect(contrast).toBeGreaterThanOrEqual(4.5);
  }
 });
+
+
