@@ -129,5 +129,3 @@ test('background story labels retain readable contrast in both themes',async({pa
   expect(contrast).toBeGreaterThanOrEqual(4.5);
  }
 });
-
-
