@@ -121,6 +121,18 @@ document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) =>
 );
 const slides = [...document.querySelectorAll<HTMLElement>(".slide")];
 if (slides.length) {
+  const illustrations = [...document.querySelectorAll<HTMLDetailsElement>('.talk-image-disclosure')];
+  let beforePrint: boolean[] | undefined;
+  window.addEventListener('beforeprint', () => {
+    if (beforePrint) return;
+    beforePrint = illustrations.map(item => item.open);
+    illustrations.forEach(item => { item.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    if (!beforePrint) return;
+    illustrations.forEach((item, i) => { item.open = beforePrint![i] ?? false; });
+    beforePrint = undefined;
+  });
   let current = 0;
   const previous = document.querySelector<HTMLButtonElement>("#previous");
   const next = document.querySelector<HTMLButtonElement>("#next");
@@ -171,7 +183,7 @@ if (slides.length) {
   document.addEventListener("keydown", (e) => {
     if (
       (e.target instanceof Element &&
-        e.target.closest("select,button,input,textarea,a")) ||
+        e.target.closest("select,button,input,textarea,a,summary")) ||
       e.altKey ||
       e.ctrlKey ||
       e.metaKey
