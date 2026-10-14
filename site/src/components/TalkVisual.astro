@@ -1,4 +1,5 @@
 ---
+import TalkSymbol from './TalkSymbol.astro';
 import catalog from '../../locales.json';
 interface Props { id: string }
 const { id } = Astro.props;
@@ -8,25 +9,25 @@ const text = catalog['en-US'];
   {id === 'questions' && <>
     <figcaption class="sr-only" data-i18n="talkQuestionsVisual">{text.talkQuestionsVisual}</figcaption>
     <div class="talk-paths">
-      <div class="talk-path" data-story-unit="loop"><strong data-i18n="talkRepeat">{text.talkRepeat}</strong><ol>{['talkPoorResult', 'talkTune', 'talkNoProgress'].map((key,index) => <li data-story-unit={['loop-fail','loop-tune','loop-stuck'][index]} data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ol><span class="talk-loop-return" aria-hidden="true">↶</span></div>
-      <div class="talk-path talk-path-emphasis" data-story-unit="check"><strong data-i18n="talkCheckFirst">{text.talkCheckFirst}</strong><ol>{['talkQuestionDirection', 'talkMismatch', 'talkDecideNext'].map((key,index) => <li data-story-unit={['question','mismatch','decide'][index]} data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ol></div>
+      <div class="talk-path" data-story-unit="loop"><TalkSymbol name="loop"/><strong class="sr-only" data-i18n="talkRepeat">{text.talkRepeat}</strong><ol>{['talkPoorResult', 'talkTune', 'talkNoProgress'].map((key,index) => <li data-story-unit={['loop-fail','loop-tune','loop-stuck'][index]} ><TalkSymbol name={['bad','tune','blocked'][index]!}/><span class="sr-only" data-i18n={key}>{text[key as keyof typeof text]}</span></li>)}</ol><span class="talk-loop-return" aria-hidden="true">↶</span></div>
+      <div class="talk-path talk-path-emphasis" data-story-unit="check"><TalkSymbol name="search"/><strong class="sr-only" data-i18n="talkCheckFirst">{text.talkCheckFirst}</strong><ol>{['talkQuestionDirection', 'talkMismatch', 'talkDecideNext'].map((key,index) => <li data-story-unit={['question','mismatch','decide'][index]} ><TalkSymbol name={['search','mismatch','choose'][index]!}/><span class="sr-only" data-i18n={key}>{text[key as keyof typeof text]}</span></li>)}</ol></div>
     </div>
   </>}
   {id === 'customers' && <>
     <figcaption class="sr-only" data-i18n="talkCustomersVisual">{text.talkCustomersVisual}</figcaption>
     <div class="talk-product-comparison">
-      <div class="talk-product"><p class="talk-label" data-i18n="talkBefore">{text.talkBefore}</p><div class="talk-paper talk-paper-long" data-story-unit="information"><strong data-i18n="talkInformation">{text.talkInformation}</strong><div class="talk-paper-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div><p data-story-unit="customer-work" data-i18n="talkCustomerWork">{text.talkCustomerWork}</p></div>
-      <div class="talk-product"><p class="talk-label" data-i18n="talkAfter">{text.talkAfter}</p><div class="talk-paper talk-paper-short" data-story-unit="stock-list"><strong data-i18n="talkStockList">{text.talkStockList}</strong><div class="talk-paper-lines" aria-hidden="true"><i></i><i></i></div></div><p data-story-unit="our-work" data-i18n="talkOurWork">{text.talkOurWork}</p></div>
+      <div class="talk-product"><p class="talk-label sr-only" data-i18n="talkBefore">{text.talkBefore}</p><div class="talk-paper talk-paper-long" data-story-unit="information"><strong class="sr-only" data-i18n="talkInformation">{text.talkInformation}</strong><div class="talk-paper-lines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div><div class="talk-work-symbol" data-story-unit="customer-work"><TalkSymbol name="person"/><TalkSymbol name="gear"/><span class="sr-only" data-i18n="talkCustomerWork">{text.talkCustomerWork}</span></div></div>
+      <div class="talk-product"><p class="talk-label sr-only" data-i18n="talkAfter">{text.talkAfter}</p><div class="talk-paper talk-paper-short" data-story-unit="stock-list"><strong class="sr-only" data-i18n="talkStockList">{text.talkStockList}</strong><div class="talk-paper-lines" aria-hidden="true"><i></i><i></i></div></div><div class="talk-work-symbol" data-story-unit="our-work"><TalkSymbol name="gear"/><span aria-hidden="true">→</span><TalkSymbol name="person"/><span class="sr-only" data-i18n="talkOurWork">{text.talkOurWork}</span></div></div>
     </div>
   </>}
   {id === 'ownership' && <>
     <figcaption class="sr-only" data-i18n="talkOwnershipVisual">{text.talkOwnershipVisual}</figcaption>
-    <ol class="talk-pipeline">{['talkDownload', 'talkClean', 'talkModel', 'talkSend'].map((key,index) => <li data-story-unit={['download','clean','model','send'][index]} data-i18n={key}>{text[key as keyof typeof text]}</li>)}</ol>
+    <ol class="talk-pipeline">{['talkDownload', 'talkClean', 'talkModel', 'talkSend'].map((key,index) => <li data-story-unit={['download','clean','model','send'][index]} ><TalkSymbol name={['download','shield','model','send'][index]!}/><span class="sr-only" data-i18n={key}>{text[key as keyof typeof text]}</span></li>)}</ol>
     <div class="talk-timeline">
-      <div data-story-unit="early"><strong>07:00</strong><span data-i18n="talkEarlierSend">{text.talkEarlierSend}</span></div>
-      <p class="talk-recovery" data-story-unit="recovery" data-i18n="talkRecovery">{text.talkRecovery}</p>
-      <div data-story-unit="original"><strong>09:00</strong><span data-i18n="talkOriginalSend">{text.talkOriginalSend}</span></div>
-      <div data-story-unit="market"><strong>09:30</strong><span data-i18n="talkMarketOpen">{text.talkMarketOpen}</span></div>
+      <div data-story-unit="early"><TalkSymbol name="early"/><strong class="sr-only">07:00</strong><span class="sr-only" data-i18n="talkEarlierSend">{text.talkEarlierSend}</span></div>
+      <div class="talk-recovery" data-story-unit="recovery"><TalkSymbol name="recovery"/><span class="sr-only" data-i18n="talkRecovery">{text.talkRecovery}</span></div>
+      <div data-story-unit="original"><TalkSymbol name="original"/><strong class="sr-only">09:00</strong><span class="sr-only" data-i18n="talkOriginalSend">{text.talkOriginalSend}</span></div>
+      <div data-story-unit="market"><TalkSymbol name="market"/><strong class="sr-only">09:30</strong><span class="sr-only" data-i18n="talkMarketOpen">{text.talkMarketOpen}</span></div>
     </div>
   </>}
   {id === 'workflows' && <>
@@ -34,12 +35,12 @@ const text = catalog['en-US'];
     <svg class="talk-branches" viewBox="0 0 900 180" role="img" aria-label={text.talkWorkflowVisual} data-i18n-aria="talkWorkflowVisual">
       <defs><marker id="talk-story-sync-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path class="talk-sync-arrow" d="M0 0 L7 3.5 L0 7 Z" /></marker></defs>
       <path class="talk-main-track" d="M20 30 H880" />
-      <text x="20" y="20">main</text><text x="824" y="20" data-story-unit="merged-main">main</text>
-      {[{key:'talkTaskA', unit:'branchA', y:75, merge:780}, {key:'talkTaskB', unit:'branchB', y:115, merge:690}, {key:'talkTaskC', unit:'branchC', y:155, merge:850}].map(task => <g data-story-unit={task.unit}><path class="talk-task-track talk-branch-out" pathLength="1" d={`M100 30 C155 30 150 ${task.y} 205 ${task.y} H570`} /><path class="talk-task-track talk-branch-return" pathLength="1" d={`M570 ${task.y} H${task.merge-115} C${task.merge-50} ${task.y} ${task.merge-55} 30 ${task.merge} 30`} /><circle cx="290" cy={task.y} r="5" /><text x="310" y={task.y - 8} data-i18n={task.key}>{text[task.key as keyof typeof text]}</text><text class="talk-check-mark" x="560" y={task.y-8}>✓</text><circle class="talk-merge-node" cx={task.merge} cy="30" r="5" /></g>)}
+      <path class="talk-hub" d="M20 7h20v20H20z M25 12h10v10H25z"/><path class="talk-hub" data-story-unit="merged-main" d="M850 7h20v20h-20z M855 12h10v10h-10z"/>
+      {[{key:'talkTaskA', unit:'branchA', y:75, merge:780}, {key:'talkTaskB', unit:'branchB', y:115, merge:690}, {key:'talkTaskC', unit:'branchC', y:155, merge:850}].map(task => <g data-story-unit={task.unit}><path class="talk-task-track talk-branch-out" pathLength="1" d={`M100 30 C155 30 150 ${task.y} 205 ${task.y} H570`} /><path class="talk-task-track talk-branch-return" pathLength="1" d={`M570 ${task.y} H${task.merge-115} C${task.merge-50} ${task.y} ${task.merge-55} 30 ${task.merge} 30`} /><circle cx="290" cy={task.y} r="5" /><path class="talk-task-shape" transform={`translate(310 ${task.y - 26})`} d={task.unit === 'branchA' ? 'M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0' : task.unit === 'branchB' ? 'M10 0l10 10-10 10L0 10z' : 'M0 0h20v20H0z'}/><path class="talk-check-mark" d={`M555 ${task.y-16}l6 6 12-14`}/><circle class="talk-merge-node" cx={task.merge} cy="30" r="5" /></g>)}
       <path class="talk-sync-track" data-story-unit="syncA" marker-end="url(#talk-story-sync-arrow)" d="M690 38 Q735 80 550 75" />
       <path class="talk-sync-track" data-story-unit="syncC" marker-end="url(#talk-story-sync-arrow)" d="M780 38 Q820 155 550 155" />
     </svg>
-    <div class="talk-branches-mobile"><span>main</span><ul>{['talkTaskA', 'talkTaskB', 'talkTaskC'].map((key,index) => <li data-story-unit={['branchA','branchB','branchC'][index]}><span data-i18n={key}>{text[key as keyof typeof text]}</span><span class="talk-check-mark" aria-hidden="true"> ✓</span><span class="talk-mobile-merge" aria-hidden="true">→</span>{index !== 1 && <span class="talk-mobile-sync" data-story-unit={index === 0 ? 'syncA' : 'syncC'} aria-hidden="true">←</span>}</li>)}</ul><span data-story-unit="merged-main">main</span></div>
+    <div class="talk-branches-mobile"><TalkSymbol name="hub"/><ul>{['talkTaskA', 'talkTaskB', 'talkTaskC'].map((key,index) => <li data-story-unit={['branchA','branchB','branchC'][index]}><TalkSymbol name={['circle','diamond','square'][index]!}/><span class="sr-only" data-i18n={key}>{text[key as keyof typeof text]}</span><span class="talk-check-mark" aria-hidden="true"> ✓</span><span class="talk-mobile-merge" aria-hidden="true">→</span>{index !== 1 && <span class="talk-mobile-sync" data-story-unit={index === 0 ? 'syncA' : 'syncC'} aria-hidden="true">←</span>}</li>)}</ul><span data-story-unit="merged-main"><TalkSymbol name="hub"/></span></div>
     <p class="talk-merge-note sr-only" data-i18n="talkCheckMerge">{text.talkCheckMerge}</p>
   </>}
   <div class="talk-story-controls" hidden>

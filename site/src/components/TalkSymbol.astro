@@ -1,0 +1,28 @@
+---
+interface Props { name: string }
+const {name} = Astro.props;
+const paths: Record<string,string> = {
+ loop:'M25 12A12 12 0 1 0 26 22 M25 5v8h-8',
+ search:'M22 22l7 7 M25 14a11 11 0 1 1-22 0 11 11 0 0 1 22 0',
+ bad:'M5 27V5 M5 27h23 M9 10l7 7 6-3 6 8',
+ tune:'M8 4v24 M16 4v24 M24 4v24 M4 10h8 M12 22h8 M20 13h8',
+ blocked:'M6 6l20 20 M26 6L6 26',
+ mismatch:'M3 8h10v16H3z M19 4h10v24H19z M14 16h4',
+ choose:'M4 16h11 M15 16l10-10 M15 16l10 10 M20 6h5v5 M20 26h5v-5',
+ person:'M21 8a5 5 0 1 1-10 0 5 5 0 0 1 10 0 M6 28v-5a10 10 0 0 1 20 0v5',
+ gear:'M16 4v4 M16 24v4 M4 16h4 M24 16h4 M7 7l3 3 M22 22l3 3 M7 25l3-3 M22 10l3-3 M23 16a7 7 0 1 1-14 0 7 7 0 0 1 14 0',
+ download:'M16 3v17 M10 14l6 6 6-6 M5 22v7h22v-7',
+ shield:'M16 3l12 5v8c0 7-12 13-12 13S4 23 4 16V8z M10 16l4 4 8-9',
+ model:'M4 24l9-17 15 17z M4 24h24 M13 7l3 17 M4 24l17-12',
+ send:'M3 14L29 3 18 29l-5-11z M13 18L29 3',
+ early:'M29 16a13 13 0 1 1-26 0 13 13 0 0 1 26 0 M16 7v9l-6 8',
+ original:'M29 16a13 13 0 1 1-26 0 13 13 0 0 1 26 0 M16 7v9H6',
+ market:'M29 16a13 13 0 1 1-26 0 13 13 0 0 1 26 0 M16 26V16H6',
+ recovery:'M4 16h24 M4 11v10 M28 11v10 M8 7l-4 4 M24 7l4 4',
+ hub:'M7 7h18v18H7z M12 12h8v8h-8z',
+ circle:'M25 16a9 9 0 1 1-18 0 9 9 0 0 1 18 0',
+ diamond:'M16 4l12 12-12 12L4 16z',
+ square:'M6 6h20v20H6z',
+};
+---
+<svg class="talk-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d={paths[name] ?? paths.hub}/></svg>

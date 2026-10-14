@@ -526,3 +526,45 @@ h1, h2, h3 { font-family: var(--display); }
   .story-merged .talk-mobile-merge, .talk-mobile-sync.story-focus { opacity: 1; }
   .talk-visual-customers[data-story-step="3"] .talk-product-comparison::after, .talk-visual-customers[data-story-step="4"] .talk-product-comparison::after { content: '↓'; left: auto; right: 4px; top: 48%; }
 }
+/* Wordless visual vocabulary, with localized descriptions for assistive readers. */
+.talk-symbol { display: inline-block; width: 48px; height: 48px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+.talk-symbol path { fill: none; stroke: currentColor; }
+.talk-path > .talk-symbol { width: 32px; height: 32px; margin-bottom: 14px; }
+.talk-path ol li, .talk-pipeline li { text-align: center; }
+.talk-path ol li:not(:last-child)::after, .talk-pipeline li:not(:last-child)::after { top: 16px; }
+.talk-path ol .story-error::before, .talk-pipeline .story-error::before { position: absolute; left: 0; top: 0; }
+.talk-path ol .story-focus .talk-symbol, .talk-path ol .story-done .talk-symbol { outline: 2px solid currentColor; outline-offset: 6px; border-radius: 8px; }
+.talk-paper { width: min(100%, 260px); min-height: 110px; border: 2px solid var(--line); border-radius: 3px; padding: 16px; }
+.talk-paper-long { min-height: 145px; }
+.talk-paper-short { border-color: var(--brand); }
+.talk-paper-short .talk-paper-lines i::before { content: '✓'; color: var(--brand); position: absolute; left: -20px; top: -12px; font-size: 22px; }
+.talk-paper-short .talk-paper-lines { padding-left: 20px; gap: 24px; }
+.talk-paper-lines i { position: relative; }
+.talk-work-symbol { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.talk-work-symbol .talk-symbol { width: 32px; height: 32px; }
+.talk-timeline { grid-template-columns: 64px minmax(0, 1fr) 64px 64px; align-items: center; }
+.talk-timeline .talk-symbol { width: 48px; height: 48px; }
+.talk-recovery { padding: 0; border: 0; width: 100%; margin: 0; }
+.talk-recovery .talk-symbol { width: 100%; height: 36px; }
+.talk-timeline .sr-only { display: block; }
+.talk-clock-packet { width: 36px; height: 36px; padding: 0; border: 0; background: var(--paper); box-shadow: none; }
+.talk-clock-packet .talk-symbol { width: 36px; height: 36px; }
+.talk-branches .talk-task-shape, .talk-branches .talk-hub, .talk-branches .talk-check-mark { fill: none; stroke: var(--ink); stroke-width: 2; }
+.talk-branches .story-focus.talk-hub { stroke: var(--brand); stroke-width: 3; }
+.talk-branches .story-done .talk-check-mark { fill: none; stroke: var(--brand); }
+.talk-qr-disclosure .resources { justify-content: flex-start; margin-top: 12px; }
+@media (max-width: 700px) {
+ .talk-symbol { width: 38px; height: 38px; }
+ .talk-product-comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+ .talk-paper { padding: 12px; min-height: 104px; }
+ .talk-paper-long { min-height: 135px; }
+ .talk-timeline { grid-template-columns: 42px minmax(0, 1fr) 42px 42px; gap: 8px; }
+ .talk-timeline .talk-symbol { width: 36px; height: 36px; }
+ .talk-recovery { grid-column: auto; }
+ .talk-branches-mobile > .talk-symbol, .talk-branches-mobile > span > .talk-symbol { width: 26px; height: 26px; }
+ .talk-branches-mobile li .talk-symbol { width: 30px; height: 30px; }
+ .talk-mobile-merge { top: 4px; }
+ .talk-mobile-sync { top: -14px; }
+ .talk-visual-customers[data-story-step="3"] .talk-product-comparison::after, .talk-visual-customers[data-story-step="4"] .talk-product-comparison::after { content: '→'; right: auto; left: calc(50% - 8px); top: 40%; }
+}
+.talk-story-enabled .talk-branches { max-height: 136px; }
