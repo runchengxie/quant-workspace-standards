@@ -453,3 +453,49 @@ h1, h2, h3 { font-family: var(--display); }
   .talk-image-disclosure::details-content { display: block; content-visibility: visible; }
   .talk-image-disclosure img { max-height: 65vh; width: auto; max-width: 100%; object-fit: contain; }
 }
+
+/* Motion follows a click; the unenhanced page remains a complete static view. */
+.talk-visual { position: relative; }
+.talk-story-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
+.talk-story-controls button { padding: 4px 10px; font-size: .85rem; }
+.talk-story-count { color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; }
+.talk-story-controls [data-story-status] { flex: 1 1 290px; margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.4; }
+.talk-story-enabled[data-story-motion="true"] [data-story-unit] { transition: opacity .35s ease, color .35s ease, background-color .35s ease; }
+.story-muted { color: var(--muted); font-weight: 400; }
+.story-muted strong { color: var(--muted); }
+.talk-paper.story-muted { border-color: var(--line); background: none; }
+.talk-story-enabled .talk-branches { max-height: 160px; }
+.story-focus { color: var(--brand); font-weight: 600; }
+.talk-paper.story-focus { background: var(--soft); }
+.story-error { color: #b02f38; font-weight: 650; }
+:root[data-theme="dark"] .story-error { color: #ff9ca3; }
+.talk-pipeline .story-error::before { content: '!'; display: inline-block; margin-right: 8px; font-weight: 750; }
+.story-done { color: var(--brand); }
+.talk-flow-packet { position: absolute; z-index: 2; left: 0; top: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 4px var(--soft); pointer-events: none; }
+.talk-loop-return { display: none; color: var(--brand); position: absolute; right: 0; bottom: -16px; font-size: 1.5rem; }
+.talk-path { position: relative; }
+.talk-visual-questions[data-story-step="1"] .talk-loop-return, .talk-visual-questions[data-story-step="2"] .talk-loop-return { display: block; }
+.talk-visual-customers[data-story-step="3"] .talk-paper-long, .talk-visual-customers[data-story-step="4"] .talk-paper-long { transform: scale(.92); transform-origin: left top; }
+.talk-check-mark, .talk-merge-node, .talk-sync-track { opacity: 0; }
+.story-done .talk-check-mark, .story-merged .talk-merge-node { opacity: 1; }
+.talk-sync-track { fill: none; stroke: var(--brand); stroke-width: 2; stroke-dasharray: 5 4; }
+.talk-branches .talk-sync-arrow { fill: var(--brand); stroke: none; }
+.talk-sync-track.story-focus { opacity: 1; }
+.talk-branch-out, .talk-branch-return { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.talk-story-enabled:not([data-story-step="0"]) .talk-branch-return { stroke-dashoffset: 1; }
+.talk-story-enabled .story-merged .talk-branch-return { stroke-dashoffset: 0; }
+.talk-story-enabled[data-story-motion="true"] .talk-branch-return { transition: stroke-dashoffset .9s ease; }
+.talk-branches .story-focus circle { stroke: var(--brand); stroke-width: 3; }
+.talk-branches .story-done .talk-check-mark { fill: var(--brand); }
+.talk-recovery { transform-origin: left center; }
+@media (max-width: 700px) {
+  .talk-story-controls [data-story-status] { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .talk-story-enabled [data-story-unit], .talk-story-enabled .talk-branch-return { transition: none !important; }
+}
+@media print {
+  .talk-story-controls, .talk-flow-packet, .talk-loop-return { display: none !important; }
+  .talk-visual [data-story-unit] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .talk-visual .talk-branch-return { stroke-dashoffset: 0 !important; }
+}

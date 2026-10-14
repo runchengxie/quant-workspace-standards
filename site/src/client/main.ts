@@ -1,4 +1,5 @@
 import { initStandards } from './standards-ui';
+import { initTalkStories } from './talk-stories';
 import {
   normalizeLocale,
   normalizeTheme,
@@ -85,6 +86,7 @@ media.addEventListener("change", () => {
 });
 applyTheme();
 initStandards(message);
+initTalkStories(message);
 const stages = [...document.querySelectorAll<HTMLElement>("[data-stage]")];
 const phaseButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-phase]")];
 function selectPhase(name: string): void {
@@ -155,6 +157,7 @@ if (slides.length) {
     const notes = document.getElementById("notes-text");
     if (notes) notes.textContent = slide.dataset["notes"] ?? "";
     if (updateHash) history.replaceState(null, "", `#${slide.id}`);
+    window.dispatchEvent(new Event('talkslidechange'));
   }
   function fromHash(): void {
     const index = slides.findIndex((slide) => `#${slide.id}` === location.hash);
