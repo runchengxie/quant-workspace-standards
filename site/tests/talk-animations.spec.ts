@@ -4,8 +4,12 @@ import {resolve} from 'node:path';
 const output=process.env.STANDARDS_SITE_OUTPUT_DIR;
 if(!output) throw new Error('Built site required');
 const url=pathToFileURL(resolve(output,'talk/2026-10-18/index.html')).href;
+test.beforeEach(async({page})=>{
+ await page.clock.install({time:new Date('2026-10-14T12:00:00Z')});
+ await page.clock.pauseAt(new Date('2026-10-14T12:00:01Z'));
+});
 
-test('all four stories advance only on request, replay and preserve offline navigation', async({page})=>{
+test('all four stories autoplay only after play, replay and preserve offline navigation', async({page})=>{
  await page.route(/^https?:/, route=>route.abort());
  await page.goto(url);
  await page.selectOption('.locale','zh-CN');
@@ -13,15 +17,17 @@ test('all four stories advance only on request, replay and preserve offline navi
   await page.evaluate(id=>{location.hash=id;},id);
   const story=page.locator(`#${id} [data-talk-story]`);
   await expect(story).toHaveAttribute('data-story-step','0');
-  await expect(story.locator('[data-story-next]')).toHaveText('演示');
+  await expect(story.locator('[data-story-toggle]')).toHaveAccessibleName('播放');
+  await story.locator('[data-story-toggle]').click();
   for(let step=1;step<=last;step++){
-   await story.locator('[data-story-next]').click();
+   if(step>1)await page.clock.runFor(4000);
    await expect(story).toHaveAttribute('data-story-step',String(step));
   }
-  await expect(story.locator('[data-story-next]')).toHaveText('重播');
-  await story.locator('[data-story-next]').click();
+  await page.clock.runFor(4000);
+  await expect(story.locator('[data-story-toggle]')).toHaveAccessibleName('重播');
+  await story.locator('[data-story-toggle]').click();
   await expect(story).toHaveAttribute('data-story-step','1');
-  await story.locator('[data-story-overview]').click();
+  await story.locator('[data-story-stop]').click();
   await expect(story).toHaveAttribute('data-story-step','0');
  }
  await page.waitForTimeout(1500);
@@ -34,17 +40,18 @@ test('all four stories advance only on request, replay and preserve offline navi
 test('pipeline failure stops downstream and branches merge after their checks',async({page})=>{
  await page.goto(url+'#ownership');
  const story=page.locator('#ownership [data-talk-story]');
- await story.locator('[data-story-next]').click();
- await story.locator('[data-story-next]').click();
+ await story.locator('[data-story-toggle]').click();
+ await page.clock.runFor(4000);
  await expect(story.locator('[data-story-unit="clean"]')).toHaveClass(/story-error/);
  await expect(story.locator('[data-story-unit="send"]')).toHaveClass(/story-muted/);
  await expect(story.locator('[data-story-status]')).toContainText('stops');
  await page.evaluate(()=>{location.hash='workflows';});
  const branches=page.locator('#workflows [data-talk-story]');
- for(let i=0;i<4;i++) await branches.locator('[data-story-next]').click();
+ await branches.locator('[data-story-toggle]').click();
+ await page.clock.runFor(12000);
  await expect(branches.locator('g[data-story-unit="branchB"]')).toHaveClass(/story-merged/);
  await expect(branches.locator('g[data-story-unit="branchA"]')).not.toHaveClass(/story-merged/);
- await branches.locator('[data-story-next]').click();
+ await page.clock.runFor(4000);
  await expect(branches.locator('[data-story-status]')).toContainText('sync');
 });
 
@@ -52,7 +59,7 @@ test('reduced-motion steps localize and printing restores the current phase',asy
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto(url+'#customers');
  const story=page.locator('#customers [data-talk-story]');
- await story.locator('[data-story-next]').click();
+ await story.locator('[data-story-toggle]').click();
  await expect(story).toHaveAttribute('data-story-reduced-motion','true');
  await page.selectOption('.locale','zh-CN');
  await expect(story.locator('[data-story-status]')).toContainText('企业信息');
@@ -75,7 +82,7 @@ test('without JavaScript visual stories and original image disclosure remain usa
 
 test('navigation cancels moving markers and every animated phase remains within the viewport',async({page})=>{
  await page.goto(url);
- await page.locator('#questions [data-story-next]').click();
+ await page.locator('#questions [data-story-toggle]').click();
  await expect(page.locator('#questions .talk-flow-packet')).toHaveCount(1);
  await page.locator('#next').click();
  await expect(page.locator('#questions .talk-flow-packet')).toHaveCount(0);
@@ -87,9 +94,10 @@ test('navigation cancels moving markers and every animated phase remains within 
    for(const [id,last] of [['questions',5],['customers',4],['ownership',7],['workflows',7]] as const){
     await page.evaluate(id=>{location.hash=id;},id);
     const story=page.locator(`#${id} [data-talk-story]`);
-    await story.locator('[data-story-overview]').evaluate((el:HTMLButtonElement)=>el.click());
+    await story.locator('[data-story-stop]').evaluate((el:HTMLButtonElement)=>el.click());
+    await story.locator('[data-story-toggle]').click();
     for(let step=1;step<=last;step++){
-     await story.locator('[data-story-next]').click();
+     if(step>1)await page.clock.runFor(4000);
      await page.evaluate(()=>window.scrollTo(0,0));
      expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
      if(width===1280)expect(await page.locator('.deck-controls').evaluate(el=>el.getBoundingClientRect().bottom),`${id}/${locale}/phase ${step}`).toBeLessThanOrEqual(720);
@@ -102,7 +110,7 @@ test('navigation cancels moving markers and every animated phase remains within 
 test('background story labels retain readable contrast in both themes',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto(url);
- await page.locator('#questions [data-story-next]').click();
+ await page.locator('#questions [data-story-toggle]').click();
  for(const theme of ['light','dark']){
   await page.selectOption('.theme',theme);
   const contrast=await page.locator('#questions .talk-path-emphasis li').first().evaluate(el=>{
