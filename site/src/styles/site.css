@@ -499,3 +499,30 @@ h1, h2, h3 { font-family: var(--display); }
   .talk-visual [data-story-unit] { opacity: 1 !important; transform: none !important; transition: none !important; }
   .talk-visual .talk-branch-return { stroke-dashoffset: 0 !important; }
 }
+
+/* Familiar player controls; explanation stays in the graphic, not a caption. */
+.talk-story-controls .talk-player-button { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; padding: 9px; border-radius: 50%; }
+.talk-player-button svg { width: 22px; height: 22px; fill: currentColor; }
+.talk-player-pause { display: none; }
+[data-story-playback="playing"] .talk-player-play { display: none; }
+[data-story-playback="playing"] .talk-player-pause { display: block; }
+.talk-story-progress { width: min(260px, 45%); height: 3px; background: var(--line); overflow: hidden; }
+.talk-story-progress > span { display: block; width: 0; height: 100%; background: var(--brand); }
+.talk-visual-questions .story-error::before { content: '! '; }
+.talk-visual-questions .story-focus, .talk-visual-questions .story-done { text-decoration: underline; text-decoration-color: var(--brand); text-underline-offset: 6px; }
+.talk-product-comparison { position: relative; }
+.talk-visual-customers[data-story-step="3"] .talk-product-comparison::after, .talk-visual-customers[data-story-step="4"] .talk-product-comparison::after { content: '→'; position: absolute; top: 48%; left: calc(50% - 8px); color: var(--brand); font-size: 1.5em; }
+.talk-pipeline li.story-error::after { content: '×'; color: #b02f38; font-weight: 700; }
+@media (max-width: 700px) {
+  .talk-pipeline li:nth-child(2).story-error::after { position: static; margin-left: 6px; }
+}
+.talk-clock-packet { width: 72px; height: auto; padding: 2px 4px; border-radius: 3px; font-size: 1rem; font-weight: 650; text-align: center; background: var(--paper); color: var(--brand); box-shadow: 0 0 0 1px var(--brand); }
+.talk-branches .story-focus { fill: var(--brand); }
+.talk-mobile-merge, .talk-mobile-sync { opacity: 0; color: var(--brand); }
+@media (max-width: 700px) {
+  .talk-branches-mobile li { position: relative; }
+  .talk-mobile-merge { position: absolute; right: -24px; top: 0; }
+  .talk-mobile-sync { position: absolute; right: -24px; top: -18px; }
+  .story-merged .talk-mobile-merge, .talk-mobile-sync.story-focus { opacity: 1; }
+  .talk-visual-customers[data-story-step="3"] .talk-product-comparison::after, .talk-visual-customers[data-story-step="4"] .talk-product-comparison::after { content: '↓'; left: auto; right: 4px; top: 48%; }
+}

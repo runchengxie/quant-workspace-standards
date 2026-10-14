@@ -134,11 +134,9 @@
     "imageSource": "Original source",
     "imageDisclosure": "Story illustration",
     "imageFullSize": "View original size",
-    "storyPlay": "Demonstrate",
-    "storyNext": "Next step",
+    "storyPlay": "Play",
     "storyReplay": "Replay",
-    "storyOverview": "Overview",
-    "storyOverviewHint": "Click Demonstrate to follow the story.",
+    "storyOverviewHint": "Press Play to start the visual story.",
     "storyQuestions1": "Poor results lead to another round of parameter tuning.",
     "storyQuestions2": "The result still disappoints, so the same loop starts again.",
     "storyQuestions3": "Pause the loop and question whether the method fits.",
@@ -161,7 +159,10 @@
     "storyWorkflows4": "Merge B first; main now includes its changes.",
     "storyWorkflows5": "A must sync with current main and validate again before merging.",
     "storyWorkflows6": "A passes the checks and merges into the updated main.",
-    "storyWorkflows7": "C also syncs and passes its checks before merging."
+    "storyWorkflows7": "C also syncs and passes its checks before merging.",
+    "storyPause": "Pause",
+    "storyStop": "Stop",
+    "storyProgress": "Story playback progress"
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
@@ -298,11 +299,9 @@
     "imageSource": "原图来源",
     "imageDisclosure": "故事配图",
     "imageFullSize": "查看原尺寸",
-    "storyPlay": "演示",
-    "storyNext": "下一步",
+    "storyPlay": "播放",
     "storyReplay": "重播",
-    "storyOverview": "概览",
-    "storyOverviewHint": "点击“演示”，跟着故事逐步看。",
+    "storyOverviewHint": "点击播放，开始演示。",
     "storyQuestions1": "效果不好，先让模型再调一轮参数。",
     "storyQuestions2": "结果仍不满意，又回到同一个调参循环。",
     "storyQuestions3": "先停下循环，检查方法是否合适。",
@@ -325,6 +324,9 @@
     "storyWorkflows4": "B 先合入，main 现在包含了它的改动。",
     "storyWorkflows5": "A 先同步当前 main，再针对更新后的主线验证。",
     "storyWorkflows6": "A 通过检查，合入更新后的 main。",
-    "storyWorkflows7": "C 同样同步主线，通过检查后合入。"
+    "storyWorkflows7": "C 同样同步主线，通过检查后合入。",
+    "storyPause": "暂停",
+    "storyStop": "停止",
+    "storyProgress": "演示播放进度"
   }
 }
