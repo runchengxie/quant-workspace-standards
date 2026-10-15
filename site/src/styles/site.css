@@ -445,3 +445,11 @@ h1, h2, h3 { font-family: var(--display); }
  .talk-story-controls { display:none !important; }.talk-image-disclosure::details-content { display:block;content-visibility:visible; }.talk-image-disclosure img { max-height:65vh;width:auto;max-width:100%;object-fit:contain; }
  .quiet-scene{height:260px}.deck .slide{min-height:85vh}.talk-visual [data-quiet-motion]{opacity:1!important;transform:none!important}.talk-visual .quiet-delivery{left:8%!important;transform:translate(-50%,-50%)!important}
 }
+
+/* Subtle instrument-like details, without extra moving decoration. */
+.quiet-directions svg { stroke-linecap:round; stroke-linejoin:round; }
+.quiet-buffer { background:color-mix(in srgb,var(--brand) 4%,var(--paper)); }
+.quiet-time-axis > .quiet-buffer-label { top:-54px; left:41.5%; white-space:nowrap; color:var(--brand); }
+.quiet-delivery i { box-shadow:0 0 0 5px color-mix(in srgb,var(--brand) 8%,transparent); }
+.talk-story-controls button { min-width:44px; min-height:32px; border-radius:20px; transition:background .2s; }
+.talk-story-controls button:hover { background:color-mix(in srgb,var(--brand) 7%,transparent); }

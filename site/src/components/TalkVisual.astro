@@ -18,7 +18,7 @@ const description = descriptions[id as keyof typeof descriptions];
     <div class="quiet-object"><div class="quiet-paper quiet-list" data-quiet-motion="list">{Array.from({length:3},()=> <i/> )}</div><span class="quiet-label" data-i18n="quietResult">{text.quietResult}</span><span class="sr-only" data-i18n="talkStockList">{text.talkStockList}</span></div>
   </div>}
   {id === 'ownership' && <div class="quiet-scene quiet-time">
-    <div class="quiet-time-axis"><span class="quiet-time-early">07:00</span><span class="quiet-time-original">09:00</span><span class="quiet-time-open">09:30</span><div class="quiet-buffer" data-quiet-motion="buffer"><span data-i18n="quietBuffer">{text.quietBuffer}</span></div><div class="quiet-delivery" data-quiet-motion="delivery"><i/><span data-i18n="quietDelivery">{text.quietDelivery}</span></div></div>
+    <div class="quiet-time-axis"><span class="quiet-time-early">07:00</span><span class="quiet-time-original">09:00</span><span class="quiet-time-open">09:30</span><div class="quiet-buffer" data-quiet-motion="buffer"></div><span class="quiet-buffer-label" data-i18n="quietBuffer">{text.quietBuffer}</span><div class="quiet-delivery" data-quiet-motion="delivery"><i/><span data-i18n="quietDelivery">{text.quietDelivery}</span></div></div>
   </div>}
   {id === 'workflows' && <div class="quiet-resources">
     <a href="../../standards/index.html"><span data-i18n="quietStandards">{text.quietStandards}</span><span aria-hidden="true">↗</span></a>
@@ -26,8 +26,6 @@ const description = descriptions[id as keyof typeof descriptions];
     <a href="../../downloads/repo-maintenance.zip"><span>Skill</span><svg width="16" height="20" viewBox="0 0 16 20" aria-hidden="true"><path d="M8 2v14m-5-5 5 5 5-5" fill="none" stroke="currentColor"/></svg></a>
   </div>}
   {id !== 'workflows' && <div class="talk-story-controls" hidden>
-    <button type="button" data-story-toggle data-i18n="quietPlay" aria-pressed="false">{text.quietPlay}</button>
-    <button type="button" data-story-stop data-i18n="storyStop">{text.storyStop}</button>
-    <span class="sr-only" data-story-status role="status" aria-live="polite"></span>
+    <button type="button" data-story-toggle data-i18n="storyPause" aria-pressed="false">{text.storyPause}</button>
   </div>}
 </figure>
