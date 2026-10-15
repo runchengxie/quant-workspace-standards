@@ -1,5 +1,7 @@
 ---
 import catalog from '../../locales.json';
+import { readFileSync } from 'node:fs';
+const quietFonts = [['QuietSans','NotoSansSC',400],['QuietSerif','NotoSerifSC',500]].map(([family,file,weight]) => `@font-face{font-family:${family};src:url(data:font/woff2;base64,${readFileSync(`src/assets/fonts/${file}.woff2`).toString('base64')}) format('woff2');font-weight:${weight};font-display:swap}`).join('');
 import css from '../styles/site.css?raw';
 import { themeScript, mainScript } from '../lib/bundles';
 import { routes, type PageKey } from '../lib/paths';
@@ -19,6 +21,7 @@ const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
   <title>{catalog['en-US'][page]} · {catalog['en-US'].brand}</title>
   <script is:inline set:html={themeScript}></script>
   <style is:inline set:html={css}></style>
+  {bodyClass === 'deck' && <style is:inline set:html={quietFonts}></style>}
 </head>
 <body class={bodyClass} data-title-key={page}>
 <a class="skip" href="#main" data-i18n="skip">{catalog['en-US'].skip}</a>
