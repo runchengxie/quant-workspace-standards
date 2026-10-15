@@ -196,7 +196,17 @@
     "storyWorkflows7": "C also syncs and passes its checks before merging.",
     "storyPause": "Pause",
     "storyStop": "Stop",
-    "storyProgress": "Story playback progress"
+    "storyProgress": "Story playback progress",
+    "quietPrompts": "Maintenance prompts",
+    "quietBuffer": "Recovery buffer",
+    "quietTune": "Tune parameters",
+    "quietResult": "Result",
+    "quietResume": "Resume",
+    "quietQuestion": "Question the approach",
+    "quietDelivery": "Delivery",
+    "quietPlay": "Play once ↗",
+    "quietInformation": "Information",
+    "quietStandards": "Standards"
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
@@ -395,6 +405,16 @@
     "storyWorkflows7": "C 同样同步主线，通过检查后合入。",
     "storyPause": "暂停",
     "storyStop": "停止",
-    "storyProgress": "演示播放进度"
+    "storyProgress": "演示播放进度",
+    "quietPrompts": "维护提示词",
+    "quietBuffer": "缓冲时间",
+    "quietTune": "调参数",
+    "quietResult": "结果",
+    "quietResume": "继续",
+    "quietQuestion": "换问题",
+    "quietDelivery": "提前交付",
+    "quietPlay": "播放一次 ↗",
+    "quietInformation": "信息",
+    "quietStandards": "开发规范"
   }
 }
