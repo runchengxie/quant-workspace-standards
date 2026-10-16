@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { marked } from "marked";
 import { repoRoot } from "./paths";
-import type { Locale } from "../client/preferences";
+import type { Locale } from "./locale";
 import slideSource from "../../../content/talk-slides.json";
 export const locales: readonly Locale[] = ["en-US", "zh-CN"];
 export type Slide = {

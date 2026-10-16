@@ -1,4 +1,5 @@
-export type Locale = "en-US" | "zh-CN";
+import type { Locale } from "../lib/locale";
+export type { Locale } from "../lib/locale";
 export type Theme = "system" | "light" | "dark";
 export function normalizeLocale(value: unknown): Locale {
   return value === "zh-CN" ? "zh-CN" : "en-US";
