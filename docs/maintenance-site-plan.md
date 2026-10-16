@@ -1,4 +1,6 @@
-# Maintenance site implementation plan
+# Historical notes: maintenance site implementation
+
+This file preserves the original implementation plan. Its steps describe intended work at the time and are not a current task list or source of current behavior. See the [README](../README.md) and [site instructions](../site/AGENTS.md) for the current site structure and validation commands.
 
 Implement the user-supplied design: a lightweight Markdown-built engineering site, three reusable maintenance prompts, one distributable Skill with three workflows, and an offline October 18 talk.
 
