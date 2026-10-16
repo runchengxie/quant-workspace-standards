@@ -6,8 +6,10 @@ import {
   realpathSync,
   readdirSync,
   copyFileSync,
+  mkdtempSync,
+  renameSync,
+  rmSync,
   writeFileSync,
-  unlinkSync,
 } from "node:fs";
 import { zipSync } from "fflate";
 import { pagePaths, repoRoot } from "./paths";
@@ -89,28 +91,39 @@ export function validateOutput(path: string): string {
   }
   return output;
 }
-export function publishOutput(staging: string, output: string): void {
-  validateOutput(output);
-  const manifestPath = join(output, marker);
-  const retired = existsSync(manifestPath)
-    ? ownedRetiredFiles(JSON.parse(readFileSync(manifestPath, "utf8")))
-    : [];
-  for (const path of generatedFiles) {
-    const destination = join(output, path);
-    mkdirSync(dirname(destination), { recursive: true });
-    copyFileSync(join(staging, path), destination);
+export function publishOutput(staging: string, outputPath: string): void {
+  const output = validateOutput(outputPath);
+  const parent = dirname(output);
+  mkdirSync(parent, { recursive: true });
+  const transaction = mkdtempSync(join(parent, ".standards-site-publish-"));
+  const next = join(transaction, "next");
+  const previous = join(transaction, "previous");
+
+  try {
+    for (const path of generatedFiles) {
+      const destination = join(next, path);
+      mkdirSync(dirname(destination), { recursive: true });
+      copyFileSync(join(staging, path), destination);
+    }
+    writeFileSync(
+      join(next, marker),
+      JSON.stringify({
+        owner: "quant-workspace-standards",
+        files: generatedFiles,
+      }) + "\n",
+    );
+
+    const hadOutput = existsSync(output);
+    if (hadOutput) renameSync(output, previous);
+    try {
+      renameSync(next, output);
+    } catch (error) {
+      if (hadOutput) renameSync(previous, output);
+      throw error;
+    }
+  } finally {
+    rmSync(transaction, { recursive: true, force: true });
   }
-  for (const path of retired) {
-    const target = join(output, path);
-    if (existsSync(target)) unlinkSync(target);
-  }
-  writeFileSync(
-    join(output, marker),
-    JSON.stringify({
-      owner: "quant-workspace-standards",
-      files: generatedFiles,
-    }) + "\n",
-  );
 }
 export function packageDownloads(output: string): void {
   const skillPaths = [

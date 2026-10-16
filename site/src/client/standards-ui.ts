@@ -49,7 +49,7 @@ export function initStandards(message: (key: string) => string): void {
 
   const demo = document.querySelector<HTMLElement>('#flow-demo');
   if (!demo) return;
-  initFlowTooltip(demo, message);
+  const syncTooltip = initFlowTooltip(demo, message);
   const play = document.querySelector<HTMLButtonElement>('#flow-play')!;
   const next = document.querySelector<HTMLButtonElement>('#flow-next')!;
   const status = document.querySelector<HTMLElement>('#flow-status')!;
@@ -69,6 +69,7 @@ export function initStandards(message: (key: string) => string): void {
     demo!.querySelectorAll<SVGElement>('[data-reveal]').forEach(mark => {
       mark.classList.toggle('is-pending', Number(mark.dataset.reveal) > step);
     });
+    syncTooltip();
     const playKey = playing ? 'flowPause' : 'flowPlay';
     play.dataset.i18nAria = playKey;
     play.setAttribute('aria-label', message(playKey));
@@ -118,7 +119,7 @@ export function initStandards(message: (key: string) => string): void {
   render();
 }
 
-function initFlowTooltip(demo: HTMLElement, message: (key: string) => string): void {
+function initFlowTooltip(demo: HTMLElement, message: (key: string) => string): () => void {
  const tooltip = demo.querySelector<HTMLElement>("#flow-tooltip")!;
  let active: SVGElement | undefined;
  let leaveTimer: ReturnType<typeof setTimeout> | undefined;
@@ -154,4 +155,5 @@ function initFlowTooltip(demo: HTMLElement, message: (key: string) => string): v
  window.addEventListener("scroll", reposition, true);
  window.addEventListener("beforeprint", hide);
  window.addEventListener("presentationchange", () => {if (active) show(active);});
+ return () => { if (active?.classList.contains("is-pending")) hide(); };
 }

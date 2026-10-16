@@ -64,8 +64,34 @@ test("publishing removes a retired generated cases page only when the prior mani
     publishOutput(staging, output);
     assert.equal(existsSync(join(output, "cases/index.html")), false);
     assert.equal(readFileSync(join(output, "index.html"), "utf8"), "new");
+    mkdirSync(join(output, "cases"));
     writeFileSync(join(output, "cases/index.html"), "user-owned content");
     assert.throws(() => publishOutput(staging, output), /unowned/);
     assert.equal(readFileSync(join(output, "cases/index.html"), "utf8"), "user-owned content");
   } finally { rmSync(temp, { recursive: true }); }
+});
+
+test("failed publication leaves the previously published site intact", () => {
+  const temp = mkdtempSync(join(tmpdir(), "standards-publish-failure-"));
+  try {
+    const staging = join(temp, "staging");
+    const output = join(temp, "output");
+    for (const path of generatedFiles) {
+      mkdirSync(dirname(join(staging, path)), { recursive: true });
+      writeFileSync(join(staging, path), "new site");
+      mkdirSync(dirname(join(output, path)), { recursive: true });
+      writeFileSync(join(output, path), "previous site");
+    }
+    writeFileSync(
+      join(output, ".standards-site.json"),
+      JSON.stringify({ owner: "quant-workspace-standards", files: generatedFiles }),
+    );
+    const missing = generatedFiles.at(-1)!;
+    rmSync(join(staging, missing));
+
+    assert.throws(() => publishOutput(staging, output));
+    assert.equal(readFileSync(join(output, generatedFiles[0]!), "utf8"), "previous site");
+  } finally {
+    rmSync(temp, { recursive: true, force: true });
+  }
 });
