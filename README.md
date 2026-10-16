@@ -25,6 +25,8 @@ Machine-local path settings belong in `CONFIG_ROOT/shared/workspace.toml`. Tools
 
 ## Build and validate
 
+From the repository root, run `node scripts/check-doc-links.mjs` to validate local file links and Markdown heading fragments in `docs/`. CI runs this check for documentation and checker changes without building or deploying the site.
+
 The site uses Astro 7, TypeScript, and Bun 1.4.3. Bun manages the frozen `site/bun.lock`; Astro requires Node.js 22.12.0 or newer. See [site instructions](site/AGENTS.md) for implementation boundaries.
 
 ```sh
