@@ -468,6 +468,18 @@ test("graph tooltip appears on hover, focus and tap and closes with Escape", asy
  await expect(tip).toBeHidden();
 });
 
+test("graph tooltip closes when its focused node becomes pending again", async ({ page }) => {
+ await page.goto(url("standards/index.html"));
+ const node = page.locator('.graph-wide g[data-i18n-aria="flowHoverMerge"]').first();
+ const tip = page.locator("#flow-tooltip");
+ await node.focus();
+ await expect(tip).toBeVisible();
+ await page.evaluate(() => document.querySelector<HTMLButtonElement>("#flow-replay")!.click());
+ await expect(node).toHaveClass(/is-pending/);
+ await expect(tip).toBeHidden();
+ await expect(node).not.toHaveAttribute("aria-describedby", "flow-tooltip");
+});
+
 test("standards connects the download to its workflow and talk is anonymized", async ({page}) => {
  await page.goto(url("standards/index.html"));
  await page.selectOption(".locale","zh-CN");
