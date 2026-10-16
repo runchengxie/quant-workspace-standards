@@ -23,6 +23,8 @@
 
 ## 构建与验证
 
+在仓库根目录运行 `node scripts/check-doc-links.mjs`，可检查 `docs/` 下 Markdown 的本地文件链接和标题锚点。文档或检查器变更会单独触发这项 CI 检查，不构建或部署站点。
+
 网站使用 Astro 7、TypeScript 和 Bun 1.4.3。Bun 管理锁定的 `site/bun.lock`；Astro 要求 Node.js 22.12.0 或更新版本。实现边界见[站点指引](site/AGENTS.md)。
 
 ```sh
