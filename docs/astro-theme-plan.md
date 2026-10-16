@@ -1,4 +1,6 @@
-# Astro migration, themes and complete standards localization
+# Historical notes: Astro migration, themes and standards localization
+
+This file preserves the original implementation plan. Its steps describe intended work at the time and are not a current task list or source of current behavior. See the [README](../README.md) and [site instructions](../site/AGENTS.md) for the current site structure and validation commands.
 
 The user approved migrating the existing site to Astro + TypeScript and requested dark mode plus Chinese standards body text.
 
