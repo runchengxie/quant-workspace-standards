@@ -24,6 +24,7 @@ export const talkAssetPaths = [
   "assets/talk/2026-10-18/tuning-reaction.jpg",
   "assets/talk/2026-10-18/safeguard-reaction.png",
   "assets/talk/2026-10-18/market-feedback-report.png",
+  "assets/talk/2026-10-18/wechat-contact.jpg",
 ];
 export const generatedFiles = [
   ...talkAssetPaths,
