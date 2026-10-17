@@ -433,7 +433,10 @@ h1, h2, h3 { font-family: var(--display); }
 .talk-image-disclosure > summary { font-size:.8rem; font-weight:400; color:var(--muted); }
 .talk-image-disclosure .talk-illustration { margin-top:20px; }
 .talk-illustration figcaption { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
-.talk-qr-disclosure .resources { justify-content:flex-start; }
+.talk-qr-disclosure .resources { justify-content:flex-start; align-items:flex-start; gap:32px; }
+.talk-contact { margin:0; width:min(320px, 100%); }
+.talk-contact figcaption { margin-top:12px; font-size:.85rem; }
+.talk-wechat { display:block; width:100%; height:auto; background:#fff; }
 .talk-qr-disclosure .qr { width:min(320px, 100%); height:auto; aspect-ratio:1; flex-shrink:0; }
 .talk-qr-disclosure .qr svg { display:block; }
 .quiet-print [data-quiet-motion] { opacity:1 !important; transform:none !important; }
