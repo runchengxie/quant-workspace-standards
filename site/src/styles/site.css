@@ -434,6 +434,8 @@ h1, h2, h3 { font-family: var(--display); }
 .talk-image-disclosure .talk-illustration { margin-top:20px; }
 .talk-illustration figcaption { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
 .talk-qr-disclosure .resources { justify-content:flex-start; }
+.talk-qr-disclosure .qr { width:min(320px, 100%); height:auto; aspect-ratio:1; flex-shrink:0; }
+.talk-qr-disclosure .qr svg { display:block; }
 .quiet-print [data-quiet-motion] { opacity:1 !important; transform:none !important; }
 .quiet-print .quiet-delivery { left:8% !important; transform:translate(-50%,-50%) !important; }
 @media(max-width:700px) {
