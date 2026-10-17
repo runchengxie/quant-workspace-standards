@@ -433,12 +433,16 @@ h1, h2, h3 { font-family: var(--display); }
 .talk-image-disclosure > summary { font-size:.8rem; font-weight:400; color:var(--muted); }
 .talk-image-disclosure .talk-illustration { margin-top:20px; }
 .talk-illustration figcaption { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
-.talk-qr-disclosure .resources { justify-content:flex-start; align-items:flex-start; gap:32px; }
-.talk-contact { margin:0; width:min(320px, 100%); }
-.talk-contact figcaption { margin-top:12px; font-size:.85rem; }
-.talk-wechat { display:block; width:100%; height:auto; background:#fff; }
-.talk-qr-disclosure .qr { width:min(320px, 100%); height:auto; aspect-ratio:1; flex-shrink:0; }
-.talk-qr-disclosure .qr svg { display:block; }
+.talk-contacts { display:flex; justify-content:center; align-items:flex-start; flex-wrap:wrap; gap:28px 64px; margin:24px 0 0; }
+.talk-contact { margin:0; width:min(280px, 100%); text-align:center; }
+.talk-contact figcaption { margin-top:12px; font-size:.95rem; }
+.talk-contact .qr { display:block; width:100%; height:auto; aspect-ratio:1; padding:0; }
+.talk-contact .qr svg { display:block; }
+#workflows .talk-visual { margin:22px 0 0; }
+#workflows .quiet-resources { display:flex; justify-content:center; flex-wrap:wrap; min-height:0; gap:12px 28px; padding:0; }
+#workflows .quiet-resources a { font-size:.8rem; padding:0; border:0; gap:8px; }
+#workflows .slide-content { gap:8px; }
+
 .quiet-print [data-quiet-motion] { opacity:1 !important; transform:none !important; }
 .quiet-print .quiet-delivery { left:8% !important; transform:translate(-50%,-50%) !important; }
 @media(max-width:700px) {
