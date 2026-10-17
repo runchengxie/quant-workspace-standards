@@ -43,6 +43,7 @@ export function initDeck(message: (key: string) => string): void {
     const notes = document.getElementById("notes-text");
     if (notes) notes.textContent = slide.dataset["notes"] ?? "";
     if (updateHash) history.replaceState(null, "", `#${slide.id}`);
+    if (document.fullscreenElement) window.scrollTo(0, 0);
     window.dispatchEvent(new Event("talkslidechange"));
   }
 
@@ -63,7 +64,13 @@ export function initDeck(message: (key: string) => string): void {
   async function fullscreen(): Promise<void> {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
-      else await document.documentElement.requestFullscreen();
+      else {
+        await document.documentElement.requestFullscreen();
+        // Move focus off the now-hidden fullscreen button so slide shortcuts work.
+        const main = document.getElementById("main");
+        main?.setAttribute("tabindex", "-1");
+        main?.focus({ preventScroll: true });
+      }
     } catch {
       const status = document.getElementById("deck-status");
       if (status) status.textContent = message("fullscreenFallback");
@@ -74,6 +81,10 @@ export function initDeck(message: (key: string) => string): void {
     void fullscreen();
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.fullscreenElement) {
+      void fullscreen();
+      return;
+    }
     if (
       (event.target instanceof Element &&
         event.target.closest("select,button,input,textarea,a,summary")) ||
