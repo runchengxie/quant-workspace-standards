@@ -23,6 +23,7 @@ function within(parent: string, child: string): boolean {
 export const talkAssetPaths = [
   "assets/talk/2026-10-18/tuning-reaction.jpg",
   "assets/talk/2026-10-18/safeguard-reaction.png",
+  "assets/talk/2026-10-18/market-feedback-report.png",
 ];
 export const generatedFiles = [
   ...talkAssetPaths,

@@ -11,7 +11,7 @@ export type Slide = {
   points: Record<Locale, string[]>;
   notes: string;
   case: string | null;
-  image?: { src: string; source: string; alt: Record<Locale, string> };
+  image?: { src: string; source?: string; alt: Record<Locale, string> };
 };
 export const slides: readonly Slide[] = slideSource;
 export function text(path: string): string {
