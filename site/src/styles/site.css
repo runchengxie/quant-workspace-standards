@@ -397,6 +397,15 @@ h1, h2, h3 { font-family: var(--display); }
 .deck .slide ul { font-size:clamp(1rem,1.45vw,1.3rem); color:var(--muted); margin:0; max-width:none; }
 .deck .slide li, .deck #workflows li { border:0; padding:0; font-size:inherit; }
 .deck .slide-content { display:block; }
+:root:fullscreen .deck .shell { max-width:none; padding:0; }
+:root:fullscreen .deck .shell > :not(main),
+:root:fullscreen .deck > .skip,
+:root:fullscreen .deck main > :not(.slide),
+:root:fullscreen .deck .talk-duration,
+:root:fullscreen .deck .slide-number,
+:root:fullscreen .deck .talk-story-controls { display:none !important; }
+:root:fullscreen .deck main { min-height:100svh; padding:6vh 7vw; display:grid; align-content:safe center; }
+:root:fullscreen .deck .slide { width:100%; max-width:1280px; min-height:0; margin:auto; padding:0; }
 .talk-duration { float:left; font-size:.7rem; letter-spacing:.1em; }
 .slide-number { text-align:right; font-size:.75rem; }
 .talk-visual { position:relative; margin:0; min-width:0; color:var(--brand); }
