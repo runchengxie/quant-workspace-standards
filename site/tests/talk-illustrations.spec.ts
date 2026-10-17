@@ -14,7 +14,7 @@ test('quiet diagrams use only essential labels and no particles',async({page})=>
  await expect(page.locator('.quiet-time-axis')).toContainText('09:30');
  await expect(page.locator('.talk-flow-packet')).toHaveCount(0);
  await page.locator('#next').click();
- const disclosures=page.locator('.talk-image-disclosure');await expect(disclosures).toHaveCount(3);
+ const disclosures=page.locator('.talk-image-disclosure');await expect(disclosures).toHaveCount(4);
  for(const disclosure of await disclosures.all()){await expect(disclosure).toHaveJSProperty('open',false);await expect(disclosure.locator('summary')).toHaveText('配图');}
  await page.locator('#workflows summary').click();await expect(page.locator('.qr svg')).toBeVisible();
 });

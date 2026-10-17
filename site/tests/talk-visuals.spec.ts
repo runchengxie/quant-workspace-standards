@@ -11,7 +11,7 @@ test('illustrations fold with native keyboard controls and expand to readable si
   await page.route(/^https?:/, route => route.abort());
   await page.goto(talk);
   await page.selectOption('.locale', 'zh-CN');
-  for (const [id, count] of [['questions', '1 / 4'], ['ownership', '3 / 4']]) {
+  for (const [id, count] of [['questions', '1 / 4'], ['customers', '2 / 4'], ['ownership', '3 / 4']]) {
     await page.goto(talk + `#${id}`);
     const disclosure = page.locator('.slide:visible .talk-image-disclosure');
     await expect(disclosure).toHaveJSProperty('open', false);
@@ -60,7 +60,7 @@ test('four visual stories localize and fit a projector and narrow mobile screen'
 test('printing reveals both illustrations and restores their disclosure state', async ({ page }) => {
   await page.goto(talk);
   const disclosures = page.locator('.talk-image-disclosure');
-  await expect(disclosures).toHaveCount(3);
+  await expect(disclosures).toHaveCount(4);
   await page.locator('.slide:visible .talk-image-disclosure summary').click();
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
   for (const disclosure of await disclosures.all()) await expect(disclosure).toHaveJSProperty('open', true);
