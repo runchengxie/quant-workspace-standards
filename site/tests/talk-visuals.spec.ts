@@ -60,11 +60,37 @@ test('four visual stories localize and fit a projector and narrow mobile screen'
 test('printing reveals both illustrations and restores their disclosure state', async ({ page }) => {
   await page.goto(talk);
   const disclosures = page.locator('.talk-image-disclosure');
-  await expect(disclosures).toHaveCount(4);
+  await expect(disclosures).toHaveCount(3);
   await page.locator('.slide:visible .talk-image-disclosure summary').click();
   await page.evaluate(() => window.dispatchEvent(new Event('beforeprint')));
   for (const disclosure of await disclosures.all()) await expect(disclosure).toHaveJSProperty('open', true);
   await page.evaluate(() => window.dispatchEvent(new Event('afterprint')));
   await expect(disclosures.nth(0)).toHaveJSProperty('open', true);
   await expect(disclosures.nth(1)).toHaveJSProperty('open', false);
+});
+
+test('closing slide shows equally sized QR codes immediately and stacks them on mobile', async ({ page }) => {
+  await page.route(/^https?:/, route => route.abort());
+  for (const width of [1280, 320]) {
+    await page.setViewportSize({ width, height: width === 1280 ? 720 : 900 });
+    await page.goto(talk + '?locale=zh-CN#workflows');
+    await expect(page.locator('#workflows summary')).toHaveCount(0);
+    const codes = page.locator('#workflows .talk-contact .qr');
+    await expect(codes).toHaveCount(2);
+    await expect(codes.nth(0)).toBeVisible();
+    await expect(codes.nth(1)).toBeVisible();
+    await expect(page.locator('.talk-contact figcaption')).toHaveText(['下载规范与提示词', '添加我的微信']);
+    const first = (await codes.nth(0).boundingBox())!;
+    const second = (await codes.nth(1).boundingBox())!;
+    expect(first.width).toBeCloseTo(second.width);
+    expect(first.height).toBeCloseTo(second.height);
+    expect(second.x + second.width).toBeLessThanOrEqual(width);
+    if (width === 1280) {
+      expect(first.y).toBeCloseTo(second.y);
+      expect(second.x).toBeGreaterThan(first.x + first.width);
+      expect(await page.locator('.deck-controls').evaluate(el => el.getBoundingClientRect().bottom)).toBeLessThanOrEqual(720);
+    } else expect(second.y).toBeGreaterThan(first.y + first.height);
+    const image = codes.nth(1).locator('image');
+    await expect(image).toHaveAttribute('href', /wechat-contact.jpg$/);
+  }
 });
