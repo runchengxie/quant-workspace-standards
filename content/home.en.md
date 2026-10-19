@@ -1,4 +1,6 @@
-# AI can write code. Who maintains the system?
+# AI writes code. Engineering still needs discipline.
+
+Development standards, maintenance prompts and a reusable Skill
 
 <ol class="handbook-index">
 <li><span class="index-number" aria-hidden="true">01</span><div><a href="standards/index.html">Development standards</a><p>Development isolation, contracts, validation and delivery rules</p></div></li>

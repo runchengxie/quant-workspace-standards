@@ -1,4 +1,6 @@
-# AI 能写代码，谁来维护系统？
+# AI 写代码，工程仍需章法
+
+开发规范、维护提示词与可复用 Skill
 
 <ol class="handbook-index">
 <li><span class="index-number" aria-hidden="true">01</span><div><a href="standards/index.html">开发规范</a><p>开发隔离、契约、验证和交付规则</p></div></li>

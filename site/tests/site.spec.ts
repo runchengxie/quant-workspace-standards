@@ -322,10 +322,10 @@ test("missing UI translations fall back to English and then the stable key", asy
 
 test("home presents two entries and playbooks presents two ways to do the same work", async ({ page }) => {
   await page.goto(url('index.html'));
-  await expect(page.locator('main h1:visible')).toHaveText('AI can write code. Who maintains the system?');
+  await expect(page.locator('main h1:visible')).toHaveText('AI writes code. Engineering still needs discipline.');
   await expect(page.locator('.locale-panel:visible .handbook-index li')).toHaveCount(2);
   await page.selectOption('.locale', 'zh-CN');
-  await expect(page.locator('main h1:visible')).toHaveText('AI 能写代码，谁来维护系统？');
+  await expect(page.locator('main h1:visible')).toHaveText('AI 写代码，工程仍需章法');
   await expect(page.locator('[data-locale="zh-CN"] .handbook-index a')).toHaveText(['开发规范', '提示词与 Skill']);
   await expect(page.locator('main')).not.toContainText('适用范围');
   await page.selectOption('.locale', 'en-US');
