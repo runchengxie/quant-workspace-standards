@@ -20,14 +20,7 @@ function within(parent: string, child: string): boolean {
     (!path.startsWith(`..${sep}`) && path !== ".." && !isAbsolute(path))
   );
 }
-export const talkAssetPaths = [
-  "assets/talk/2026-10-18/tuning-reaction.jpg",
-  "assets/talk/2026-10-18/safeguard-reaction.png",
-  "assets/talk/2026-10-18/market-feedback-report.png",
-  "assets/talk/2026-10-18/wechat-contact.jpg",
-];
 export const generatedFiles = [
-  ...talkAssetPaths,
   ...pagePaths,
   ".nojekyll",
   "downloads/AGENTS.md",
@@ -154,7 +147,7 @@ export function packageDownloads(output: string): void {
     writeFileSync(join(output, "downloads", name), source);
     offline[`downloads/${name}`] = source;
   }
-  for (const path of [...pagePaths, ...talkAssetPaths])
+  for (const path of pagePaths)
     offline[path] = readFileSync(join(output, path));
   for (const [name, source] of Object.entries(skill))
     offline[`downloads/${name}`] = source;

@@ -13,9 +13,9 @@
 
 ## 网站内容
 
-规范页展示默认 worktree 流程图和七个与源文件对应的章节。提示词页提供三个完整提示词和可下载的 `repo-maintenance` Skill。2026 年 10 月 18 日分享页包含双语投影片、带播放控制的分步演示、中文备注、完整中文阅读稿和离线网站。分享采用匿名化的八分钟版本。
+规范页展示默认 worktree 流程图和七个与源文件对应的章节。提示词页提供三个完整提示词和可下载的 `repo-maintenance` Skill。
 
-网站默认英文，并提供持续记忆选择的简体中文界面，以及跟随系统、浅色和深色主题。未知 locale 回退到英文；缺失的中文界面翻译先回退到英文，再回退到稳定键名。语言和主题只改变呈现，不改变规范源文件、提示词、投影片事实或下载内容。
+网站默认英文，并提供持续记忆选择的简体中文界面，以及跟随系统、浅色和深色主题。未知 locale 回退到英文；缺失的中文界面翻译先回退到英文，再回退到稳定键名。语言和主题只改变呈现，不改变规范源文件、提示词或下载内容。
 
 构建后的站点可直接从 `index.html` 离线打开，页面内嵌样式、语言目录和浏览器脚本。访问在线来源和下载仍需联网。安装 Skill 时复制完整的 `skills/repo-maintenance` 文件夹，以保留其中的工作流文件。
 
@@ -40,6 +40,6 @@ bun audit
 
 构建前从本机配置解析 `DATA_ROOT`。输出目录必须为空，或包含本构建器写入的 `.standards-site.json` 标记；发现其他文件时会拒绝写入。构建器先在临时目录生成产物，再发布已知文件。保留的构建结果放在 `DATA_ROOT`，CI 和测试使用临时目录。浏览器测试需要 Chromium；本地可通过 `bunx playwright install chromium` 安装，CI 会安装浏览器和系统依赖。
 
-本地开发使用 `bun run dev`。构建器保留 `talk/2026-10-18/reading.html` 路径，以及 `repo-maintenance.zip` 和 `engineering-practices-offline.zip` 两个下载文件名。旧 Python 构建器及其测试已由 TypeScript 构建、浏览器和产物检查接替；构建网站不依赖 Python。
+本地开发使用 `bun run dev`。构建器保留 `repo-maintenance.zip` 和 `engineering-practices-offline.zip` 两个下载文件名。旧 Python 构建器及其测试已由 TypeScript 构建、浏览器和产物检查接替；构建网站不依赖 Python。
 
 规范、网站、内容、Skill 或 Pages 工作流发生变化时会触发检查。PR 只构建和验证，不部署。推送到 `main` 和手动触发工作流时会部署 Pages 网站。

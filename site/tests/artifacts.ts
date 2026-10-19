@@ -4,7 +4,6 @@ import { resolve, relative } from "node:path";
 import { parse, type DefaultTreeAdapterMap } from "parse5";
 import { unzipSync, strFromU8 } from "fflate";
 import { marked } from "marked";
-import { talkAssetPaths } from "../src/lib/artifacts";
 import { repoRoot, pagePaths } from "../src/lib/paths";
 import { promptPath } from "../src/lib/content";
 
@@ -124,7 +123,6 @@ for (const workflow of ["code", "docs", "closeout"]) {
 }
 const expectedArchive = [
   ...pagePaths,
-  ...talkAssetPaths,
   "downloads/AGENTS.md",
   "downloads/AGENTS.zh-CN.md",
   "downloads/repo-maintenance.zip",
@@ -143,7 +141,3 @@ for (const path of Object.keys(offline)) {
 console.log(
   `Artifact checks passed: ${pagePaths.length} routes, all offline links/fragments, exact prompts, complete Skill and restricted archive.`,
 );
-
-for (const path of talkAssetPaths) {
-  assert.deepEqual(offline[path], new Uint8Array(readFileSync(resolve(output, path))), `Missing or changed offline illustration: ${path}`);
-}

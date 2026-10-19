@@ -2,9 +2,6 @@ import { parseArgs } from "node:util";
 import { dirname, join, resolve } from "node:path";
 import {
   readFileSync,
-  readdirSync,
-  renameSync,
-  rmdirSync,
   mkdtempSync,
   rmSync,
 } from "node:fs";
@@ -41,14 +38,6 @@ try {
     throw new Error(
       `Astro build failed: ${build.status ?? build.error?.message}`,
     );
-  // Astro emits a directory for the legacy .html route. Preserve its public file URL.
-  const reading = join(stagingOutput, "talk/2026-10-18/reading.html");
-  if (JSON.stringify(readdirSync(reading)) !== '["index.html"]')
-    throw new Error("Unexpected reading route output");
-  const staging = `${reading}.staging`;
-  renameSync(join(reading, "index.html"), staging);
-  rmdirSync(reading);
-  renameSync(staging, reading);
   packageDownloads(stagingOutput);
   publishOutput(stagingOutput, output);
 } finally {

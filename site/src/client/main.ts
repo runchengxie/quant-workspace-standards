@@ -1,7 +1,5 @@
-import { initDeck } from "./deck-ui";
 import { initPlaybooks } from "./playbooks-ui";
 import { initStandards } from "./standards-ui";
-import { initTalkStories } from "./talk-stories";
 import {
   normalizeLocale,
   normalizeTheme,
@@ -99,6 +97,4 @@ media.addEventListener("change", () => {
 applyTheme();
 
 initStandards(message);
-initTalkStories(message);
 initPlaybooks(message);
-initDeck(message);

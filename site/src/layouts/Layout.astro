@@ -1,7 +1,5 @@
 ---
 import catalog from '../../locales.json';
-import { readFileSync } from 'node:fs';
-const quietFonts = [['QuietSans','NotoSansSC',400],['QuietSerif','NotoSerifSC',500]].map(([family,file,weight]) => `@font-face{font-family:${family};src:url(data:font/woff2;base64,${readFileSync(`src/assets/fonts/${file}.woff2`).toString('base64')}) format('woff2');font-weight:${weight};font-display:swap}`).join('');
 import css from '../styles/site.css?raw';
 import { themeScript, mainScript } from '../lib/bundles';
 import { routes, type PageKey } from '../lib/paths';
@@ -21,7 +19,6 @@ const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
   <title>{catalog['en-US'][page]} · {catalog['en-US'].brand}</title>
   <script is:inline set:html={themeScript}></script>
   <style is:inline set:html={css}></style>
-  {bodyClass === 'deck' && <style is:inline set:html={quietFonts}></style>}
 </head>
 <body class={bodyClass} data-title-key={page}>
 <a class="skip" href="#main" data-i18n="skip">{catalog['en-US'].skip}</a>
@@ -29,7 +26,7 @@ const catalogJson = JSON.stringify(catalog).replaceAll('<', '\\u003c');
   <header class="top">
     <a class="brand" href={`${rootLink}index.html`} data-i18n="brand">{catalog['en-US'].brand}</a>
     <nav class="nav" aria-label={catalog['en-US'].navigation} data-i18n-aria="navigation">
-      {Object.entries(routes).map(([key, target]) => <a class={key === 'talk' ? 'nav-secondary' : undefined} href={`${rootLink}${target}`} data-i18n={key} aria-current={key === page || (page === 'readingTitle' && key === 'talk') ? 'page' : undefined}>{catalog['en-US'][key as keyof typeof routes]}</a>)}
+      {Object.entries(routes).map(([key, target]) => <a href={`${rootLink}${target}`} data-i18n={key} aria-current={key === page ? 'page' : undefined}>{catalog['en-US'][key as keyof typeof routes]}</a>)}
     </nav>
     <div class="preferences">
       <label><span data-i18n="language">{catalog['en-US'].language}</span>

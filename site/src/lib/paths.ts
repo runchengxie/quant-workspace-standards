@@ -7,10 +7,8 @@ export const routes = {
   home: "index.html",
   standards: "standards/index.html",
   playbooks: "playbooks/index.html",
-  talk: "talk/2026-10-18/index.html",
 } as const;
-export const pagePaths = [
+export const pagePaths: string[] = [
   ...Object.values(routes),
-  "talk/2026-10-18/reading.html",
 ];
-export type PageKey = keyof typeof routes | "readingTitle";
+export type PageKey = keyof typeof routes;

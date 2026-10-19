@@ -16,6 +16,6 @@ STANDARDS_SITE_OUTPUT_DIR=/tmp/standards-site-check bun run test:browser
 bun audit
 ```
 
-Use a disposable output directory for tests and the configured project DATA_ROOT for retained previews. HTML must contain inline classic browser scripts and styles so file:// use works without a server. Preserve public route/file URLs, complete prompt text, QR target and download names. Offline file links carry presentation preferences when localStorage is unreliable; online pages use localStorage. Theme and locale must not alter source facts, prompt text, slides or archive membership.
+Use a disposable output directory for tests and the configured project DATA_ROOT for retained previews. HTML must contain inline classic browser scripts and styles so file:// use works without a server. Preserve public route/file URLs, complete prompt text, download names. Offline file links carry presentation preferences when localStorage is unreliable; online pages use localStorage. Theme and locale must not alter source facts, prompt text or archive membership.
 
 Theme choices are system/light/dark. Apply the initial theme before paint, persist explicit changes, and respond to system changes only in system mode. Localize visible UI, page titles and accessible names using locales.json. Keep English default and existing maintenance-locale/maintenance-theme storage keys stable.

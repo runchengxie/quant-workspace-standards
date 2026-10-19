@@ -15,9 +15,9 @@ This repository contains general standards. Keep credentials, personal settings,
 
 ## Site content
 
-The standards page presents the default worktree workflow and seven source-backed chapters. The playbooks page provides three complete prompts and the downloadable `repo-maintenance` Skill. The October 18, 2026 talk page contains bilingual slides, step-by-step visuals with playback controls, Chinese speaker notes, a full Chinese reading page, and an offline site. The talk is the anonymized eight-minute version.
+The standards page presents the default worktree workflow and seven source-backed chapters. The playbooks page provides three complete prompts and the downloadable `repo-maintenance` Skill.
 
-The site defaults to English and offers a persistent Simplified Chinese switch and system, light, and dark themes. Unknown locales fall back to English; missing Chinese UI translations fall back to English and then the stable key. Locale and theme affect presentation, not the source standards, prompts, slide facts, or downloads.
+The site defaults to English and offers a persistent Simplified Chinese switch and system, light, and dark themes. Unknown locales fall back to English; missing Chinese UI translations fall back to English and then the stable key. Locale and theme affect presentation, not the source standards, prompts, or downloads.
 
 The generated site works offline when opened from `index.html`; pages embed their styles, locale catalogs, and browser scripts. Online source links and downloads require connectivity. To install the Skill, copy the complete `skills/repo-maintenance` folder so its workflow files are included.
 
@@ -42,6 +42,6 @@ bun audit
 
 Resolve `DATA_ROOT` from machine-local settings before building. The output directory must be empty or marked with this builder's `.standards-site.json`; unrelated files are rejected. The builder stages its output before publishing known files. Retained output belongs under `DATA_ROOT`; CI and tests use temporary directories. Browser tests need Chromium. Install it locally with `bunx playwright install chromium`; CI installs the browser and system dependencies.
 
-Use `bun run dev` for local development. The builder preserves the `talk/2026-10-18/reading.html` route and the download names `repo-maintenance.zip` and `engineering-practices-offline.zip`. The retired Python builder and its tests have been replaced by the TypeScript build and browser/artifact checks; Python is not a site build dependency.
+Use `bun run dev` for local development. The builder preserves the download names `repo-maintenance.zip` and `engineering-practices-offline.zip`. The retired Python builder and its tests have been replaced by the TypeScript build and browser/artifact checks; Python is not a site build dependency.
 
 Changes to the standards, site, content, Skill, or Pages workflow trigger checks. Pull requests build and validate without deploying. Pushes to `main` and manual workflow dispatches also deploy the Pages site.

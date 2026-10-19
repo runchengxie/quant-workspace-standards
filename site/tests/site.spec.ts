@@ -188,54 +188,6 @@ test("clipboard denial selects the complete prompt, independent of theme", async
     source.trimEnd(),
   );
 });
-test("offline slides preserve navigation, notes, QR and eight-minute label", async ({
-  page,
-}) => {
-  const failures: string[] = [];
-  page.on("pageerror", (error) => failures.push(error.message));
-  await page.route(/^https?:/, (route) => route.abort());
-  await page.goto(url("talk/2026-10-18/index.html"));
-  await page.selectOption(".locale", "zh-CN");
-  await expect(page.locator(".slide:visible")).toContainText("约 8 分钟");
-  await page.locator("main").click({ position: { x: 2, y: 2 } });
-  await page.keyboard.press("ArrowRight");
-  await expect(page.locator("#page-count")).toHaveText("2 / 4");
-  expect(page.url()).toContain("#customers");
-  await page.keyboard.press("End");
-  await expect(page.locator("#page-count")).toHaveText("4 / 4");
-  await expect(page.locator(".qr svg").first()).toBeVisible();
-  await page.locator("main").click({position:{x:2,y:2}});
-  await page.keyboard.press("n");
-  await expect(page.locator("#speaker-notes")).toBeVisible();
-  expect(failures).toEqual([]);
-});
-test("all slides fit the projector in both themes and languages", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1280, height: 720 });
-  await page.goto(url("talk/2026-10-18/index.html"));
-  const ids = await page
-    .locator(".slide")
-    .evaluateAll((slides) => slides.map((slide) => slide.id));
-  for (const theme of ["light", "dark"]) {
-    await page.selectOption(".theme", theme);
-    for (const locale of ["en-US", "zh-CN"]) {
-      await page.selectOption(".locale", locale);
-      for (const id of ids) {
-        await page.evaluate((id) => {
-          location.hash = id;
-        }, id);
-        await expect(page.locator(".slide:visible")).toHaveAttribute("id", id);
-        expect(
-          await page
-            .locator(".deck-controls")
-            .evaluate((el) => el.getBoundingClientRect().bottom),
-          `${theme}/${locale}/${id}`,
-        ).toBeLessThanOrEqual(720);
-      }
-    }
-  }
-});
 test("mobile pages stay within the viewport in either theme", async ({
   page,
 }) => {
@@ -244,7 +196,6 @@ test("mobile pages stay within the viewport in either theme", async ({
     "index.html",
     "standards/index.html",
     "playbooks/index.html",
-    "talk/2026-10-18/index.html",
   ]) {
     await page.goto(url(route));
     await page.selectOption(".locale", "zh-CN");
@@ -369,13 +320,13 @@ test("missing UI translations fall back to English and then the stable key", asy
   await expect(page.locator("#missing-ui-key")).toHaveText("testMissingKey");
 });
 
-test("home presents three entries and playbooks presents two ways to do the same work", async ({ page }) => {
+test("home presents two entries and playbooks presents two ways to do the same work", async ({ page }) => {
   await page.goto(url('index.html'));
   await expect(page.locator('main h1:visible')).toHaveText('AI can write code. Who maintains the system?');
-  await expect(page.locator('.locale-panel:visible .handbook-index li')).toHaveCount(3);
+  await expect(page.locator('.locale-panel:visible .handbook-index li')).toHaveCount(2);
   await page.selectOption('.locale', 'zh-CN');
   await expect(page.locator('main h1:visible')).toHaveText('AI 能写代码，谁来维护系统？');
-  await expect(page.locator('[data-locale="zh-CN"] .handbook-index a')).toHaveText(['开发规范', '提示词与 Skill', '10 月 18 日分享']);
+  await expect(page.locator('[data-locale="zh-CN"] .handbook-index a')).toHaveText(['开发规范', '提示词与 Skill']);
   await expect(page.locator('main')).not.toContainText('适用范围');
   await page.selectOption('.locale', 'en-US');
   await page.locator('nav [data-i18n="playbooks"]').click();
@@ -479,14 +430,10 @@ test("graph tooltip closes when its focused node becomes pending again", async (
  await expect(node).not.toHaveAttribute("aria-describedby", "flow-tooltip");
 });
 
-test("standards connects the download to its workflow and talk is anonymized", async ({page}) => {
+test("standards connects the download to its workflow", async ({page}) => {
  await page.goto(url("standards/index.html"));
  await page.selectOption(".locale","zh-CN");
  await expect(page.locator(".standards-heading")).toHaveText("开发规范");
  await expect(page.locator(".standards-relation")).toContainText("这份规范中的默认开发流程");
- await page.goto(url("talk/2026-10-18/reading.html"));
- await expect(page.locator("main")).toContainText("重复发送检查");
- await expect(page.locator("main")).not.toContainText("PR #");
- await expect(page.locator("main")).not.toContainText("稿件备注");
- await expect(page.locator("main")).not.toContainText("674");
+
 });

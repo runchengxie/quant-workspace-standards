@@ -3,17 +3,7 @@ import { resolve } from "node:path";
 import { marked } from "marked";
 import { repoRoot } from "./paths";
 import type { Locale } from "./locale";
-import slideSource from "../../../content/talk-slides.json";
 export const locales: readonly Locale[] = ["en-US", "zh-CN"];
-export type Slide = {
-  id: string;
-  title: Record<Locale, string>;
-  points: Record<Locale, string[]>;
-  notes: string;
-  case: string | null;
-  image?: { src: string; source?: string; alt: Record<Locale, string> };
-};
-export const slides: readonly Slide[] = slideSource;
 export function text(path: string): string {
   return readFileSync(resolve(repoRoot, path), "utf8");
 }
