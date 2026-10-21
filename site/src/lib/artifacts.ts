@@ -131,7 +131,7 @@ export function packageDownloads(output: string): void {
   const skill: Record<string, Uint8Array> = {};
   for (const path of skillPaths) {
     const name = `repo-maintenance/${path}`;
-    const source = readFileSync(join(repoRoot, "skills", name));
+    const source = readFileSync(join(repoRoot, "scripts", name));
     skill[name] = source;
     const destination = join(output, "downloads", name);
     mkdirSync(dirname(destination), { recursive: true });

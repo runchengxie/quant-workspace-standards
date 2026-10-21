@@ -13,10 +13,10 @@ export function rendered(path: string): string {
 export function documentPath(name: string, locale: Locale): string {
   if (name === "standards")
     return locale === "en-US" ? "AGENTS.md" : "AGENTS.zh-CN.md";
-  return `content/${name}.${locale === "en-US" ? "en" : "zh-CN"}.md`;
+  return `docs/content/${name}.${locale === "en-US" ? "en" : "zh-CN"}.md`;
 }
 export function promptPath(name: string, locale: Locale): string {
   return locale === "en-US"
-    ? `skills/repo-maintenance/workflows/${name}.md`
-    : `content/prompts/${name}.zh-CN.md`;
+    ? `scripts/repo-maintenance/workflows/${name}.md`
+    : `docs/content/prompts/${name}.zh-CN.md`;
 }

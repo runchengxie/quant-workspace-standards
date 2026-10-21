@@ -1,74 +1,29 @@
-# Quant Workspace Standards
+# AI-Assisted Development Standards
 
-Workspace-wide development standards for repositories under the quant code workspace.
+Practical rules for working with AI coding agents. They cover how to inspect a project, keep parallel changes separate, verify behavior, and finish delivery without losing other people's work.
 
-The root [`AGENTS.md`](AGENTS.md) is the canonical, versioned standard. Keep local workspace instructions aligned with it, record resolved `CODE_ROOT`, `DATA_ROOT`, and `CONFIG_ROOT` in local instructions or settings, and preserve each project's own `AGENTS.md`.
+[中文说明](README.zh-CN.md) · [Read the website](https://runchengxie.github.io/quant-workspace-standards/)
 
-This repository contains general standards. Keep credentials, personal settings, machine-specific paths, raw data, and runtime artifacts outside the repository.
+## What this covers
 
-## Read the standards
+- Read the project's instructions and current state before making changes.
+- Give independent tasks separate branches and worktrees.
+- Keep code, tests and documentation consistent; report checks actually run.
+- Use the authorized PR process and verify changes against the current target branch.
+- Preserve unrelated work and active runtime resources during cleanup.
+- Keep private configuration, data and generated output outside source repositories.
 
-- [Source standard](AGENTS.md)
-- [GitHub Pages site](https://runchengxie.github.io/quant-workspace-standards/)
-- [English standard download](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md) and [Chinese translation](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md)
-- [Parallel worktree workflow](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)
+## How to use it
 
-## Site content
+Start with [the standards](AGENTS.md), or [the Chinese translation](AGENTS.zh-CN.md). Adapt the general rules to your workspace and keep project-specific boundaries and validation commands in each project's AGENTS.md. Review the delivery policy before adopting it; this workspace's authorization to merge assigned work is not a universal team policy.
 
-The standards page presents the default worktree workflow and seven source-backed chapters. The playbooks page provides three complete prompts and the downloadable `repo-maintenance` Skill.
+For recurring repository maintenance, use [repo-maintenance](scripts/repo-maintenance/SKILL.md). It supports read-only audits, code maintenance, documentation checks and closeout. The [Prompts & Skill page](https://runchengxie.github.io/quant-workspace-standards/playbooks/index.html) provides the standalone prompts, installation instructions and a complete simulated example.
 
-The site defaults to English and offers a persistent Simplified Chinese switch and system, light, and dark themes. Unknown locales fall back to English; missing Chinese UI translations fall back to English and then the stable key. Locale and theme affect presentation, not the source standards, prompts, or downloads.
+## Further reading
 
-The generated site works offline when opened from `index.html`; pages embed their styles, locale catalogs, and browser scripts. Online source links and downloads require connectivity. To install the Skill, copy the complete `skills/repo-maintenance` folder so its workflow files are included.
+- [Local setup](docs/workspace-configuration.md)
+- [Read-only push, cleanup and standards checks](docs/maintenance/tools.en.md)
+- [Behavioral evaluation and observed results](docs/maintenance/evaluation-2026-10-21.md)
+- [Repository and documentation guide](docs/README.md)
 
-Machine-local path settings belong in `CONFIG_ROOT/shared/workspace.toml`. Tools must read the file or receive resolved paths through their environment; TOML does not export shell variables. Honor an existing private configuration layout or use `~/.config/<owner>/`, including an explicitly configured `XDG_CONFIG_HOME`. Tool-specific settings belong where the tool requires them.
-
-## Build and validate
-
-From the repository root, run `node scripts/check-doc-links.mjs` to validate local file links and Markdown heading fragments in `docs/`. CI runs this check for documentation and checker changes without building or deploying the site.
-
-The site uses Astro 7, TypeScript, and Bun 1.4.3. Bun manages the frozen `site/bun.lock`; Astro requires Node.js 22.12.0 or newer. See [site instructions](site/AGENTS.md) for implementation boundaries.
-
-```sh
-cd site
-bun install --frozen-lockfile
-bun run check
-bun run test:unit
-bun run build --output-dir "${DATA_ROOT}/quant/quant-workspace-standards/site"
-STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bun run test:artifacts
-STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bun run test:browser
-bun audit
-```
-
-Resolve `DATA_ROOT` from machine-local settings before building. The output directory must be empty or marked with this builder's `.standards-site.json`; unrelated files are rejected. The builder stages its output before publishing known files. Retained output belongs under `DATA_ROOT`; CI and tests use temporary directories. Browser tests need Chromium. Install it locally with `bunx playwright install chromium`; CI installs the browser and system dependencies.
-
-Use `bun run dev` for local development. The builder preserves the download names `repo-maintenance.zip` and `engineering-practices-offline.zip`. The retired Python builder and its tests have been replaced by the TypeScript build and browser/artifact checks; Python is not a site build dependency.
-
-Changes to the standards, site, content, Skill, or Pages workflow trigger checks. Pull requests build and validate without deploying. Pushes to `main` and manual workflow dispatches also deploy the Pages site.
-
-## Local path configuration
-
-Replace the illustrative absolute paths below with private machine settings. This example uses flat TOML keys and Python 3.11+; adapt the reader if your existing layout uses tables. It only prints paths, without modifying files or exporting shell variables. Keep resolved machine paths private.
-
-```toml
-# CONFIG_ROOT/shared/workspace.toml
-CODE_ROOT = "/srv/example/code"
-DATA_ROOT = "/srv/example/data"
-CONFIG_ROOT = "/srv/example/config"
-```
-
-```sh
-# Set CONFIG_ROOT to the existing private configuration directory first.
-python3 - "$CONFIG_ROOT/shared/workspace.toml" <<'PYTHON'
-import sys
-import tomllib
-from pathlib import Path
-
-settings = tomllib.loads(Path(sys.argv[1]).read_text())
-for key in ("CODE_ROOT", "DATA_ROOT", "CONFIG_ROOT"):
-    value = Path(settings[key])
-    if not value.is_absolute():
-        raise SystemExit(f"{key} must be an absolute path")
-    print(f"{key}: {value}")
-PYTHON
-```
+The English AGENTS.md is the source standard. This repository keeps general rules and reusable tools; personal settings, credentials and runtime data belong elsewhere.

@@ -15,7 +15,7 @@
 
 Codex 使用 `$CODEX_HOME/skills`，未设置时使用 `~/.codex/skills`。其他工具按各自目录安装，并按要求重启或重新加载。下载压缩包本身不会安装，也不会修改生产环境。
 
-[Skill 源文件](https://github.com/runchengxie/quant-workspace-standards/tree/main/skills/repo-maintenance) · [入口指令](../downloads/repo-maintenance/SKILL.md)
+[Skill 源文件](https://github.com/runchengxie/quant-workspace-standards/tree/main/scripts/repo-maintenance) · [入口指令](../downloads/repo-maintenance/SKILL.md)
 
 交付遵循已有用户授权与仓库控制，`audit` 始终只读。报告区分已实现、已合并、已部署和消费者已采用的状态。
 

@@ -3,7 +3,7 @@ import { mkdtempSync, mkdirSync, rmSync, symlinkSync, writeFileSync } from "node
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, test } from "node:test";
-import { checkMarkdownLinks, extractMarkdownLinks } from "./check-doc-links.mjs";
+import { checkMarkdownLinks, extractMarkdownLinks, documentationFiles } from "./check-doc-links.mjs";
 
 const temporaryRoots = [];
 
@@ -86,4 +86,15 @@ test("rejects symlinks that resolve outside the repository", () => {
   assert.deepEqual(checkMarkdownLinks(root, ["docs/index.md"]), [
     "docs/index.md:1: local target resolves outside the repository: 'linked.md'",
   ]);
+});
+
+
+test("source docs include root readmes while rendered content is checked by site artifacts", () => {
+  const root = mkdtempSync(join(tmpdir(), "standards-doc-selection-"));
+  temporaryRoots.push(root);
+  mkdirSync(join(root, "docs/content"), { recursive: true });
+  writeFileSync(join(root, "README.md"), "# Readme\n");
+  writeFileSync(join(root, "docs/guide.md"), "# Guide\n");
+  writeFileSync(join(root, "docs/content/page.md"), "[Download](../downloads/file.zip)\n");
+  assert.deepEqual(documentationFiles(root).sort(), ["README.md", "docs/guide.md"]);
 });

@@ -1,72 +1,29 @@
-# 量化工作区工程规范
+# AI 辅助开发规范
 
-根目录 [`AGENTS.md`](AGENTS.md) 是版本管理中的英文权威规范。保持本地工作区说明与其一致，在本地说明或配置中记录已解析的 `CODE_ROOT`、`DATA_ROOT` 和 `CONFIG_ROOT`，各项目继续维护自己的 `AGENTS.md`。
+这套规范说明怎样和 AI 编程助手一起维护项目。从动手前了解项目，到分开处理多个任务、验证修改，再到提交和收尾，都有对应的规则。
 
-本仓库只保存通用规范。凭据、个人设置、机器路径、原始数据和运行产物都应放在仓库外。
+[English](README.md) · [在线阅读](https://runchengxie.github.io/quant-workspace-standards/)
 
-## 阅读规范
+## 主要管什么
 
-- [英文源文件](AGENTS.md)
-- [GitHub Pages 网站](https://runchengxie.github.io/quant-workspace-standards/)
-- [下载英文规范](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.md)和[中文译版](https://runchengxie.github.io/quant-workspace-standards/downloads/AGENTS.zh-CN.md)
-- [并行 worktree 流程](https://runchengxie.github.io/quant-workspace-standards/standards/index.html#parallel-development)
+- 修改前先读项目要求，检查当前分支和已有改动。
+- 独立任务使用各自的分支和工作目录。
+- 代码、测试和文档保持一致，只报告实际运行的检查。
+- 按已有授权走 PR 流程，合并前对照最新主线验证。
+- 收尾时保留别人的工作和仍在使用的运行资源。
+- 私有配置、数据和运行产物放在源码仓库之外。
 
-## 网站内容
+## 怎么用
 
-规范页展示默认 worktree 流程图和七个与源文件对应的章节。提示词页提供三个完整提示词和可下载的 `repo-maintenance` Skill。
+先读[中文规范](AGENTS.zh-CN.md)，需要核对原文时看[英文规范](AGENTS.md)。按自己的工作区调整通用规则，再把项目边界和验证命令写进各项目的 AGENTS.md。采用前留意交付规则，本工作区允许直接合并已授权任务的做法，需要按团队情况调整。
 
-网站默认英文，并提供持续记忆选择的简体中文界面，以及跟随系统、浅色和深色主题。未知 locale 回退到英文；缺失的中文界面翻译先回退到英文，再回退到稳定键名。语言和主题只改变呈现，不改变规范源文件、提示词或下载内容。
+反复做仓库维护时，可以使用 [repo-maintenance](scripts/repo-maintenance/SKILL.md)。它支持只读审计、代码维护、文档检查和任务收尾。[提示词与 Skill 页面](https://runchengxie.github.io/quant-workspace-standards/playbooks/index.html)提供完整提示词、安装方法和一次模拟演练。
 
-构建后的站点可直接从 `index.html` 离线打开，页面内嵌样式、语言目录和浏览器脚本。访问在线来源和下载仍需联网。安装 Skill 时复制完整的 `skills/repo-maintenance` 文件夹，以保留其中的工作流文件。
+## 需要时再看
 
-机器本地路径设置保存在 `CONFIG_ROOT/shared/workspace.toml`。工具需要主动读取或通过环境变量接收已解析路径，TOML 不会自动导出 shell 变量。沿用已有私有配置布局；没有现成布局时使用 `~/.config/<owner>/`，并遵循显式设置的 `XDG_CONFIG_HOME`。工具专用配置放在工具要求的位置。
+- [本地配置](docs/workspace-configuration.zh-CN.md)
+- [推送、清理与规范差异的只读检查](docs/maintenance/tools.zh-CN.md)
+- [行为评估结果与发现的问题](docs/maintenance/evaluation-2026-10-21.md)
+- [仓库结构与文档入口](docs/README.md)
 
-## 构建与验证
-
-在仓库根目录运行 `node scripts/check-doc-links.mjs`，可检查 `docs/` 下 Markdown 的本地文件链接和标题锚点。文档或检查器变更会单独触发这项 CI 检查，不构建或部署站点。
-
-网站使用 Astro 7、TypeScript 和 Bun 1.4.3。Bun 管理锁定的 `site/bun.lock`；Astro 要求 Node.js 22.12.0 或更新版本。实现边界见[站点指引](site/AGENTS.md)。
-
-```sh
-cd site
-bun install --frozen-lockfile
-bun run check
-bun run test:unit
-bun run build --output-dir "${DATA_ROOT}/quant/quant-workspace-standards/site"
-STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bun run test:artifacts
-STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bun run test:browser
-bun audit
-```
-
-构建前从本机配置解析 `DATA_ROOT`。输出目录必须为空，或包含本构建器写入的 `.standards-site.json` 标记；发现其他文件时会拒绝写入。构建器先在临时目录生成产物，再发布已知文件。保留的构建结果放在 `DATA_ROOT`，CI 和测试使用临时目录。浏览器测试需要 Chromium；本地可通过 `bunx playwright install chromium` 安装，CI 会安装浏览器和系统依赖。
-
-本地开发使用 `bun run dev`。构建器保留 `repo-maintenance.zip` 和 `engineering-practices-offline.zip` 两个下载文件名。旧 Python 构建器及其测试已由 TypeScript 构建、浏览器和产物检查接替；构建网站不依赖 Python。
-
-规范、网站、内容、Skill 或 Pages 工作流发生变化时会触发检查。PR 只构建和验证，不部署。推送到 `main` 和手动触发工作流时会部署 Pages 网站。
-
-## 本地路径配置
-
-将以下示例路径替换为私有机器配置。示例使用顶层 TOML 键和 Python 3.11+；已有配置若使用分组表，按其结构调整读取方式。代码只显示路径，不修改文件或导出 shell 变量。解析结果保持私有。
-
-```toml
-# CONFIG_ROOT/shared/workspace.toml
-CODE_ROOT = "/srv/example/code"
-DATA_ROOT = "/srv/example/data"
-CONFIG_ROOT = "/srv/example/config"
-```
-
-```sh
-# Set CONFIG_ROOT to the existing private configuration directory first.
-python3 - "$CONFIG_ROOT/shared/workspace.toml" <<'PYTHON'
-import sys
-import tomllib
-from pathlib import Path
-
-settings = tomllib.loads(Path(sys.argv[1]).read_text())
-for key in ("CODE_ROOT", "DATA_ROOT", "CONFIG_ROOT"):
-    value = Path(settings[key])
-    if not value.is_absolute():
-        raise SystemExit(f"{key} must be an absolute path")
-    print(f"{key}: {value}")
-PYTHON
-```
+英文 AGENTS.md 是规范原文。这个仓库保留通用规则和可复用工具，个人设置、凭据和运行数据另行保存。
