@@ -174,7 +174,10 @@ class ToolsTest(unittest.TestCase):
     def test_sync_fenced_heading_does_not_create_fake_sections(self):
         content = '# Standard\n\n## Rules\n\n```md\n## Example heading\n```\n\n- Keep work.\n'
         canonical = self.root / 'canonical.md'; local = self.root / 'local.md'
-        canonical.write_text(content); local.write_text(content.replace('\n','\r\n'))
+        canonical.write_bytes(content.encode('utf-8'))
+        # Write exact bytes: Windows text mode would translate CRLF to CRCRLF.
+        local.write_bytes(content.replace('\n', '\r\n').encode('utf-8'))
+        self.assertNotIn(b'\r\r\n', local.read_bytes())
         proc, result = self.run_tool('check-workspace-sync.py', '--canonical', canonical, '--local', local)
         self.assertEqual(proc.returncode, 0)
         self.assertEqual(len(result['sections']), 1)
