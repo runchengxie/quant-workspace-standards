@@ -15,7 +15,9 @@
 
 ## 怎么用
 
-先读[中文规范](AGENTS.zh-CN.md)，需要核对原文时看[英文规范](AGENTS.md)。按自己的工作区调整通用规则，再把项目边界和验证命令写进各项目的 AGENTS.md。采用前留意交付规则，本工作区允许直接合并已授权任务的做法，需要按团队情况调整。
+保留已有工作、验证修改、遵守授权，是通用原则。自动合并、具体目录布局和长期交付权限，是本工作区选定的做法。采用前先看[哪些可以沿用、哪些需要调整](docs/adopting.zh-CN.md)。
+
+先读[中文规范](AGENTS.zh-CN.md)，需要核对原文时看[英文规范](AGENTS.md)。按自己的工作区调整通用规则，再把项目边界和验证命令写进各项目的 AGENTS.md。
 
 反复做仓库维护时，可以使用 [repo-maintenance](scripts/repo-maintenance/SKILL.md)。它支持只读审计、代码维护、文档检查和任务收尾。[提示词与 Skill 页面](https://runchengxie.github.io/quant-workspace-standards/playbooks/index.html)提供完整提示词、安装方法和一次模拟演练。
 

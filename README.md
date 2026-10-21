@@ -15,7 +15,9 @@ Practical rules for working with AI coding agents. They cover how to inspect a p
 
 ## How to use it
 
-Start with [the standards](AGENTS.md), or [the Chinese translation](AGENTS.zh-CN.md). Adapt the general rules to your workspace and keep project-specific boundaries and validation commands in each project's AGENTS.md. Review the delivery policy before adopting it; this workspace's authorization to merge assigned work is not a universal team policy.
+Preserving work, verifying changes and respecting authorization are general principles. Automatic merging, the exact directory layout and the standing delivery permissions are choices made by this workspace. See [what to keep and what to adapt](docs/adopting.md) before adopting them.
+
+Start with [the standards](AGENTS.md), or [the Chinese translation](AGENTS.zh-CN.md). Adapt the general rules to your workspace and keep project-specific boundaries and validation commands in each project's AGENTS.md.
 
 For recurring repository maintenance, use [repo-maintenance](scripts/repo-maintenance/SKILL.md). It supports read-only audits, code maintenance, documentation checks and closeout. The [Prompts & Skill page](https://runchengxie.github.io/quant-workspace-standards/playbooks/index.html) provides the standalone prompts, installation instructions and a complete simulated example.
 
