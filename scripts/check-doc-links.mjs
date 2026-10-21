@@ -228,9 +228,17 @@ export function checkMarkdownLinks(repositoryRoot, files) {
   return errors;
 }
 
+export function documentationFiles(repositoryRoot) {
+  // Rendered prose uses built-site URLs; artifact checks validate those links.
+  const sourceDocs = markdownFiles(resolve(repositoryRoot, "docs"), repositoryRoot)
+    .filter(path => !path.replaceAll("\\", "/").startsWith("docs/content/"));
+  return [...sourceDocs, ...["README.md", "README.zh-CN.md"]
+    .filter(path => existsSync(resolve(repositoryRoot, path)))];
+}
+
 function run() {
   const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-  const files = markdownFiles(resolve(repositoryRoot, "docs"), repositoryRoot);
+  const files = documentationFiles(repositoryRoot);
   const errors = checkMarkdownLinks(repositoryRoot, files);
   if (errors.length) {
     console.error(errors.join("\n"));

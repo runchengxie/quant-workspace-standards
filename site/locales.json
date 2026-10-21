@@ -162,7 +162,8 @@
     "storyWorkflows7": "C also syncs and passes its checks before merging.",
     "storyPause": "Pause",
     "storyStop": "Stop",
-    "storyProgress": "Story playback progress"
+    "storyProgress": "Story playback progress",
+    "maintenanceExample": "A complete maintenance example"
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
@@ -327,6 +328,7 @@
     "storyWorkflows7": "C 同样同步主线，通过检查后合入。",
     "storyPause": "暂停",
     "storyStop": "停止",
-    "storyProgress": "演示播放进度"
+    "storyProgress": "演示播放进度",
+    "maintenanceExample": "完整维护演练"
   }
 }

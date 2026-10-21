@@ -16,7 +16,7 @@ Extract the complete `repo-maintenance` folder into your tool’s Skill director
 
 For Codex, use `$CODEX_HOME/skills`, or `~/.codex/skills` when unset. Other tools use their own Skill directories. Restart or reload discovery when your tool requires it. Downloading the archive does not install it or modify production.
 
-[Skill source](https://github.com/runchengxie/quant-workspace-standards/tree/main/skills/repo-maintenance) · [Routing instructions](../downloads/repo-maintenance/SKILL.md)
+[Skill source](https://github.com/runchengxie/quant-workspace-standards/tree/main/scripts/repo-maintenance) · [Routing instructions](../downloads/repo-maintenance/SKILL.md)
 
 Existing user authorization and repository controls govern delivery. `audit` stays read-only. Reports distinguish implemented, merged, deployed and consumer-adopted states.
 

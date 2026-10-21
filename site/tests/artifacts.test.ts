@@ -17,7 +17,7 @@ test("output validation protects source and its parents, including symlinks", ()
   for (const path of [
     repoRoot,
     dirname(repoRoot),
-    join(repoRoot, "content/output"),
+    join(repoRoot, "docs/content/output"),
     join(repoRoot, "site/src/output"),
     join(repoRoot, "..generated"),
   ]) {
@@ -25,7 +25,7 @@ test("output validation protects source and its parents, including symlinks", ()
   }
   const temp = mkdtempSync(join(tmpdir(), "standards-output-"));
   try {
-    symlinkSync(join(repoRoot, "content"), join(temp, "source"), "dir");
+    symlinkSync(join(repoRoot, "docs/content"), join(temp, "source"), "dir");
     assert.throws(
       () => validateOutput(join(temp, "source/site")),
       /dedicated generated-site/,

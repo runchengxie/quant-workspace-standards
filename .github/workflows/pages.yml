@@ -7,16 +7,16 @@ on:
       - AGENTS.md
       - AGENTS.zh-CN.md
       - 'site/**'
-      - 'content/**'
-      - 'skills/**'
+      - 'docs/content/**'
+      - 'scripts/repo-maintenance/**'
       - .github/workflows/pages.yml
   pull_request:
     paths:
       - AGENTS.md
       - AGENTS.zh-CN.md
       - 'site/**'
-      - 'content/**'
-      - 'skills/**'
+      - 'docs/content/**'
+      - 'scripts/repo-maintenance/**'
       - .github/workflows/pages.yml
   workflow_dispatch:
 

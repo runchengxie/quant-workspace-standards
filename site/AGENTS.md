@@ -1,6 +1,6 @@
 # Website implementation
 
-This directory owns the Astro static site, browser TypeScript, build/download packaging and website tests. The repository root AGENTS.md is the canonical shared standard rendered by the site. AGENTS.zh-CN.md localizes it; prose and prompts live in ../content and the distributable Skill lives in ../skills. Keep project-specific website instructions here rather than adding them to the shared standard.
+This directory owns the Astro static site, browser TypeScript, build/download packaging and website tests. The repository root AGENTS.md is the canonical shared standard rendered by the site. AGENTS.zh-CN.md localizes it; prose and prompts live in ../docs/content and the distributable Skill lives in ../scripts/repo-maintenance. Keep project-specific website instructions here rather than adding them to the shared standard.
 
 Use Bun 1.4.3 with bun.lock for dependency installation and script orchestration. Astro runs under Node >=22.12.0. Run commands from this directory. Keep one package-manager lockfile.
 

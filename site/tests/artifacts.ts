@@ -76,7 +76,7 @@ assert.deepEqual(Object.keys(skill).sort(), expectedSkill);
 for (const path of expectedSkill)
   assert.deepEqual(
     skill[path],
-    new Uint8Array(readFileSync(resolve(repoRoot, "skills", path))),
+    new Uint8Array(readFileSync(resolve(repoRoot, "scripts", path))),
   );
 for (const [path, source] of htmlFiles) {
   const parsed = linksAndIds(source);

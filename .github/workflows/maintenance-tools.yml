@@ -1,0 +1,36 @@
+name: Check maintenance tools
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/*.py'
+      - 'evals/**'
+      - 'scripts/repo-maintenance/**'
+      - '.github/workflows/maintenance-tools.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/*.py'
+      - 'evals/**'
+      - 'scripts/repo-maintenance/**'
+      - '.github/workflows/maintenance-tools.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check-tools:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test local evidence tools and fixture isolation
+        run: python -B -m unittest discover -s scripts -p "test_*.py"

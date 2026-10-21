@@ -20,7 +20,7 @@ Verify ownership, dependency direction, producer/consumer API/CLI/schema/configu
 
 ## Clean up within authorization
 
-Clean only content proven obsolete and within the task's authority. For branch/worktree cleanup, identify owner, unique commits and uncommitted/untracked work, verify the PR was merged and preserve recoverable work. Never infer authorization to merge or delete unrelated branches. Follow existing authorized delivery rules; do not rewrite history, bypass hooks or branch protection, or change production/data/global state without authorization. Report unknown ownership or destructive migrations rather than proceeding.
+Clean only content proven obsolete and within the task's authority. For branch/worktree cleanup, identify owner, unique commits and uncommitted/untracked work, verify the PR was merged and preserve recoverable work. Local ancestry or matching file trees proves neither PR merge nor task ownership. If required merge or ownership evidence is unavailable, retain the branch/worktree and report what is missing; do not substitute a branch name or an empty unique-commit list for that evidence. Never infer authorization to merge or delete unrelated branches. Follow existing authorized delivery rules; do not rewrite history, bypass hooks or branch protection, or change production/data/global state without authorization. Report unknown ownership or destructive migrations rather than proceeding.
 
 ## Final validation and handoff
 

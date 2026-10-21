@@ -79,7 +79,7 @@ test("online preferences persist across routes without changing content or URLs"
   await expect(page.locator(".locale")).toHaveValue("zh-CN");
   expect(new URL(page.url()).search).toBe("");
   const source = readFileSync(
-    new URL("../../content/prompts/code.zh-CN.md", import.meta.url),
+    new URL("../../docs/content/prompts/code.zh-CN.md", import.meta.url),
     "utf8",
   );
   expect(await page.locator(".prompt:visible pre").first().textContent()).toBe(
@@ -178,7 +178,7 @@ test("clipboard denial selects the complete prompt, independent of theme", async
   await page.locator(".prompt:visible button").first().click();
   await expect(page.locator("#copy-status")).toContainText("Ctrl+C");
   const source = readFileSync(
-    new URL("../../content/prompts/code.zh-CN.md", import.meta.url),
+    new URL("../../docs/content/prompts/code.zh-CN.md", import.meta.url),
     "utf8",
   );
   expect(await page.locator(".prompt:visible pre").first().textContent()).toBe(
@@ -366,7 +366,7 @@ test("phase selection copies complete folded source and survives locale changes"
    await expect(page.locator(".prompt-stage:visible")).toHaveAttribute("data-stage", phase);
    await expect(page.locator(".prompt:visible details")).toHaveJSProperty("open", false);
    await page.locator(".prompt:visible button").click();
-   const sourcePath = locale === "en-US" ? `../../skills/repo-maintenance/workflows/${phase}.md` : `../../content/prompts/${phase}.zh-CN.md`;
+   const sourcePath = locale === "en-US" ? `../../scripts/repo-maintenance/workflows/${phase}.md` : `../../docs/content/prompts/${phase}.zh-CN.md`;
    expect(await page.locator("body").getAttribute("data-copied-text")).toBe(readFileSync(new URL(sourcePath, import.meta.url), "utf8"));
   }
  }
@@ -436,4 +436,18 @@ test("standards connects the download to its workflow", async ({page}) => {
  await expect(page.locator(".standards-heading")).toHaveText("开发规范");
  await expect(page.locator(".standards-relation")).toContainText("这份规范中的默认开发流程");
 
+});
+
+
+test("maintenance example discloses actual evidence and delivery limits in both languages", async ({ page }) => {
+  await page.goto(url('playbooks/index.html'));
+  const example = page.locator('details.maintenance-example');
+  await expect(example).not.toHaveAttribute('open', '');
+  await example.locator(':scope > summary').click();
+  await expect(example.getByRole('heading', { name: 'A maintenance request from inspection to handoff', exact: true })).toBeVisible();
+  await expect(example.locator('.locale-panel:visible')).toContainText('Not performed; no remote or authorization');
+  await page.selectOption('.locale', 'zh-CN');
+  await expect(example.locator(':scope > summary')).toHaveText('完整维护演练');
+  await expect(example.getByRole('heading', { name: '一次维护任务：从检查到交接', exact: true })).toBeVisible();
+  await expect(example.locator('.locale-panel:visible')).toContainText('未执行；没有 remote 或相应授权');
 });
