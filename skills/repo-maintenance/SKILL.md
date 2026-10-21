@@ -1,9 +1,11 @@
 ---
 name: repo-maintenance
-description: Audit and maintain repositories and submodules through code governance, documentation and test synchronization, and repository closeout. Use for repository maintenance requests, with audit, code, docs or full modes.
+description: Use for repository audits, code and documentation consistency checks, or task closeout and residue cleanup, including requests such as "audit this project", "check whether docs and tests match the code", or "wrap up this change". Not for conceptual questions or routine edits without a maintenance request.
 ---
 
 # Repository maintenance
+
+First read the target repository's AGENTS.md and inspect git status, branch, remotes and worktrees. Read [shared evidence](references/evidence.md) before any mutation; record scope, baseline and existing authorization, then select the workflow.
 
 Choose the mode from the user's request. For an unspecified maintenance request, infer the narrowest useful workflow; clarify only if intent materially changes scope.
 
