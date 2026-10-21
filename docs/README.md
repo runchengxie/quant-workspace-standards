@@ -4,6 +4,7 @@ The root README explains what the standards are for and how to adopt them. Imple
 
 | Topic | English | 简体中文 |
 | --- | --- | --- |
+| General principles and workspace choices | [Adoption guide](adopting.md) | [采用说明](adopting.zh-CN.md) |
 | Local paths and configuration | [Setup](workspace-configuration.md) | [本地配置](workspace-configuration.zh-CN.md) |
 | Read-only maintenance tools | [Commands and limits](maintenance/tools.en.md) | [命令与边界](maintenance/tools.zh-CN.md) |
 | Website build and publication | [Contributor guide](site-development.md) | [构建与发布](site-development.zh-CN.md) |
