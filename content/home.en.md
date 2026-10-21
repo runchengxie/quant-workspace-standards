@@ -1,4 +1,4 @@
-# AI writes code. Engineering still needs discipline.
+# AI-Assisted Development Standards
 
 Development standards, maintenance prompts and a reusable Skill
 

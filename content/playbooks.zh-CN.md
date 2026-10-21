@@ -2,6 +2,8 @@
 
 ```text
 使用 $repo-maintenance，以 full 模式维护当前仓库及其 submodule。
+先读 AGENTS.md，检查 git status、分支、remote 和 worktree。
+报告有证据的问题、实际验证结果和交付状态。
 基于实际实现确认问题，保留公共契约，遵循仓库已有授权的交付流程。
 ```
 

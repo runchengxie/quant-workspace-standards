@@ -2,6 +2,8 @@
 
 ```text
 Use $repo-maintenance in full mode for this repository and its submodules.
+First read AGENTS.md and inspect git status, branch, remotes and worktrees.
+Report evidenced findings, actual validation and delivery state.
 Base changes on implementation evidence, preserve public contracts,
 and follow the repository's authorized delivery process.
 ```
