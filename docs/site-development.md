@@ -14,7 +14,8 @@ bun run check
 bun run test:unit
 bun run build --output-dir "${DATA_ROOT}/quant/quant-workspace-standards/site"
 STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bun run test:artifacts
-STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" bun run test:browser
+STANDARDS_SITE_OUTPUT_DIR="${DATA_ROOT}/quant/quant-workspace-standards/site" \
+  STANDARDS_BROWSER_OUTPUT_DIR="$(mktemp -d)" bun run test:browser
 bun audit
 ```
 
