@@ -13,5 +13,12 @@ import WorktreeFlow from '../components/WorktreeFlow.astro';
   </div>
   <p id="standards-relation" class="standards-relation sr-only" data-i18n="standardsRelation">{catalog['en-US'].standardsRelation}</p>
   </div>
+  <section aria-labelledby="adoption-title">
+    <h2 id="adoption-title" data-i18n="adoptionTitle">{catalog['en-US'].adoptionTitle}</h2>
+    <p data-i18n="adoptionPermissions">{catalog['en-US'].adoptionPermissions}</p>
+    <p data-i18n="adoptionPlacement">{catalog['en-US'].adoptionPlacement}</p>
+    <p data-i18n="adoptionRoots">{catalog['en-US'].adoptionRoots}</p>
+    <p data-i18n="adoptionVerify">{catalog['en-US'].adoptionVerify}</p>
+  </section>
   <WorktreeFlow><StandardsDocument /></WorktreeFlow>
 </Layout>

@@ -43,6 +43,7 @@ test.afterAll(async () => {
 
 test("standards downloads preserve both source files and the diagram localizes", async ({ page }) => {
   await page.goto(`${origin}/standards/`);
+  await expect(page.locator("#adoption-title")).toHaveText("Before adopting the standards");
   for (const name of ["AGENTS.md", "AGENTS.zh-CN.md"]) {
     const downloading = page.waitForEvent("download");
     await page.locator(`a[download="${name}"]`).click();
@@ -54,6 +55,8 @@ test("standards downloads preserve both source files and the diagram localizes",
   }
   await page.selectOption(".locale", "zh-CN");
   await expect(page.locator("#flow-title")).toHaveText("开发流程示意图");
+  await expect(page.locator("#adoption-title")).toHaveText("采用前先核对");
+  await expect(page.locator('[data-i18n="adoptionVerify"]')).toContainText("下载文件不等于已经生效");
   await expect(page.locator(".flow-lane")).toHaveCount(3);
   await page.locator(".worktree-flow .flow-notes > summary").click();
   await page.locator(".flow-coordination > summary").click();
