@@ -163,7 +163,12 @@
     "storyPause": "Pause",
     "storyStop": "Stop",
     "storyProgress": "Story playback progress",
-    "maintenanceExample": "A complete maintenance example"
+    "maintenanceExample": "A complete maintenance example",
+    "adoptionTitle": "Before adopting the standards",
+    "adoptionPermissions": "Choose which tasks authorize a local patch, a PR, or merging and cleanup. The downloaded file includes this workspace’s standing merge authorization; adapt it to your team and keep repository protections in force.",
+    "adoptionPlacement": "Place shared instructions in AGENTS.md at your workspace root. Put project boundaries and exact checks in each repository’s AGENTS.md. Keep personal preferences in global assistant instructions and concrete machine paths in private configuration. Preserve existing instructions when combining files.",
+    "adoptionVerify": "To verify adoption, start a new assistant session in a repository and ask it to list the instruction files it loaded, the target repository, permitted delivery steps and required checks before editing. Compare its answer with the files. A downloaded file alone does not prove it was loaded; file discovery depends on the assistant and its launch directory.",
+    "adoptionRoots": "Resolve CODE_ROOT, DATA_ROOT and CONFIG_ROOT before running the examples. Decide the destination repository and branch, review requirements and data locations before granting delivery permission. Full standards and downloads remain available below and above."
   },
   "zh-CN": {
     "standardsDownloads": "下载开发规范",
@@ -329,6 +334,11 @@
     "storyPause": "暂停",
     "storyStop": "停止",
     "storyProgress": "演示播放进度",
-    "maintenanceExample": "完整维护演练"
+    "maintenanceExample": "完整维护演练",
+    "adoptionTitle": "采用前先核对",
+    "adoptionPermissions": "先约定任务授权到本地修改、创建 PR，还是合并与清理。下载文件包含本工作区的持续合并授权，采用时应按团队约定调整，并遵守仓库保护规则。",
+    "adoptionPlacement": "共享规范放在工作区根目录的 AGENTS.md，各仓库的 AGENTS.md 记录项目边界和检查命令。个人偏好放在助手的全局指令中，机器路径留在私有配置里。合并文件时保留已有指令。",
+    "adoptionVerify": "验证时，在仓库中启动新的助手会话，先让它列出已读取的指令文件、目标仓库、允许的交付步骤和必须运行的检查，再与文件逐项核对。下载文件不等于已经生效，指令查找方式取决于助手和启动目录。",
+    "adoptionRoots": "运行示例前，先解析 CODE_ROOT、DATA_ROOT 和 CONFIG_ROOT。确认目标仓库与分支、评审要求和数据位置，再授予交付权限。完整规范和下载文件继续保留在本页。"
   }
 }
