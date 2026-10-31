@@ -12,6 +12,8 @@ The root README explains what the standards are for and how to adopt them. Imple
 
 [Behavioral evaluation procedure](maintenance/evaluation.md) · [Initial observations and correction](maintenance/evaluation-2026-10-21.md)
 
+[Agent interface contracts](agent-interface-contracts.md) — discovery, preflight, errors, handoffs and behavioral acceptance.
+
 ## Repository layout
 
 - Root AGENTS.md and AGENTS.zh-CN.md contain the shared standard and translation.
