@@ -17,6 +17,12 @@ These standards apply to a workspace containing multiple independent repositorie
 - Keep locale selection separate from business logic. Store timestamps and other values according to the data contract; format them for display using the selected locale and an explicit time zone.
 - Keep machine logs, APIs, persisted data, and internal identifiers stable and language-neutral. Translate human-facing UI text and documentation instead of changing data or protocol values by locale.
 
+## Documentation Internationalization
+
+- Use English for the default `README.md` and reader-facing documentation without a locale suffix. Put Chinese translations in explicitly named files such as `README.zh-CN.md` and `docs/setup.zh-CN.md`; use the corresponding locale suffix for other translations. Preserve established explicit English filenames such as `.en.md` when changing them would break existing links or contracts.
+- Add visible reciprocal language links near the top of each translated document and its English counterpart. Keep translated instructions, examples, limitations and links aligned when the source changes; do not require translations of every internal note or historical record.
+- Keep the root README concise: explain the project, its current scope and the next useful steps, then link to detailed setup, architecture, usage and operations documentation under `docs/`.
+
 ## Reader-Facing Content and Research Sources
 
 - Apply these principles to websites, public-facing text, explanatory documentation, reports, research notes, and similar content. Lead with the current conclusion or the reader's next useful action, then provide evidence, scope, and limitations in the order needed to assess it. Match the language and level of detail to the intended audience.
