@@ -68,9 +68,45 @@ jobs:
         with:
           path: ${{ runner.temp }}/standards-site
 
+  minimum-node:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Configure temporary output
+        run: |
+          printf 'STANDARDS_SITE_OUTPUT_DIR=%s/standards-site-minimum\nSTANDARDS_BROWSER_OUTPUT_DIR=%s/standards-browser-minimum\n' "$RUNNER_TEMP" "$RUNNER_TEMP" >> "$GITHUB_ENV"
+      - name: Set up minimum supported Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22.12.0'
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.4.3'
+      - name: Install locked dependencies
+        run: bun install --frozen-lockfile
+      - name: Check Astro and TypeScript
+        run: bun run check
+      - name: Test preferences and output boundaries
+        run: bun run test:unit
+      - name: Build site and downloads
+        run: bun run build --output-dir "$STANDARDS_SITE_OUTPUT_DIR"
+      - name: Validate portable pages and resources
+        run: bun run test:artifacts
+      - name: Install browser
+        run: bunx playwright install --with-deps chromium
+      - name: Validate minimum-Node themes, localization and offline presentation
+        run: bun run test:browser
+      - name: Audit locked dependencies
+        run: bun audit
+
   deploy:
     if: github.event_name != 'pull_request'
-    needs: build
+    needs: [build, minimum-node]
     runs-on: ubuntu-latest
     permissions:
       pages: write
