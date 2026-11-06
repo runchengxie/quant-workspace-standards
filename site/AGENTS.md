@@ -4,6 +4,10 @@ This directory owns the Astro static site, browser TypeScript, build/download pa
 
 Use Bun 1.4.3 with bun.lock for dependency installation and script orchestration. Astro runs under Node >=22.12.0. Run commands from this directory. Keep one package-manager lockfile.
 
+The Pages workflow validates the same locked site on Node 22.12.0 and Node 24.
+Both jobs must pass before deployment; only the Node 24 build uploads the Pages
+artifact. Keep the minimum-version check aligned with the declared Node contract.
+
 Validation:
 
 ```sh
