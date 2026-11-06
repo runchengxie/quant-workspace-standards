@@ -29,5 +29,8 @@
     "esbuild": "0.28.2",
     "parse5": "8.1.0",
     "typescript": "6.0.3"
+  },
+  "overrides": {
+    "unifont": "0.7.4"
   }
 }

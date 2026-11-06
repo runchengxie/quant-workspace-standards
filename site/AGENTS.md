@@ -19,3 +19,19 @@ bun audit
 Use a disposable output directory for tests and the configured project DATA_ROOT for retained previews. HTML must contain inline classic browser scripts and styles so file:// use works without a server. Preserve public route/file URLs, complete prompt text, download names. Offline file links carry presentation preferences when localStorage is unreliable; online pages use localStorage. Theme and locale must not alter source facts, prompt text or archive membership.
 
 Theme choices are system/light/dark. Apply the initial theme before paint, persist explicit changes, and respond to system changes only in system mode. Localize visible UI, page titles and accessible names using locales.json. Keep English default and existing maintenance-locale/maintenance-theme storage keys stable.
+
+## Temporary font dependency compatibility
+
+The site pins `unifont` to `0.7.4` through Bun's package overrides. This is an
+explicit exception to Astro 7.3.8's `~0.7.5` range: unifont 0.7.5 introduces
+undici 8, which requires Node >=22.19 and conflicts with this site's Node
+>=22.12 contract. Keep Astro's security fixes and the existing Node minimum.
+
+The 0.7.4 and 0.7.5 exports and type signatures match. Provider transport,
+retry behavior and some font CSS parsing differ. This site does not configure
+Astro `fonts` or font providers; the override is validated only for that current
+boundary, including the full build and browser checks on Node 22.12. Before
+adding a font provider, re-evaluate the override and its behavior. Remove it
+when the upstream dependency chain supports the declared minimum, or during an
+explicitly reviewed Node support migration. Do not replace it with an
+unsupported undici major override or suppress engine/security checks.
