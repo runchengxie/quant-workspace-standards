@@ -38,6 +38,26 @@ class ToolsTest(unittest.TestCase):
     def push(self):
         return self.run_tool('repo-preflight.py', 'push', '--repo', self.repo, '--remote', 'origin', '--target', 'main', '--expected-repository', 'example/project')
 
+    def test_production_prioritizes_approved_pin_drift(self):
+        root = self.root / 'production'
+        current = root / self.repo.name / 'current'
+        current.parent.mkdir(parents=True)
+        git(self.repo, 'clone', '--quiet', str(self.repo), str(current))
+        sha = git(current, 'rev-parse', 'HEAD')
+        approved = self.root / 'approved.json'
+        common = {'repository': self.repo.name, 'path': 'current', 'reason': 'Reviewed test release'}
+        approved.write_text(json.dumps([
+            {**common, 'source': 'current', 'revision': 'a' * 40},
+            {**common, 'source': 'missing.service', 'revision': sha},
+        ]), encoding='utf-8')
+        proc, result = self.run_tool(
+            'repo-preflight.py', 'production', '--repo', self.repo,
+            '--production-root', root, '--owner', 'example', '--approved', approved,
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertEqual([x['approval_state'] for x in result['attention']],
+                         ['revision_drift', 'evidence_unavailable'])
+
     def test_production_reports_remote_mismatch_without_network(self):
         root = self.root / 'production'
         full_sha = git(self.repo, 'rev-parse', 'HEAD')
