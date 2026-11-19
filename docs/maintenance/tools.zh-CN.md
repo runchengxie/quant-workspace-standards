@@ -74,3 +74,7 @@ python -B scripts/repo-preflight.py production \
 `repository`、`source`（`current` 或服务名）、`path`（报告中的生产相对路径）、
 `revision`（完整 SHA）和 `reason`。服务或路径缺失时记录为证据不可用。
 `attention` 列出证据缺失和版本偏离。已批准的版本落后主线时仍只记录在常规巡检中。
+
+服务直接环境变量中的生产目录（例如渲染器检出）可用
+`--unit-env-path SERVICE:VARIABLE` 核对。报告只显示显式选择、位于生产根下的路径，
+其他环境值不会输出。对应的基线来源写作 `SERVICE:VARIABLE`。

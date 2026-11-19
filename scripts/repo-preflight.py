@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import subprocess
 import sys
 from urllib.parse import urlsplit
@@ -243,6 +244,37 @@ def service_paths(root, units):
     return paths, unavailable
 
 
+def service_environment_paths(root, registrations):
+    """Observe only explicitly requested production path variables."""
+    observed, unavailable = [], []
+    for registration in registrations:
+        unit, separator, variable = registration.partition(':')
+        if (not separator or not re.fullmatch(r'[A-Za-z0-9_.@-]+\.service', unit)
+                or not re.fullmatch(r'[A-Z][A-Z0-9_]*', variable)):
+            raise Unavailable('invalid_unit_environment_registration')
+        try:
+            run = subprocess.run(
+                ['systemctl', '--user', 'show', '-p', 'Environment', '--value', '--', unit],
+                capture_output=True, text=True, timeout=10,
+            )
+            values = shlex.split(run.stdout) if run.returncode == 0 else []
+            selected = [value.split('=', 1)[1] for value in values if value.startswith(variable + '=')]
+            if len(selected) != 1:
+                raise ValueError('missing path')
+            path = Path(selected[0])
+            name, *parts = path.relative_to(root).parts
+            relative = '/'.join(parts)
+            if not re.fullmatch(r'current|(?:content|releases)/[0-9a-f]{7,40}', relative):
+                raise ValueError('unsupported production path')
+            if (path / '.git').exists() and git(path, 'status', '--porcelain'):
+                raise ValueError('local checkout is dirty')
+        except (OSError, ValueError, subprocess.TimeoutExpired, Unavailable):
+            unavailable.append(registration)
+            continue
+        observed.append((registration, name, relative))
+    return observed, unavailable
+
+
 def production_row(repo, root, owner, remote_name, references):
     remote = None
     error = None
@@ -315,6 +347,9 @@ def production(args):
     if not repos:
         raise Unavailable('no_repositories')
     observed, unavailable = service_paths(root, args.unit)
+    env_paths, env_unavailable = service_environment_paths(root, args.unit_env_path)
+    observed.extend(env_paths)
+    unavailable.extend(env_unavailable)
     references = {name: [] for name in repos}
     for name in repos:
         current = root / name / 'current'
@@ -359,6 +394,7 @@ def main():
     auditing.add_argument('--owner', required=True)
     auditing.add_argument('--remote', default='origin')
     auditing.add_argument('--approved', help='Private JSON array of approved production pins')
+    auditing.add_argument('--unit-env-path', action='append', default=[], help='Explicit UNIT:VARIABLE production directory')
     auditing.add_argument('--unit', action='append', default=[], help='Loaded systemd user unit to inspect')
     args = parser.parse_args()
     if args.operation == 'push' and not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', args.expected_repository):
