@@ -71,3 +71,10 @@ visible. The command does not inspect private service environment variables,
 installed packages, running binaries, or remote deployment status. Schedule it
 from a stable checkout and retain the JSON in the service journal or under the
 configured data root. The command never fetches or deploys.
+
+Use `--approved` with a private JSON array to make approved consumer pins
+visible separately from distance to main. Each entry has `repository`, `source`
+(`current` or a unit name), `path` (the reported relative production path),
+`revision` (full SHA), and `reason`. A pin with a missing service or path is
+reported as unavailable evidence. `attention` lists unavailable evidence and
+revision drift. An approved pin behind main does not enter that list.

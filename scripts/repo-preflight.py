@@ -265,6 +265,37 @@ def production_row(repo, root, owner, remote_name, references):
             'production': views}
 
 
+def compare_approved(rows, policy_path):
+    policies = json.loads(Path(policy_path).read_text(encoding='utf-8'))
+    if not isinstance(policies, list) or not policies:
+        raise Unavailable('invalid_approved_pins')
+    observations = {
+        (row['repository'], view['source'], view['path']): view['revision']
+        for row in rows for view in row['production']
+    }
+    checked = set()
+    results = []
+    for policy in policies:
+        fields = {'repository', 'source', 'path', 'revision', 'reason'}
+        if (not isinstance(policy, dict) or set(policy) != fields
+                or any(not isinstance(value, str) or not value.strip() for value in policy.values())
+                or not re.fullmatch(r'[0-9a-f]{40}', policy['revision'])):
+            raise Unavailable('invalid_approved_pin')
+        key = (policy['repository'], policy['source'], policy['path'])
+        if key in checked:
+            raise Unavailable('duplicate_approved_pin')
+        checked.add(key)
+        actual = observations.get(key)
+        if not actual:
+            state = 'evidence_unavailable'
+        elif actual != policy['revision']:
+            state = 'revision_drift'
+        else:
+            state = 'matches_approved'
+        results.append({**policy, 'actual_revision': actual, 'approval_state': state})
+    return results
+
+
 def production(args):
     root = Path(args.production_root).resolve()
     if not root.is_dir():
@@ -296,9 +327,17 @@ def production(args):
         jobs = [pool.submit(production_row, repo, root, args.owner, args.remote, references[name])
                 for name, repo in sorted(repos.items())]
         rows = [job.result() for job in jobs]
-    return {'schema_version': 1, 'operation': 'production',
-            'checked_at_utc': datetime.now(timezone.utc).isoformat(),
-            'unavailable_units': unavailable, 'repositories': rows}, 0
+    result = {'schema_version': 1, 'operation': 'production',
+              'checked_at_utc': datetime.now(timezone.utc).isoformat(),
+              'unavailable_units': unavailable, 'repositories': rows}
+    if args.approved:
+        try:
+            approved = compare_approved(rows, args.approved)
+        except (ValueError, UnicodeError) as exc:
+            raise Unavailable('invalid_approved_pin_file') from exc
+        result['approved_pins'] = approved
+        result['attention'] = [row for row in approved if row['approval_state'] != 'matches_approved']
+    return result, 0
 
 
 def main():
@@ -319,6 +358,7 @@ def main():
     auditing.add_argument('--production-root', required=True)
     auditing.add_argument('--owner', required=True)
     auditing.add_argument('--remote', default='origin')
+    auditing.add_argument('--approved', help='Private JSON array of approved production pins')
     auditing.add_argument('--unit', action='append', default=[], help='Loaded systemd user unit to inspect')
     args = parser.parse_args()
     if args.operation == 'push' and not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', args.expected_repository):
