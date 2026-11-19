@@ -51,3 +51,21 @@ python3 -B -m unittest discover -s scripts -p 'test_*.py'
 ```
 
 另见[行为评估](evaluation.md)与[完整演练](../content/maintenance-example.zh-CN.md)，区分脚本检查与 agent 判断。
+
+## 生产版本巡检
+
+使用配置好的工作区根和已核实的 GitHub 所有者运行只读巡检。每个要核对启动命令或
+工作目录的 systemd 用户服务各传一次 `--unit`。
+
+```bash
+python -B scripts/repo-preflight.py production \
+  --repo-group "$CODE_ROOT/quant" \
+  --production-root "$CODE_ROOT/production" \
+  --owner "$GITHUB_OWNER" \
+  --unit "$REPORT_SERVICE"
+```
+
+输出列出实时远端 `main` 的提交，以及 `current` 和匹配的服务路径选中的版本。
+固定版本落后主线可能是预期行为。远端不可用、版本不明和未匹配的服务都会标记。
+巡检不读取服务私有环境变量，不检查已安装包、运行中的二进制或远端部署状态。
+可让定时任务使用稳定检出，结果存入服务日志或配置的数据根。巡检不会拉取或部署代码。

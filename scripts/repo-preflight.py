@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Read-only, local Git evidence. Never fetches, pushes, merges or deletes."""
+"""Collect Git and production evidence without fetching, deploying or deleting."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -183,6 +185,122 @@ def cleanup(args):
     return result, 1
 
 
+def compare_release(repo, deployed, remote):
+    if not deployed or not remote:
+        return {'state': 'unknown'}
+    if deployed == remote:
+        return {'state': 'matches_main', 'behind': 0, 'ahead': 0}
+    try:
+        ahead, behind = map(
+            int, git(repo, 'rev-list', '--left-right', '--count', f'{deployed}...{remote}').split()
+        )
+    except (Unavailable, ValueError):
+        return {'state': 'different_history_unavailable'}
+    state = 'diverged' if ahead and behind else 'behind_main' if behind else 'ahead_of_main'
+    return {'state': state, 'behind': behind, 'ahead': ahead}
+
+
+def release_commit(path):
+    if not path.is_dir():
+        return None
+    path = path.resolve()
+    # Exported releases use their full source revision as the directory name.
+    if re.fullmatch(r'[0-9a-f]{40}', path.name):
+        return path.name
+    if (path / '.git').exists():
+        try:
+            return revision(path, 'HEAD')
+        except Unavailable:
+            return None
+    return None
+
+
+def service_paths(root, units):
+    if not units:
+        return [], []
+    paths, unavailable = [], []
+    pattern = re.compile(
+        re.escape(str(root)) + r'/([A-Za-z0-9_.-]+)/(current|(?:releases|content)/[0-9a-f]{7,40})(?=[/\s;}]|$)'
+    )
+    for unit in units:
+        try:
+            run = subprocess.run(
+                ['systemctl', '--user', 'show', '-p', 'LoadState', '-p',
+                 'WorkingDirectory', '-p', 'ExecStart', '--', unit],
+                capture_output=True, text=True, timeout=10
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            unavailable.append(unit)
+            continue
+        if run.returncode or 'LoadState=loaded' not in run.stdout.splitlines():
+            unavailable.append(unit)
+            continue
+        # Never emit raw ExecStart arguments or environment.
+        matches = sorted(set(pattern.findall(run.stdout)))
+        paths.extend((unit, name, relative) for name, relative in matches)
+        if not matches:
+            unavailable.append(unit)
+    return paths, unavailable
+
+
+def production_row(repo, root, owner, remote_name, references):
+    remote = None
+    error = None
+    try:
+        info = destination(git(repo, 'remote', 'get-url', remote_name))
+        if info['credential_bearing'] or info['repository'] != f'{owner}/{repo.name}':
+            raise Unavailable('remote_identity_mismatch')
+        lines = git(repo, 'ls-remote', '--exit-code', remote_name, 'refs/heads/main').splitlines()
+        if len(lines) != 1 or not re.fullmatch(r'[0-9a-f]{40}\trefs/heads/main', lines[0]):
+            raise Unavailable('remote_main_unavailable')
+        remote = lines[0].split()[0]
+    except Unavailable as exc:
+        error = str(exc)
+    views = []
+    for source, relative in references:
+        deployed = release_commit(root / repo.name / relative)
+        views.append({'source': source, 'path': relative, 'revision': deployed,
+                      **compare_release(repo, deployed, remote)})
+    return {'repository': repo.name, 'remote_main': remote, 'remote_error': error,
+            'production': views}
+
+
+def production(args):
+    root = Path(args.production_root).resolve()
+    if not root.is_dir():
+        raise Unavailable('production_root_unavailable')
+    repos = {}
+    for directory in args.repo_group:
+        for child in Path(directory).iterdir():
+            if child.is_dir() and (child / '.git').exists():
+                if child.name in repos:
+                    raise Unavailable('duplicate_repository_name')
+                repos[child.name] = child.resolve()
+    for item in args.repo:
+        repo = Path(item).resolve()
+        if not (repo / '.git').exists() or repo.name in repos:
+            raise Unavailable('repository_missing_or_duplicate')
+        repos[repo.name] = repo
+    if not repos:
+        raise Unavailable('no_repositories')
+    observed, unavailable = service_paths(root, args.unit)
+    references = {name: [] for name in repos}
+    for name in repos:
+        current = root / name / 'current'
+        if current.exists() or current.is_symlink():
+            references[name].append(('current', 'current'))
+    for unit, name, relative in observed:
+        if name in repos:
+            references[name].append((unit, relative))
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        jobs = [pool.submit(production_row, repo, root, args.owner, args.remote, references[name])
+                for name, repo in sorted(repos.items())]
+        rows = [job.result() for job in jobs]
+    return {'schema_version': 1, 'operation': 'production',
+            'checked_at_utc': datetime.now(timezone.utc).isoformat(),
+            'unavailable_units': unavailable, 'repositories': rows}, 0
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='operation', required=True)
@@ -195,11 +313,18 @@ def main():
     cleaning.add_argument('--repo', required=True)
     cleaning.add_argument('--candidate', required=True)
     cleaning.add_argument('--base', required=True, help='Locally available integration revision')
+    auditing = sub.add_parser('production', help='Compare production paths with live remote main')
+    auditing.add_argument('--repo-group', action='append', default=[])
+    auditing.add_argument('--repo', action='append', default=[])
+    auditing.add_argument('--production-root', required=True)
+    auditing.add_argument('--owner', required=True)
+    auditing.add_argument('--remote', default='origin')
+    auditing.add_argument('--unit', action='append', default=[], help='Loaded systemd user unit to inspect')
     args = parser.parse_args()
     if args.operation == 'push' and not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', args.expected_repository):
         parser.error('--expected-repository must be owner/repository')
     try:
-        result, code = push(args) if args.operation == 'push' else cleanup(args)
+        result, code = {'push': push, 'cleanup': cleanup, 'production': production}[args.operation](args)
     except (Unavailable, OSError, subprocess.TimeoutExpired) as exc:
         result, code = {'schema_version': 1, 'operation': args.operation, 'status': 'unavailable', 'error': str(exc) if isinstance(exc, Unavailable) else 'input_or_command_unavailable'}, 2
     print(json.dumps(result, indent=2, ensure_ascii=True))

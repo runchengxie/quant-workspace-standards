@@ -38,6 +38,22 @@ class ToolsTest(unittest.TestCase):
     def push(self):
         return self.run_tool('repo-preflight.py', 'push', '--repo', self.repo, '--remote', 'origin', '--target', 'main', '--expected-repository', 'example/project')
 
+    def test_production_reports_remote_mismatch_without_network(self):
+        root = self.root / 'production'
+        full_sha = git(self.repo, 'rev-parse', 'HEAD')
+        current = root / self.repo.name / 'current'
+        current.parent.mkdir(parents=True)
+        git(self.repo, 'clone', '--quiet', str(self.repo), str(current))
+        proc, result = self.run_tool(
+            'repo-preflight.py', 'production', '--repo', self.repo,
+            '--production-root', root, '--owner', 'example',
+        )
+        self.assertEqual(proc.returncode, 0)
+        row = result['repositories'][0]
+        self.assertEqual(row['remote_error'], 'remote_identity_mismatch')
+        self.assertEqual(row['production'][0]['revision'], full_sha)
+        self.assertEqual(row['production'][0]['state'], 'unknown')
+
     def test_push_reads_explicit_destination_and_outgoing_commits_without_mutation(self):
         (self.repo / 'tracked').write_text('task\n')
         git(self.repo, 'commit', '-am', 'task change')
