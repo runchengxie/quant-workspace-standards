@@ -1,3 +1,4 @@
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -5,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -37,6 +39,22 @@ class ToolsTest(unittest.TestCase):
 
     def push(self):
         return self.run_tool('repo-preflight.py', 'push', '--repo', self.repo, '--remote', 'origin', '--target', 'main', '--expected-repository', 'example/project')
+
+    def test_production_reads_only_registered_service_environment_path(self):
+        spec = importlib.util.spec_from_file_location('repo_preflight', ROOT / 'scripts/repo-preflight.py')
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        root = self.root / 'production'
+        renderer = root / 'renderer' / 'content' / 'aabbccddeeff'
+        fixture = subprocess.CompletedProcess(
+            [], 0, f'SECRET=do-not-report "RENDERER={renderer}"', '',
+        )
+        with patch.object(tool.subprocess, 'run', return_value=fixture):
+            paths, missing = tool.service_environment_paths(
+                root, ['image.service:RENDERER', 'image.service:OTHER'],
+            )
+        self.assertEqual(paths, [('image.service:RENDERER', 'renderer', 'content/aabbccddeeff')])
+        self.assertEqual(missing, ['image.service:OTHER'])
 
     def test_production_prioritizes_approved_pin_drift(self):
         root = self.root / 'production'

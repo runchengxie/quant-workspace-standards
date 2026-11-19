@@ -78,3 +78,8 @@ visible separately from distance to main. Each entry has `repository`, `source`
 `revision` (full SHA), and `reason`. A pin with a missing service or path is
 reported as unavailable evidence. `attention` lists unavailable evidence and
 revision drift. An approved pin behind main does not enter that list.
+
+Use `--unit-env-path SERVICE:VARIABLE` for a production directory stored in a
+loaded unit's direct environment, such as a renderer checkout. Only explicitly
+selected variables under the production root are reported. Other environment
+values are omitted. Use `SERVICE:VARIABLE` as the approved pin source.
