@@ -49,3 +49,25 @@ python3 -B -m unittest discover -s scripts -p 'test_*.py'
 ```
 
 See the [behavioral evaluation](evaluation.md) and [walkthrough](../content/maintenance-example.en.md) for the distinction between script checks and agent decisions.
+
+## Production version inventory
+
+Run the read-only production comparison with a verified GitHub owner and the
+configured workspace root. Specify `--unit` for each loaded systemd user
+service whose working directory or command should be checked.
+
+```bash
+python -B scripts/repo-preflight.py production \
+  --repo-group "$CODE_ROOT/quant" \
+  --production-root "$CODE_ROOT/production" \
+  --owner "$GITHUB_OWNER" \
+  --unit "$REPORT_SERVICE"
+```
+
+Each row includes the live remote `main` SHA and the versions selected by
+`current` and matching loaded unit paths. Some deliberately pinned consumers
+will lag main. A missing remote, unknown revision, or unmatched service stays
+visible. The command does not inspect private service environment variables,
+installed packages, running binaries, or remote deployment status. Schedule it
+from a stable checkout and retain the JSON in the service journal or under the
+configured data root. The command never fetches or deploys.
